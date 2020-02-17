@@ -1,5 +1,8 @@
-import * as actionTypes from "./actionTypes";
+import * as actionTypes from "./types";
 import axios from "axios";
+
+const loginURL = "http://192.168.1.2:8000/rest-auth/login/";
+const signupURL = "http://192.168.1.2:8000/rest-auth/registration/";
 
 export const authStart = () => {
   return {
@@ -23,8 +26,9 @@ export const authFail = error => {
 };
 
 export const logout = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("token");
   localStorage.removeItem("expirationDate");
+  localStorage.removeItem("username");
   return {
     type: actionTypes.AUTH_LOGOUT
   };
@@ -42,7 +46,7 @@ export const authLogin = (username, password) => {
   return dispatch => {
     dispatch(authStart());
     axios
-      .post("http://127.0.0.1:8000/rest-auth/login/", {
+      .post(loginURL, {
         username: username,
         password: password
       })
@@ -65,7 +69,7 @@ export const authSignup = (username, email, password1, password2) => {
   return dispatch => {
     dispatch(authStart());
     axios
-      .post("http://127.0.0.1:8000/rest-auth/registration/", {
+      .post(signupURL, {
         username: username,
         email: email,
         password1: password1,

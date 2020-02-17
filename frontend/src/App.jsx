@@ -4,7 +4,7 @@ import BaseRouter from "./routes";
 import { connect } from "react-redux";
 import PageLayout from "./containers/PageLayout";
 
-import * as actions from "./auth/actions/auth";
+import * as actions from "./actions/auth";
 
 class App extends Component {
   componentDidMount() {

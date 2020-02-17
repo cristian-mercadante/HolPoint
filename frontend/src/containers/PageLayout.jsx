@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from "react";
-import { Navbar, Nav, Container, Button, ButtonGroup, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav, Container, Button, ButtonGroup, Image, Dropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import * as colors from "../colors";
 import Title from "../components/Title";
-import * as actions from "../auth/actions/auth";
+import * as actions from "../actions/auth";
 
 import { connect } from "react-redux";
+
+import logo from "../assets/imgs/logo.png";
 
 class PageLayout extends Component {
   navbarStyle = {
@@ -19,7 +21,7 @@ class PageLayout extends Component {
           <Navbar.Brand to="/">
             <LinkContainer to="/">
               <Navbar.Brand>
-                <Title fontSize="40px" />
+                <Title fontSize="30px" />
               </Navbar.Brand>
             </LinkContainer>
           </Navbar.Brand>
@@ -32,18 +34,22 @@ class PageLayout extends Component {
                     <Nav.Link>Home</Nav.Link>
                   </LinkContainer>
 
-                  <NavDropdown variant="danger" title={this.props.username} alignRight>
-                    <NavDropdown.Item>Profilo</NavDropdown.Item>
-                    <NavDropdown.Item>Impostazioni</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item>
-                      <LinkContainer to="/">
+                  <Dropdown as={ButtonGroup} alignRight>
+                    <Button variant="success">
+                      <Image src={logo} height={30} width={30} roundedCircle thumbnail />
+                      {"   " + this.props.username}
+                    </Button>
+                    <Dropdown.Toggle split variant="success" />
+                    <Dropdown.Menu>
+                      <Dropdown.Item>Impostazioni</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item>
                         <Button variant="outline-danger" onClick={this.props.logout}>
                           Log Out
                         </Button>
-                      </LinkContainer>
-                    </NavDropdown.Item>
-                  </NavDropdown>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </Fragment>
               ) : (
                 <Fragment>

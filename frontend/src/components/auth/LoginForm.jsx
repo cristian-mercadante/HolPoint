@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Card, Button, Spinner, Alert } from "react-bootstrap";
 import AccessFormCard from "./AccessFormCard";
 
-import * as actions from "../../auth/actions/auth";
+import * as actions from "../../actions/auth";
 import { connect } from "react-redux";
 
 class LoginForm extends Component {

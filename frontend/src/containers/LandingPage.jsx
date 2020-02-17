@@ -8,7 +8,6 @@ class LandingPage extends Component {
   };
 
   divStyle = {
-    marginTop: "20px",
     marginBottom: "20px"
   };
 
@@ -18,7 +17,7 @@ class LandingPage extends Component {
         <Row className="justify-content-md-center">
           <Col>
             <div style={this.divStyle}>
-              <Title fontSize="120px" />
+              <Title fontSize="110px" />
             </div>
           </Col>
         </Row>
