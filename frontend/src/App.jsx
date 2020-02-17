@@ -4,7 +4,8 @@ import BaseRouter from "./routes";
 import { connect } from "react-redux";
 import PageLayout from "./containers/PageLayout";
 
-import * as actions from "./actions/auth";
+import * as authActions from "./actions/auth";
+import * as alertActions from "./actions/alerts";
 
 class App extends Component {
   componentDidMount() {
@@ -27,15 +28,17 @@ class App extends Component {
 // map the state in some property
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.token !== null,
-    username: state.username
+    isAuthenticated: state.auth.token !== null,
+    username: state.auth.username,
+    alerts: state.alerts
   };
 };
 
 // authomatic auth check
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState())
+    onTryAutoSignup: () => dispatch(authActions.authCheckState()),
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
   };
 };
 

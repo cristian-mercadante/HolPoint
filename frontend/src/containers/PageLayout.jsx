@@ -1,13 +1,17 @@
 import React, { Component, Fragment } from "react";
 import { Navbar, Nav, Container, Button, ButtonGroup, Image, Dropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import * as colors from "../colors";
-import Title from "../components/Title";
-import * as actions from "../actions/auth";
+import { withRouter } from "react-router-dom";
 
+import AlertComponent from "../components/alerts/AlertComponent";
+import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
+
+import * as authActions from "../actions/auth";
 import { connect } from "react-redux";
 
 import logo from "../assets/imgs/logo.png";
+import Title from "../components/Title";
+import * as colors from "../colors";
 
 class PageLayout extends Component {
   navbarStyle = {
@@ -66,7 +70,12 @@ class PageLayout extends Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <Container>{this.props.children}</Container>
+        <Container>
+          <AlertsOverlayComponent alerts={this.props.alerts}>
+            <AlertComponent />
+          </AlertsOverlayComponent>
+          {this.props.children}
+        </Container>
       </Fragment>
     );
   }
@@ -74,8 +83,8 @@ class PageLayout extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch(actions.logout())
+    logout: () => dispatch(authActions.logout())
   };
 };
 
-export default connect(null, mapDispatchToProps)(PageLayout);
+export default withRouter(connect(null, mapDispatchToProps)(PageLayout));

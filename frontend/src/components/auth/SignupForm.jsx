@@ -1,25 +1,29 @@
 import React, { Component } from "react";
-import { Form, Card, Button, Col, Spinner, Alert } from "react-bootstrap";
+import { Form, Card, Button, Col, Spinner } from "react-bootstrap";
 import AccessFormCard from "./AccessFormCard";
 
-import * as actions from "../../actions/auth";
+import * as authActions from "../../actions/auth";
+import * as alertActions from "../../actions/alerts";
 import { connect } from "react-redux";
 
 class SignupForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const password1 = document.getElementById("password1").value;
-    const password2 = document.getElementById("password2").value;
-    console.log(`Submitted:\n${username} ${email} ${password1} ${password2}`);
+    const form = e.currentTarget;
+    const username = form.username.value;
+    const email = form.email.value;
+    const password1 = form.password1.value;
+    const password2 = form.password2.value;
     this.props.onAuth(username, email, password1, password2);
   };
 
+  componentWillUnmount() {
+    this.props.removeAllAlerts();
+  }
+
   render() {
-    let errorMessage = null;
     if (this.props.error) {
-      errorMessage = <Alert variant="danger">{this.props.error.message}</Alert>;
+      this.props.addAlert(this.props.error.message, "danger");
     }
 
     return (
@@ -27,7 +31,6 @@ class SignupForm extends Component {
         <Card.Header>
           <h1 className="display-4">Sign Up</h1>
         </Card.Header>
-        {errorMessage}
         <Form onSubmit={this.handleSubmit}>
           <Card.Body>
             <Form.Group controlId="username">
@@ -67,14 +70,16 @@ class SignupForm extends Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.loading,
-    error: state.error
+    loading: state.auth.loading,
+    error: state.auth.error
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (username, email, password1, password2) => dispatch(actions.authSignup(username, email, password1, password2))
+    onAuth: (username, email, password1, password2) => dispatch(authActions.authSignup(username, email, password1, password2)),
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
+    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };
 

@@ -1,8 +1,9 @@
 import * as actionTypes from "./types";
 import axios from "axios";
 
-const loginURL = "http://192.168.1.2:8000/rest-auth/login/";
-const signupURL = "http://192.168.1.2:8000/rest-auth/registration/";
+const server = "http://127.0.0.1:8000";
+const loginURL = server + "/rest-auth/login/";
+const signupURL = server + "/rest-auth/registration/";
 
 export const authStart = () => {
   return {

@@ -1,23 +1,28 @@
 import React, { Component } from "react";
-import { Form, Card, Button, Spinner, Alert } from "react-bootstrap";
+import { Form, Card, Button, Spinner } from "react-bootstrap";
 import AccessFormCard from "./AccessFormCard";
 
-import * as actions from "../../actions/auth";
+import * as authActions from "../../actions/auth";
+import * as alertActions from "../../actions/alerts";
 import { connect } from "react-redux";
 
 class LoginForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    //console.log(`Submitted:\n${username} ${password}`);
+    const form = e.currentTarget;
+    const username = form.username.value;
+    const password = form.password.value;
     this.props.onAuth(username, password);
   };
+
+  componentWillUnmount() {
+    this.props.removeAllAlerts();
+  }
 
   render() {
     let errorMessage = null;
     if (this.props.error) {
-      errorMessage = <Alert variant="danger">{this.props.error.message}</Alert>;
+      this.props.addAlert(this.props.error.message, "danger");
     }
 
     return (
@@ -25,12 +30,12 @@ class LoginForm extends Component {
         <Card.Header>
           <h1 className="display-4">Log In</h1>
         </Card.Header>
-        {errorMessage}
         <Form onSubmit={this.handleSubmit}>
           <Card.Body>
             <Form.Group controlId="username">
               <Form.Label>Username</Form.Label>
               <Form.Control type="text" placeholder="user_name" />
+              <Form.Control.Feedback>ciao</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="password">
               <Form.Label>Password</Form.Label>
@@ -55,14 +60,16 @@ class LoginForm extends Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.loading,
-    error: state.error
+    loading: state.auth.loading,
+    error: state.auth.error
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (username, password) => dispatch(actions.authLogin(username, password))
+    onAuth: (username, password) => dispatch(authActions.authLogin(username, password)),
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
+    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };
 
