@@ -23,7 +23,12 @@ class SignupForm extends Component {
 
   render() {
     if (this.props.error) {
-      this.props.addAlert(this.props.error.message, "danger");
+      let message = "";
+      for (const v of Object.values(this.props.error.response.data)) {
+        message += v;
+        message += "\n";
+      }
+      this.props.addAlert(message, "danger");
     }
 
     return (
