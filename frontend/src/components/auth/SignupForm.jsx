@@ -5,6 +5,7 @@ import AccessFormCard from "./AccessFormCard";
 import * as authActions from "../../actions/auth";
 import * as alertActions from "../../actions/alerts";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 class SignupForm extends Component {
   handleSubmit = e => {
@@ -14,23 +15,33 @@ class SignupForm extends Component {
     const email = form.email.value;
     const password1 = form.password1.value;
     const password2 = form.password2.value;
-    this.props.onAuth(username, email, password1, password2);
+    this.props.onAuth(username, email, password1, password2).then(err => {
+      if (err) {
+        if (err.response) {
+          let message = "";
+          for (const v of Object.values(err.response.data)) {
+            message += v;
+            message += "\n";
+          }
+          //console.log(message);
+          this.props.addAlert(message, "danger");
+        } else {
+          this.props.addAlert(err.message, "danger");
+        }
+      } else {
+        this.props.history.push("/home");
+        this.props.removeAllAlerts();
+      }
+    });
   };
 
+  /*
   componentWillUnmount() {
     this.props.removeAllAlerts();
   }
+  */
 
   render() {
-    if (this.props.error) {
-      let message = "";
-      for (const v of Object.values(this.props.error.response.data)) {
-        message += v;
-        message += "\n";
-      }
-      this.props.addAlert(message, "danger");
-    }
-
     return (
       <AccessFormCard>
         <Card.Header>
@@ -88,4 +99,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignupForm));

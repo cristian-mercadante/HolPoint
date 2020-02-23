@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Router } from "react-router-dom";
 import BaseRouter from "./routes";
 import { connect } from "react-redux";
 import PageLayout from "./containers/PageLayout";
+import history from "./history";
 
 import * as authActions from "./actions/auth";
 import * as alertActions from "./actions/alerts";
@@ -15,9 +16,9 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <Router>
+        <Router history={history}>
           <PageLayout {...this.props}>
-            <BaseRouter />
+            <BaseRouter isAuthenticated={this.props.isAuthenticated} />
           </PageLayout>
         </Router>
       </Fragment>

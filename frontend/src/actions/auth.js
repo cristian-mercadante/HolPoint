@@ -46,7 +46,8 @@ const checkAuthTimeout = expirationTime => {
 export const authLogin = (username, password) => {
   return dispatch => {
     dispatch(authStart());
-    axios
+    // we return the promise in order to use wait till the end using "then"
+    return axios
       .post(loginURL, {
         username: username,
         password: password
@@ -62,6 +63,7 @@ export const authLogin = (username, password) => {
       })
       .catch(error => {
         dispatch(authFail(error));
+        return error;
       });
   };
 };
@@ -69,7 +71,8 @@ export const authLogin = (username, password) => {
 export const authSignup = (username, email, password1, password2) => {
   return dispatch => {
     dispatch(authStart());
-    axios
+    // we return the promise in order to use wait till the end using "then"
+    return axios
       .post(signupURL, {
         username: username,
         email: email,
@@ -87,6 +90,7 @@ export const authSignup = (username, email, password1, password2) => {
       })
       .catch(err => {
         dispatch(authFail(err));
+        return err;
       });
   };
 };

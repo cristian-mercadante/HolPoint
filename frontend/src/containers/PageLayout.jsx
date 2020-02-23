@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Navbar, Nav, Container, Button, ButtonGroup, Image, Dropdown } from "react-bootstrap";
+import { Navbar, Nav, Container, Button, ButtonGroup } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { withRouter } from "react-router-dom";
 
@@ -9,9 +9,10 @@ import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent"
 import * as authActions from "../actions/auth";
 import { connect } from "react-redux";
 
-import logo from "../assets/imgs/logo.png";
 import Title from "../components/Title";
 import * as colors from "../colors";
+import ProfileButton from "../components/ProfileButton";
+import LogInSignUp from "../components/LogInSignUp";
 
 class PageLayout extends Component {
   navbarStyle = {
@@ -32,41 +33,10 @@ class PageLayout extends Component {
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <Nav>
-              {this.props.isAuthenticated ? (
-                <Fragment>
-                  <LinkContainer to="/">
-                    <Nav.Link>Home</Nav.Link>
-                  </LinkContainer>
-
-                  <Dropdown as={ButtonGroup} alignRight>
-                    <Button variant="success">
-                      <Image src={logo} height={30} width={30} roundedCircle thumbnail />
-                      {"   " + this.props.username}
-                    </Button>
-                    <Dropdown.Toggle split variant="success" />
-                    <Dropdown.Menu>
-                      <Dropdown.Item>Impostazioni</Dropdown.Item>
-                      <Dropdown.Divider />
-                      <Dropdown.Item>
-                        <Button variant="outline-danger" onClick={this.props.logout}>
-                          Log Out
-                        </Button>
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Fragment>
-              ) : (
-                <Fragment>
-                  <ButtonGroup>
-                    <LinkContainer to="/login">
-                      <Button variant="outline-success">Log In</Button>
-                    </LinkContainer>
-                    <LinkContainer to="/register">
-                      <Button variant="outline-primary">Sign Up</Button>
-                    </LinkContainer>
-                  </ButtonGroup>
-                </Fragment>
-              )}
+              <LinkContainer to="/home">
+                <Nav.Link>Home</Nav.Link>
+              </LinkContainer>
+              {this.props.isAuthenticated ? <ProfileButton username={this.props.username} logout={this.props.logout} /> : <LogInSignUp />}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
