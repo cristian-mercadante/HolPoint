@@ -5,6 +5,7 @@ import requireAuth from "./requireAuth";
 
 import HomePage from "./containers/HomePage";
 import LandingPage from "./containers/LandingPage";
+import Profile from "./containers/Profile";
 
 import LoginForm from "./components/auth/LoginForm";
 import SignupForm from "./components/auth/SignupForm";
@@ -36,6 +37,7 @@ const BaseRouter = props => (
         <LandingPage form={() => <SignupForm />} />
       </Route>
       <Route exact path="/home" component={requireAuth(HomePage)} />
+      <Route exact path="/profile/:profileId" component={Profile} />
       <Route path="*">{"404 not found"}</Route>
     </Switch>
   </div>

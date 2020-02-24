@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, Form, FormControl, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { withRouter } from "react-router-dom";
 
@@ -36,8 +36,14 @@ class PageLayout extends Component {
               {this.props.isAuthenticated ? (
                 <Fragment>
                   <LinkContainer to="/home">
-                    <Nav.Link>Home</Nav.Link>
-                  </LinkContainer>{" "}
+                    <Nav.Link className="mr-sm-2">Home</Nav.Link>
+                  </LinkContainer>
+                  <Form inline>
+                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                    <Button variant="outline-success" className="mr-sm-2">
+                      Search
+                    </Button>
+                  </Form>
                   <ProfileButton username={this.props.username} logout={this.props.logout} />
                 </Fragment>
               ) : (

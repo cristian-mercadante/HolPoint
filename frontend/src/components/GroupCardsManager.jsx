@@ -30,11 +30,6 @@ class GroupCardsManager extends Component {
         <Row>
           <GroupCard {...this.groupCardProps} />
           <GroupCard {...this.groupCardProps} />
-          <GroupCard {...this.groupCardProps} />
-          <GroupCard {...this.groupCardProps} />
-          <GroupCard {...this.groupCardProps} />
-          <GroupCard {...this.groupCardProps} />
-          <GroupCard {...this.groupCardProps} />
           <EmptyGroupCard {...this.groupCardProps} />
         </Row>
       </React.Fragment>

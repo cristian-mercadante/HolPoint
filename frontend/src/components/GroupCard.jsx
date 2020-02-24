@@ -49,6 +49,11 @@ class GroupCard extends Component {
 }
 
 export class EmptyGroupCard extends GroupCard {
+  onClick = e => {
+    e.preventDefault();
+    alert("add");
+  };
+
   render() {
     return (
       <Fragment>
@@ -69,12 +74,19 @@ export class EmptyGroupCard extends GroupCard {
               color: ${MAIN_COLOR};
               border-color: ${MAIN_COLOR};
             }
+            .iconDiv{
+              margin: auto;
+              font-size: 20px;
+              position: block;
+            }
           `}
           </style>
         </>
         <Col {...this.props.colProps}>
-          <Button as={Card} variant="outline" className="groupCard" onClick={() => alert("add")}>
-            <FaPlus />
+          <Button as={Card} variant="outline" className="groupCard" onClick={this.onClick}>
+            <div className="iconDiv">
+              <FaPlus />
+            </div>
           </Button>
         </Col>
       </Fragment>
