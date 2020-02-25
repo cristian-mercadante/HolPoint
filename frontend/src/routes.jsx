@@ -37,7 +37,7 @@ const BaseRouter = props => (
         <LandingPage form={() => <SignupForm />} />
       </Route>
       <Route exact path="/home" component={requireAuth(HomePage)} />
-      <Route exact path="/profile/:profileId" component={Profile} />
+      <Route exact path="/profile/:username" component={Profile} />
       <Route path="*">{"404 not found"}</Route>
     </Switch>
   </div>

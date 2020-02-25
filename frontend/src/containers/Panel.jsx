@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class HomePagePanel extends Component {
+class Panel extends Component {
   divStyle = {
     marginTop: "10px",
     marginBottom: "20px"
@@ -16,4 +16,4 @@ class HomePagePanel extends Component {
   }
 }
 
-export default HomePagePanel;
+export default Panel;

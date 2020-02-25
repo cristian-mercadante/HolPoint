@@ -71,8 +71,7 @@ class SignupForm extends Component {
           <Card.Footer>
             {this.props.loading ? (
               <Button variant="primary" disabled>
-                <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
-                Registrazione
+                <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" /> Registrazione
               </Button>
             ) : (
               <Button type="submit">Registrati</Button>

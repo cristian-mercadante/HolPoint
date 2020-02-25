@@ -8,3 +8,5 @@ export const AUTH_LOGOUT = "AUTH_LOGOUT";
 export const ADD_ALERT = "ADD_ALERT";
 export const REMOVE_ALERT = "REMOVE_ALERT";
 export const REMOVE_ALL_ALERTS = "REMOVE_ALL_ALERTS";
+
+export const GET_PROFILE = "GET_PROFILE";

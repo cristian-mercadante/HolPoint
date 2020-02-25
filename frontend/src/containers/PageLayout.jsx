@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Navbar, Nav, Container, Form, FormControl, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { withRouter } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 
 import AlertComponent from "../components/alerts/AlertComponent";
 import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
@@ -41,7 +42,7 @@ class PageLayout extends Component {
                   <Form inline>
                     <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                     <Button variant="outline-success" className="mr-sm-2">
-                      Search
+                      <FaSearch /> Search
                     </Button>
                   </Form>
                   <ProfileButton username={this.props.username} logout={this.props.logout} />

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
 import GroupCardsManager from "../components/GroupCardsManager";
-import HomePagePanel from "../containers/HomePagePanel";
-import FriendBallsManager from "../components/FriendBallsManager";
+import Panel from "../containers/Panel";
 
 class HomePage extends Component {
   divStyle = {
@@ -13,8 +12,7 @@ class HomePage extends Component {
   render() {
     return (
       <Container>
-        <HomePagePanel title="Gruppi" component={<GroupCardsManager />} />
-        <HomePagePanel title="Amici" component={<FriendBallsManager />} />
+        <Panel title="Gruppi" component={<GroupCardsManager />} />
       </Container>
     );
   }

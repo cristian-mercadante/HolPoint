@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
 import { Image } from "react-bootstrap";
 
 import logo from "../assets/imgs/logo.png";
@@ -18,11 +19,6 @@ class FriendBall extends Component {
   legendStyle = {
     textAlign: "center",
     fontSize: "15px"
-  };
-
-  onClick = e => {
-    e.preventDefault();
-    alert("profilo");
   };
 
   render() {
@@ -47,10 +43,10 @@ class FriendBall extends Component {
           </style>
         </>
         <div style={this.divStyle}>
-          <a href="/#" onClick={this.onClick}>
+          <Link to={`/profile/${this.props.username}`}>
             <Image src={logo} height={this.imgSize} width={this.imgSize} roundedCircle thumbnail className="frndImg" />
-          </a>
-          <legend style={this.legendStyle}>{this.props.friendname}</legend>
+          </Link>
+          <legend style={this.legendStyle}>{this.props.username}</legend>
         </div>
       </Fragment>
     );

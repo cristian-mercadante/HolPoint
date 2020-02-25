@@ -60,8 +60,7 @@ class LoginForm extends Component {
           <Card.Footer>
             {this.props.loading ? (
               <Button variant="primary" disabled>
-                <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
-                Accesso
+                <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" /> Accesso
               </Button>
             ) : (
               <Button type="submit">Accedi</Button>
