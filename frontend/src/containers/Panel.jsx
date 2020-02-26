@@ -9,7 +9,9 @@ class Panel extends Component {
   render() {
     return (
       <div style={this.divStyle}>
-        <h1 className="display-4">{this.props.title}</h1>
+        <h1 className="display-4">
+          {this.props.title} {this.props.badge}
+        </h1>
         {this.props.component}
       </div>
     );

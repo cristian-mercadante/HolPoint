@@ -40,15 +40,25 @@ const checkAuthTimeout = expirationTime => {
   };
 };
 
+const headers = {
+  headers: {
+    "Content-Type": "application/json"
+  }
+};
+
 export const authLogin = (username, password) => {
   return dispatch => {
     dispatch(authStart());
     // we return the promise in order to use wait till the end using "then"
     return axios
-      .post(loginURL, {
-        username: username,
-        password: password
-      })
+      .post(
+        loginURL,
+        {
+          username: username,
+          password: password
+        },
+        headers
+      )
       .then(res => {
         const token = res.data.key;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
@@ -70,12 +80,16 @@ export const authSignup = (username, email, password1, password2) => {
     dispatch(authStart());
     // we return the promise in order to use wait till the end using "then"
     return axios
-      .post(signupURL, {
-        username: username,
-        email: email,
-        password1: password1,
-        password2: password2
-      })
+      .post(
+        signupURL,
+        {
+          username: username,
+          email: email,
+          password1: password1,
+          password2: password2
+        },
+        headers
+      )
       .then(res => {
         const token = res.data.key;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
