@@ -2,11 +2,15 @@ import * as actionTypes from "./types";
 import axios from "axios";
 import { profileAPI } from "./server";
 
-export const getProfile = (username, token) => {
+export const getProfile = username => {
   return dispatch => {
+    const token = localStorage.getItem("token");
     console.log(token + "token");
     const headers = {
-      headers: { "Content-Type": "application/json", Authorization: `Token ${token}` }
+      headers: {
+        "Content-Type": "application/json"
+        //, Authorization: `Token ${token}`
+      }
     };
     return axios
       .get(`${profileAPI}${username}`, headers)

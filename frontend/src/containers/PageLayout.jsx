@@ -7,9 +7,6 @@ import { FaSearch } from "react-icons/fa";
 import AlertComponent from "../components/alerts/AlertComponent";
 import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
 
-import * as authActions from "../actions/auth";
-import { connect } from "react-redux";
-
 import Title from "../components/Title";
 import * as colors from "../colors";
 import ProfileButton from "../components/ProfileButton";
@@ -64,10 +61,4 @@ class PageLayout extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    logout: () => dispatch(authActions.logout())
-  };
-};
-
-export default withRouter(connect(null, mapDispatchToProps)(PageLayout));
+export default withRouter(PageLayout);

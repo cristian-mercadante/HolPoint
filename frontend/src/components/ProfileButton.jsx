@@ -3,6 +3,9 @@ import { Dropdown, Button, ButtonGroup, Image } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import logo from "../assets/imgs/logo.png";
 
+import * as authActions from "../actions/auth";
+import { connect } from "react-redux";
+
 class ProfileButton extends Component {
   onClickLogout = e => {
     e.preventDefault();
@@ -40,4 +43,10 @@ class ProfileButton extends Component {
   }
 }
 
-export default withRouter(ProfileButton);
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(authActions.authLogout())
+  };
+};
+
+export default withRouter(connect(null, mapDispatchToProps)(ProfileButton));

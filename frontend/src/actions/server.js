@@ -6,3 +6,4 @@ export const signupURL = rest_auth + "registration/";
 
 const api = server + "/api/";
 export const profileAPI = api + "profile/";
+export const currentUserAPI = api + "current_user";

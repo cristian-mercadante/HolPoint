@@ -11,16 +11,6 @@ import * as alertActions from "../actions/alerts";
 class Profile extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      token: "",
-      username: "",
-      first_name: "",
-      last_name: "",
-      profile: {
-        friends: []
-      }
-    };
   }
 
   handleError(err) {
@@ -36,48 +26,37 @@ class Profile extends Component {
       } else {
         this.props.addAlert(err.message, "danger");
       }
+      const currentUserUsername = this.props.currentUser.username;
+      this.props.history.push(`/home`);
     } else {
       this.props.removeAllAlerts();
     }
   }
 
   componentDidMount() {
-    const username = this.props.match.params.username;
-    const token = this.props.token;
-    console.log("CDM - token: " + token + " username: " + username);
-    this.props.getProfile(username, token).then(err => {
-      this.handleError(err);
+    console.log("CDM getProfile");
+    this.props.getProfile(this.props.match.params.username).then(error => {
+      this.handleError(error);
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
     const prevUsername = prevProps.match.params.username;
     const username = this.props.match.params.username;
-    const prevToken = prevProps.token;
-    const token = this.props.token;
-    console.log("CDU - token: " + token + " username: " + username);
-    if (prevToken !== token) {
-      this.props.getProfile(username, token).then(err => {
-        this.handleError();
-      });
-      console.log("token changed CDU");
-    }
     if (prevUsername !== username) {
-      this.props.getProfile(username, token).then(err => {
-        this.handleError();
-      });
-      console.log("username changed CDU");
+      console.log("CDU getProfile");
+      this.props.getProfile(this.props.match.params.username);
     }
   }
 
   render() {
     return (
       <Container>
-        {this.props.loading ? (
+        {this.props.profileLoading ? (
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
           <Fragment>
-            <Panel title={this.props.profile.username} component={<UserProfileManager profile={this.props.profile} />} />
+            <Panel title={this.props.profile.username} component={<UserProfileManager {...this.props} />} />
             <Panel
               title="Amici"
               badge={
@@ -96,11 +75,10 @@ class Profile extends Component {
 
 const mapStateToProps = state => {
   return {
-    username: state.auth.username,
     token: state.auth.token,
-    loading: state.profile.loading,
-    error: state.profile.error,
-    profile: state.profile.profile
+    profileLoading: state.profile.loading,
+    profile: state.profile.profile,
+    currentUser: state.currentUser
   };
 };
 

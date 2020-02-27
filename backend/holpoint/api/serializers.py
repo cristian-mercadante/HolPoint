@@ -13,7 +13,7 @@ class FriendRelatedField(serializers.RelatedField):
         first_name = f.user.first_name
         last_name = f.user.last_name
         username = f.user.username
-        return {'pk': value.pk, 'first_name': first_name, 'last_name': last_name, 'username': username}
+        return {'id': value.pk, 'first_name': first_name, 'last_name': last_name, 'username': username}
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -29,4 +29,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'profile')
+        fields = ('id', 'username', 'first_name', 'last_name', 'profile')

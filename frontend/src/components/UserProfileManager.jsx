@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Image, Button } from "react-bootstrap";
-import { FaUserFriends } from "react-icons/fa";
+import { Container, Row, Col, Image } from "react-bootstrap";
 
 import logo from "../assets/imgs/logo.png";
+
+import FriendUnfriendButtons from "./FriendUnfriendButtons";
 
 class UserProfileManager extends Component {
   imageSize = 200;
@@ -22,12 +23,7 @@ class UserProfileManager extends Component {
             <h1 className="display-4">
               {this.props.profile.first_name} {this.props.profile.last_name}
             </h1>
-            <Button variant="success">
-              <FaUserFriends /> Invia richiesta di amicizia
-            </Button>
-            <Button variant="danger">
-              <FaUserFriends /> Rimuovi dagli amici
-            </Button>
+            <FriendUnfriendButtons {...this.props} />
           </Col>
         </Row>
       </Container>
