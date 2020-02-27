@@ -1,7 +1,11 @@
 import { GET_PROFILE } from "../actions/types";
 import { updateObject } from "./utility";
 
-const initialState = { loading: true, error: null, profile: null };
+const initialState = {
+  loading: true,
+  error: null,
+  profile: null
+};
 
 const getProfile = (state, action) => {
   return updateObject(state, {

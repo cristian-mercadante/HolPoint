@@ -15,8 +15,8 @@ class GroupCardsManager extends Component {
 
   renderGroupCards = () => {
     let buffer = [];
-    if (!this.props.currentUser.loading) {
-      const groups = this.props.currentUser.profile.groups;
+    if (!this.props.groups.loading) {
+      const groups = this.props.groups.groups;
       groups.map(g => buffer.push(<GroupCard key={g.id} {...this.groupCardProps} group={g} />));
     }
     return buffer;

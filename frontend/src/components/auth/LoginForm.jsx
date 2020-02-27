@@ -21,7 +21,6 @@ class LoginForm extends Component {
             message += v;
             message += "\n";
           }
-          //console.log(message);
           this.props.addAlert(message, "danger");
         } else {
           this.props.addAlert(err.message, "danger");

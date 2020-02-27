@@ -17,7 +17,6 @@ class Profile extends Component {
           message += v;
           message += "\n";
         }
-        //console.log(message);
         this.props.addAlert(message, "danger");
       } else {
         this.props.addAlert(err.message, "danger");
@@ -29,7 +28,6 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    console.log("CDM getProfile");
     this.props.getProfile(this.props.match.params.username).then(error => {
       this.handleError(error);
     });
@@ -39,7 +37,6 @@ class Profile extends Component {
     const prevUsername = prevProps.match.params.username;
     const username = this.props.match.params.username;
     if (prevUsername !== username) {
-      console.log("CDU getProfile");
       this.props.getProfile(this.props.match.params.username);
     }
   }

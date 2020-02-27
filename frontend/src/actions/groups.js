@@ -1,21 +1,22 @@
 import * as actionTypes from "./types";
 import axios from "axios";
-import { profileAPI } from "./server";
+import { groupsAPI } from "./server";
 
-export const getProfile = username => {
+// listAPI
+export const getGroups = () => {
   return dispatch => {
-    //const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const headers = {
       headers: {
-        "Content-Type": "application/json"
-        //, Authorization: `Token ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
       }
     };
     return axios
-      .get(`${profileAPI}${username}`, headers)
+      .get(`${groupsAPI}`, headers)
       .then(res => {
         dispatch({
-          type: actionTypes.GET_PROFILE,
+          type: actionTypes.GET_GROUPS,
           payload: res.data
         });
       })

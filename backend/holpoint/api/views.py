@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from .serializers import (
     UserSerializer,
     BasicUserSerializer,
-    CurrentUserSerializer,
     GroupSerializer)
 
 from holpoint.models import Group
@@ -16,18 +15,20 @@ class CurrentUserDetailView(RetrieveAPIView):
     lookup_field = 'username'
     permission_classes = [IsAuthenticated, ]
     queryset = User.objects.all()
-    serializer_class = CurrentUserSerializer
+    serializer_class = UserSerializer
 
     def get_object(self):
         return self.request.user
 
 
 class UserDetailView(RetrieveAPIView):
+    # same as CurrentUserDetailView, but without authentication
     lookup_field = 'username'
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
+# FIXME: do I need it???
 class BasicUserDetailView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = BasicUserSerializer
@@ -36,8 +37,16 @@ class BasicUserDetailView(RetrieveAPIView):
 class GroupListView(ListAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        return self.request.user.profile.groups.all()
 
 
 class GroupDetailView(RetrieveAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        return self.request.user.profile.groups.all()
