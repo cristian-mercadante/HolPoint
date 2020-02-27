@@ -13,6 +13,15 @@ class GroupCardsManager extends Component {
     }
   };
 
+  renderGroupCards = () => {
+    let buffer = [];
+    if (!this.props.currentUser.loading) {
+      const groups = this.props.currentUser.profile.groups;
+      groups.map(g => buffer.push(<GroupCard key={g.id} {...this.groupCardProps} group={g} />));
+    }
+    return buffer;
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -28,8 +37,7 @@ class GroupCardsManager extends Component {
           </style>
         </>
         <Row>
-          <GroupCard {...this.groupCardProps} />
-          <GroupCard {...this.groupCardProps} />
+          {this.renderGroupCards()}
           <EmptyGroupCard {...this.groupCardProps} />
         </Row>
       </React.Fragment>

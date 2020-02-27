@@ -31,15 +31,22 @@ class GroupCard extends Component {
             .card.active {
               opacity: 0.8
             }
+            .card_header {
+              font-size: 20px,
+            }
             `}
           </style>
         </>
         <Col {...this.props.colProps}>
           <a href="/#" onClick={this.onClick}>
             <Card className="groupCard">
-              <Card.Header>Titolo</Card.Header>
-              <Card.Body>Contenuto</Card.Body>
-              <Card.Footer>Partecipanti</Card.Footer>
+              <Card.Header>
+                <h4>{this.props.group.name}</h4>
+              </Card.Header>
+              <Card.Body></Card.Body>
+              <Card.Footer>
+                Creato il {this.props.group.date_creation} da {this.props.group.creator.username}
+              </Card.Footer>
             </Card>
           </a>
         </Col>

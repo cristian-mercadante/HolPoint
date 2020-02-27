@@ -8,7 +8,7 @@ const initialState = {
   last_name: "",
   profile: {},
   error: null,
-  loading: false
+  loading: true
 };
 
 const getCurrentUserStart = (state, action) => {

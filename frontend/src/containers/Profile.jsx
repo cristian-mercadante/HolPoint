@@ -9,10 +9,6 @@ import * as profileActions from "../actions/profile";
 import * as alertActions from "../actions/alerts";
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleError(err) {
     if (err) {
       if (err.response) {
@@ -26,7 +22,6 @@ class Profile extends Component {
       } else {
         this.props.addAlert(err.message, "danger");
       }
-      const currentUserUsername = this.props.currentUser.username;
       this.props.history.push(`/home`);
     } else {
       this.props.removeAllAlerts();
