@@ -1,12 +1,14 @@
 from rest_framework.generics import RetrieveAPIView, ListAPIView
-from rest_framework.authentication import TokenAuthentication
+#from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
 
 from django.contrib.auth.models import User
 from .serializers import (
     UserSerializer,
     BasicUserSerializer,
-    GroupSerializer)
+    GroupSerializer,
+)
 
 from holpoint.models import Group
 
@@ -34,19 +36,10 @@ class BasicUserDetailView(RetrieveAPIView):
     serializer_class = BasicUserSerializer
 
 
-class GroupListView(ListAPIView):
+class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
-        return self.request.user.profile.groups.all()
-
-
-class GroupDetailView(RetrieveAPIView):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [IsAuthenticated, ]
-
-    def get_queryset(self):
-        return self.request.user.profile.groups.all()
+        return self.request.user.holiday_groups.all()

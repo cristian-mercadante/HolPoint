@@ -27,12 +27,12 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Group(models.Model):
     # constraints
-    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_groups")
-    admins = models.ManyToManyField(Profile, related_name="admin_groups")
-    profiles = models.ManyToManyField(Profile, related_name="groups")
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_groups")
+    users = models.ManyToManyField(User, related_name="holiday_groups")
 
     # attributes
     name = models.CharField(max_length=200)
+    description = models.TextField(max_length=2000, null=True, blank=True)
     date_creation = models.DateField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
@@ -42,15 +42,18 @@ class Group(models.Model):
 
 class Idea(models.Model):
     # constraints
-    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_ideas")
-    groups = models.ManyToManyField(Group, related_name="groups", blank=True)
-    likes = models.ManyToManyField(Profile, related_name="liked_ideas", blank=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_ideas")
+    groups = models.ManyToManyField(Group, related_name="holiday_groups", blank=True)
+    likes = models.ManyToManyField(User, related_name="liked_ideas", blank=True)
 
     # attributes
     title = models.CharField(max_length=200)
     date_creation = models.DateField(auto_now=True)
     date_start = models.DateField(auto_now=True)
     date_finish = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return "{}".format(self.title)
 
     def duration(self):
         if self.date_start and self.date_finish:
@@ -61,10 +64,10 @@ class Idea(models.Model):
 
 class Activity(models.Model):
     # constraints
-    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_activities", null=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_activities", null=True)
     idea = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="activities")
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="activities")
-    likes = models.ManyToManyField(Profile, related_name="liked_activities", blank=True)
+    likes = models.ManyToManyField(User, related_name="liked_activities", blank=True)
 
     # attributes
     title = models.CharField(max_length=200)

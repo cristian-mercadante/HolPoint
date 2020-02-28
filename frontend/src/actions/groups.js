@@ -6,6 +6,7 @@ import { groupsAPI } from "./server";
 export const getGroups = () => {
   return dispatch => {
     const token = localStorage.getItem("token");
+    console.log(groupsAPI);
     const headers = {
       headers: {
         "Content-Type": "application/json",
