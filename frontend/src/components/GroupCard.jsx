@@ -45,7 +45,7 @@ class GroupCard extends Component {
               </Card.Header>
               <Card.Body></Card.Body>
               <Card.Footer>
-                Creato il {this.props.group.date_creation} da {this.props.group.creator.username}
+                Creato il {this.props.group.date_creation} da {this.props.group.creator}
               </Card.Footer>
             </Card>
           </a>

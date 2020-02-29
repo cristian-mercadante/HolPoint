@@ -29,7 +29,7 @@ class GroupCardsManager extends Component {
           <style type="text/css">
             {`
             .groupCard{
-              min-height: 200px;
+              min-height: 400px;
               margin-top: 10px;
               margin-bottom: 10px;
             }

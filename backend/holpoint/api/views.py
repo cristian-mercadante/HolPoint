@@ -42,4 +42,4 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
-        return self.request.user.holiday_groups.all()
+        return self.request.user.profile.groups.all()

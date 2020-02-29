@@ -17,9 +17,7 @@ class ProfileAdmin(admin.ModelAdmin):
     inlines = [GroupInline, IdeaInline]
 
 
-admin.site.unregister(User)
-admin.site.register(User, ProfileAdmin)
-admin.site.register(models.Profile)
+admin.site.register(models.Profile, ProfileAdmin)
 admin.site.register(models.Group)
 admin.site.register(models.Idea)
 admin.site.register(models.Activity)

@@ -21,7 +21,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('friends', 'user')
+        fields = ('friends', 'groups', 'user')
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -31,18 +31,18 @@ class GroupSerializer(serializers.ModelSerializer):
     date_creation = serializers.DateField(read_only=True)
     is_active = serializers.BooleanField(default=True, read_only=True)
     creator = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
-    users = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True, required=False)
+    profiles = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all(), many=True, required=False)
 
     class Meta:
         model = Group
-        fields = ('id', 'name', 'description', 'date_creation', 'is_active', 'creator', 'users')
+        fields = ('id', 'name', 'description', 'date_creation', 'is_active', 'creator', 'profiles')
 
     def create(self, validated_data):
         current_user = self.context['request'].user.id
-        creator = User.objects.filter(id=current_user).first()
+        creator = Profile.objects.filter(user=current_user).first()
         group = Group.objects.create(**validated_data, creator=creator)
         group.save()
-        creator.holiday_groups.add(group)
+        creator.groups.add(group)
         creator.save()
         return group
 
@@ -52,7 +52,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'profile', 'holiday_groups')
+        fields = ('id', 'username', 'first_name', 'last_name', 'profile')
 
 
 class BasicUserSerializer(serializers.ModelSerializer):
