@@ -1,6 +1,6 @@
 import * as actionTypes from "./types";
 import axios from "axios";
-import { profileAPI } from "./server";
+import { profileAPI } from "../server";
 
 export const getProfile = username => {
   return dispatch => {

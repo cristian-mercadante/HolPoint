@@ -31,7 +31,7 @@ class UserDetailView(RetrieveAPIView):
 
 
 # FIXME: do I need it???
-class BasicUserDetailView(RetrieveAPIView):
+class UserBasicDetailView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = BasicUserSerializer
 

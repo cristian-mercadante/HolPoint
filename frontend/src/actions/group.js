@@ -1,12 +1,11 @@
-import * as actionTypes from "./types";
+import { GET_GROUP } from "./types";
 import axios from "axios";
-import { groupsAPI } from "./server";
+import { groupsAPI } from "../server";
 
 // listAPI
-export const getGroups = () => {
+export const getGroup = id => {
   return dispatch => {
     const token = localStorage.getItem("token");
-    console.log(groupsAPI);
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -14,10 +13,10 @@ export const getGroups = () => {
       }
     };
     return axios
-      .get(`${groupsAPI}`, headers)
+      .get(`${groupsAPI}${id}/`, headers)
       .then(res => {
         dispatch({
-          type: actionTypes.GET_GROUPS,
+          type: GET_GROUP,
           payload: res.data
         });
       })

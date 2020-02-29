@@ -3,6 +3,9 @@ import { Col, Card, Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import * as colors from "../colors";
 
+import axios from "axios";
+import { userBasicAPI } from "../server";
+
 const MAIN_COLOR = colors.RED;
 const LIGHT_COLOR = colors.LIGHT_RED;
 
@@ -11,6 +14,32 @@ class GroupCard extends Component {
     e.preventDefault();
     alert("detail");
   };
+
+  state = { creatorBaseInfo: {} };
+
+  async getUserBaseInfo(id) {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    return axios
+      .get(`${userBasicAPI}${id}`, headers)
+      .then(res => {
+        return res.data;
+      })
+      .catch(error => {
+        console.log(error);
+        return error;
+      });
+  }
+
+  async componentDidMount() {
+    const creatorBaseInfo = await this.getUserBaseInfo(this.props.creator);
+    this.setState({ creatorBaseInfo });
+  }
 
   render() {
     return (
@@ -41,11 +70,11 @@ class GroupCard extends Component {
           <a href="/#" onClick={this.onClick}>
             <Card className="groupCard">
               <Card.Header>
-                <h4>{this.props.group.name}</h4>
+                <h4>{this.props.name}</h4>
               </Card.Header>
               <Card.Body></Card.Body>
               <Card.Footer>
-                Creato il {this.props.group.date_creation} da {this.props.group.creator}
+                Creato il {this.props.date_creation} da {this.state.creatorBaseInfo.username}
               </Card.Footer>
             </Card>
           </a>
@@ -55,7 +84,7 @@ class GroupCard extends Component {
   }
 }
 
-export class EmptyGroupCard extends GroupCard {
+export class EmptyGroupCard extends Component {
   onClick = e => {
     e.preventDefault();
     alert("add");

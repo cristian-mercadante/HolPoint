@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import GroupCard, { EmptyGroupCard } from "./GroupCard";
 import { Row } from "react-bootstrap";
 
+import * as groupActions from "../actions/group";
+import * as alertActions from "../actions/alerts";
+import { connect } from "react-redux";
+
 class GroupCardsManager extends Component {
   groupCardProps = {
     colProps: {
@@ -13,11 +17,20 @@ class GroupCardsManager extends Component {
     }
   };
 
+  componentDidMount() {
+    if (this.props.group.loading) {
+      const groups = this.props.currentUser.profile.groups;
+      groups.forEach(g => {
+        this.props.getGroup(g);
+      });
+    }
+  }
+
   renderGroupCards = () => {
     let buffer = [];
-    if (!this.props.groups.loading) {
-      const groups = this.props.groups.groups;
-      groups.map(g => buffer.push(<GroupCard key={g.id} {...this.groupCardProps} group={g} />));
+    if (!this.props.group.loading) {
+      const groups = this.props.group.groups;
+      groups.map(g => buffer.push(<GroupCard key={g.id} {...this.groupCardProps} {...g} />));
     }
     return buffer;
   };
@@ -45,4 +58,18 @@ class GroupCardsManager extends Component {
   }
 }
 
-export default GroupCardsManager;
+const mapStateToProps = state => {
+  return {
+    group: state.group
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getGroup: id => dispatch(groupActions.getGroup(id)),
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
+    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupCardsManager);

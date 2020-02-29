@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-    UserDetailView, BasicUserDetailView, CurrentUserDetailView,
+    UserDetailView, UserBasicDetailView, CurrentUserDetailView,
 )
 
 from .views import GroupViewSet
@@ -11,7 +11,7 @@ group_router.register(r'group', GroupViewSet, basename="group")
 
 urlpatterns = [
     path('profile/<username>', UserDetailView.as_view()),
-    path('user/<pk>', BasicUserDetailView.as_view()),
+    path('user/<pk>', UserBasicDetailView.as_view()),
     path('current_user', CurrentUserDetailView.as_view()),
 ]
 

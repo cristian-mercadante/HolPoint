@@ -1,6 +1,6 @@
 import * as actionTypes from "./types";
 import axios from "axios";
-import { currentUserAPI } from "./server";
+import { currentUserAPI } from "../server";
 
 export const getCurrentUserStart = () => {
   return {

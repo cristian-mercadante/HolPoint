@@ -13,7 +13,7 @@ export const REMOVE_ALL_ALERTS = "REMOVE_ALL_ALERTS";
 export const GET_PROFILE = "GET_PROFILE";
 
 // groups
-export const GET_GROUPS = "GET_GROUPS";
+export const GET_GROUP = "GET_GROUP";
 
 //current user
 export const GET_CURRENT_USER_START = "GET_CURRENT_USER_START";
