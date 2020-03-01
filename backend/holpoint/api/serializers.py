@@ -28,7 +28,7 @@ class GroupSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True)
     description = serializers.CharField(required=False)
-    date_creation = serializers.DateField(read_only=True)
+    date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
     is_active = serializers.BooleanField(default=True, read_only=True)
     creator = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
     profiles = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all(), many=True, required=False)
@@ -40,10 +40,10 @@ class GroupSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         current_user = self.context['request'].user.id
         creator = Profile.objects.filter(user=current_user).first()
+        profiles = [Profile.objects.filter(user=p.id).first() for p in validated_data.get("profiles")]
+        validated_data.pop("profiles")
         group = Group.objects.create(**validated_data, creator=creator)
-        group.save()
-        creator.groups.add(group)
-        creator.save()
+        group.profiles.set(profiles)
         return group
 
 

@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from "react";
-import { Col, Card, Button } from "react-bootstrap";
-import { FaPlus } from "react-icons/fa";
+import { Col, Card, Badge } from "react-bootstrap";
+
 import * as colors from "../colors";
 
 import axios from "axios";
 import { userBasicAPI } from "../server";
+import ProfileBadge from "./ProfileBadge";
 
 const MAIN_COLOR = colors.RED;
-const LIGHT_COLOR = colors.LIGHT_RED;
+//const LIGHT_COLOR = colors.LIGHT_RED;
 
 class GroupCard extends Component {
   onClick = e => {
@@ -15,7 +16,13 @@ class GroupCard extends Component {
     alert("detail");
   };
 
-  state = { creatorBaseInfo: {} };
+  constructor(props) {
+    super(props);
+    this.state = {
+      creatorBaseInfo: {},
+      profilesBaseInfo: []
+    };
+  }
 
   async getUserBaseInfo(id) {
     const token = localStorage.getItem("token");
@@ -36,10 +43,19 @@ class GroupCard extends Component {
       });
   }
 
-  async componentDidMount() {
-    const creatorBaseInfo = await this.getUserBaseInfo(this.props.creator);
-    this.setState({ creatorBaseInfo });
+  componentDidMount() {
+    this.getUserBaseInfo(this.props.creator).then(data => {
+      this.setState({ creatorBaseInfo: data });
+    });
+
+    this.props.profiles.forEach(profile =>
+      this.getUserBaseInfo(profile).then(data => {
+        this.setState({ profilesBaseInfo: [...this.state.profilesBaseInfo, data] });
+      })
+    );
   }
+
+  componentDidUpdate(prevProps, prevState) {}
 
   render() {
     return (
@@ -72,58 +88,17 @@ class GroupCard extends Component {
               <Card.Header>
                 <h4>{this.props.name}</h4>
               </Card.Header>
-              <Card.Body></Card.Body>
+              <Card.Body>
+                <h6>Partecipanti</h6>
+                {this.state.profilesBaseInfo.map(profile => (
+                  <ProfileBadge profile={profile} />
+                ))}
+              </Card.Body>
               <Card.Footer>
-                Creato il {this.props.date_creation} da {this.state.creatorBaseInfo.username}
+                Creato da {this.state.creatorBaseInfo.username} il {this.props.date_creation}
               </Card.Footer>
             </Card>
           </a>
-        </Col>
-      </Fragment>
-    );
-  }
-}
-
-export class EmptyGroupCard extends Component {
-  onClick = e => {
-    e.preventDefault();
-    alert("add");
-  };
-
-  render() {
-    return (
-      <Fragment>
-        <>
-          <style type="text/css">
-            {`
-            .btn-outline {
-              color: ${MAIN_COLOR};
-              background-color: white;
-              border-color: ${MAIN_COLOR};
-
-            }
-            .btn-outline:hover,
-            .btn-outline:active,
-            .btn-outline:focus,
-            .btn-outline.active {
-              background: ${LIGHT_COLOR};
-              color: ${MAIN_COLOR};
-              border-color: ${MAIN_COLOR};
-            }
-            .iconDiv{
-              margin: auto;
-              font-size: 20px;
-              position: block;
-            }
-          `}
-          </style>
-        </>
-        <Col {...this.props.colProps}>
-          <Button as={Card} variant="outline" className="groupCard" onClick={this.onClick}>
-            <div className="iconDiv">
-              <FaPlus />
-            </div>
-          </Button>
         </Col>
       </Fragment>
     );

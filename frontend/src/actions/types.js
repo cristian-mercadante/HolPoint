@@ -14,6 +14,7 @@ export const GET_PROFILE = "GET_PROFILE";
 
 // groups
 export const GET_GROUP = "GET_GROUP";
+export const POST_GROUP = "POST_GROUP";
 
 //current user
 export const GET_CURRENT_USER_START = "GET_CURRENT_USER_START";

@@ -6,8 +6,13 @@ import logo from "../assets/imgs/logo.png";
 import * as colors from "../colors";
 
 const MAIN_COLOR = colors.YELLOW;
+const SELECTED_COLOR = colors.GREEN;
 
 class FriendBall extends Component {
+  state = {
+    selected: false
+  };
+
   imgSize = 80;
 
   divStyle = {
@@ -21,7 +26,15 @@ class FriendBall extends Component {
     fontSize: "15px"
   };
 
+  onSelectClick = () => {
+    const newState = !this.state.selected;
+    this.setState({ selected: newState });
+    this.props.selectFriend(this.props.friend.id);
+  };
+
   render() {
+    const selectedClassName = this.state.selected ? "selected" : "";
+
     return (
       <Fragment>
         <>
@@ -39,14 +52,31 @@ class FriendBall extends Component {
               text-decoration: none;
               border-width: 2px;
             }
+            .frndImg.selected{
+              border-width: 3px;
+              border-color: ${SELECTED_COLOR};
+            }
+
           `}
           </style>
         </>
         <div style={this.divStyle}>
-          <Link to={`/profile/${this.props.username}`}>
-            <Image src={logo} height={this.imgSize} width={this.imgSize} roundedCircle thumbnail className="frndImg" />
-          </Link>
-          <legend style={this.legendStyle}>{this.props.username}</legend>
+          {this.props.selectable ? (
+            <Image
+              src={logo}
+              height={this.imgSize}
+              width={this.imgSize}
+              roundedCircle
+              thumbnail
+              className={`frndImg ${selectedClassName}`}
+              onClick={this.onSelectClick}
+            />
+          ) : (
+            <Link to={`/profile/${this.props.friend.username}`}>
+              <Image src={logo} height={this.imgSize} width={this.imgSize} roundedCircle thumbnail className={`frndImg ${selectedClassName}`} />
+            </Link>
+          )}
+          <legend style={this.legendStyle}>{this.props.friend.username}</legend>
         </div>
       </Fragment>
     );

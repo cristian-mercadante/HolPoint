@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import GroupCard, { EmptyGroupCard } from "./GroupCard";
+import GroupCard from "./GroupCard";
+import GroupCardEmpty from "./GroupCardEmpty";
 import { Row } from "react-bootstrap";
 
 import * as groupActions from "../actions/group";
@@ -51,7 +52,7 @@ class GroupCardsManager extends Component {
         </>
         <Row>
           {this.renderGroupCards()}
-          <EmptyGroupCard {...this.groupCardProps} />
+          <GroupCardEmpty {...this.groupCardProps} />
         </Row>
       </React.Fragment>
     );
