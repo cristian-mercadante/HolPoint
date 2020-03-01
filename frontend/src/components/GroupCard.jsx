@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Col, Card, Badge } from "react-bootstrap";
+import { Col, Card } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 
 import * as colors from "../colors";
 
@@ -13,7 +14,7 @@ const MAIN_COLOR = colors.RED;
 class GroupCard extends Component {
   onClick = e => {
     e.preventDefault();
-    alert("detail");
+    this.props.history.push(`/group/${this.props.id}`);
   };
 
   constructor(props) {
@@ -91,7 +92,7 @@ class GroupCard extends Component {
               <Card.Body>
                 <h6>Partecipanti</h6>
                 {this.state.profilesBaseInfo.map(profile => (
-                  <ProfileBadge profile={profile} />
+                  <ProfileBadge key={`${this.props.id}_${profile.id}`} profile={profile} />
                 ))}
               </Card.Body>
               <Card.Footer>
@@ -105,4 +106,4 @@ class GroupCard extends Component {
   }
 }
 
-export default GroupCard;
+export default withRouter(GroupCard);

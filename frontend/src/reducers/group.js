@@ -7,10 +7,21 @@ const initialState = {
   groups: []
 };
 
+const updateGroupsArray = (groups, newGroup) => {
+  let _groups = [...groups];
+  let index = _groups.findIndex(x => x.id === newGroup.id);
+  if (index !== -1) {
+    _groups[index] = newGroup;
+  } else {
+    _groups.push(newGroup);
+  }
+  return _groups;
+};
+
 const getGroup = (state, action) => {
   return updateObject(state, {
     loading: false,
-    groups: [...state.groups, action.payload]
+    groups: updateGroupsArray(state.groups, action.payload)
   });
 };
 

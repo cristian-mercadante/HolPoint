@@ -10,6 +10,7 @@ import GroupCreate from "./containers/GroupCreate";
 
 import LoginForm from "./components/auth/LoginForm";
 import SignupForm from "./components/auth/SignupForm";
+import GroupDetail from "./containers/GroupDetail";
 
 export const isAuthenticated = () => {
   const token = localStorage.getItem("token");
@@ -40,6 +41,7 @@ const BaseRouter = props => (
       <Route exact path="/home" component={requireAuth(HomePage)} />
       <Route exact path="/profile/:username" component={Profile} />
       <Route exact path="/create" component={GroupCreate} />
+      <Route exact path="/group/:id" component={GroupDetail} />
       <Route path="*">{"404 not found"}</Route>
     </Switch>
   </div>

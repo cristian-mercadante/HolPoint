@@ -6,6 +6,7 @@ import { createStore, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import "./assets/css/font.css";
+import "./assets/css/index.css";
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const initialState = {};

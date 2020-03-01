@@ -19,12 +19,10 @@ class GroupCardsManager extends Component {
   };
 
   componentDidMount() {
-    if (this.props.group.loading) {
-      const groups = this.props.currentUser.profile.groups;
-      groups.forEach(g => {
-        this.props.getGroup(g);
-      });
-    }
+    const groups = this.props.currentUser.profile.groups;
+    groups.forEach(g => {
+      this.props.getGroup(g);
+    });
   }
 
   renderGroupCards = () => {
