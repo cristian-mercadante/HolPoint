@@ -1,23 +1,13 @@
 import React, { Component } from "react";
 import GroupCard from "./GroupCard";
-import GroupCardEmpty from "./GroupCardEmpty";
-import { Row } from "react-bootstrap";
+//import GroupCardEmpty from "../discarded/GroupCardEmpty";
+import { CardColumns } from "react-bootstrap";
 
 import * as groupActions from "../actions/group";
 import * as alertActions from "../actions/alerts";
 import { connect } from "react-redux";
 
 class GroupCardsManager extends Component {
-  groupCardProps = {
-    colProps: {
-      xs: "12",
-      sm: "6",
-      md: "6",
-      lg: "4",
-      xl: "4"
-    }
-  };
-
   componentDidMount() {
     const groups = this.props.currentUser.profile.groups;
     groups.forEach(g => {
@@ -31,27 +21,14 @@ class GroupCardsManager extends Component {
       const groups = this.props.group.groups;
       groups.map(g => buffer.push(<GroupCard key={g.id} {...this.groupCardProps} {...g} />));
     }
-    return buffer;
+    return <CardColumns>{buffer}</CardColumns>;
   };
 
   render() {
     return (
       <React.Fragment>
-        <>
-          <style type="text/css">
-            {`
-            .groupCard{
-              min-height: 400px;
-              margin-top: 10px;
-              margin-bottom: 10px;
-            }
-            `}
-          </style>
-        </>
-        <Row>
-          {this.renderGroupCards()}
-          <GroupCardEmpty {...this.groupCardProps} />
-        </Row>
+        {this.renderGroupCards()}
+        {/*<GroupCardEmpty {...this.groupCardProps} />*/}
       </React.Fragment>
     );
   }

@@ -38,7 +38,7 @@ class GroupCardEmpty extends Component {
           </style>
         </>
         <Col {...this.props.colProps}>
-          <LinkContainer to="/create">
+          <LinkContainer to="/group/create">
             <Button as={Card} variant="outline" className="groupCard">
               <div className="iconDiv">
                 <FaPlus />

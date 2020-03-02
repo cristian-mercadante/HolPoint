@@ -40,7 +40,7 @@ const BaseRouter = props => (
       </Route>
       <Route exact path="/home" component={requireAuth(HomePage)} />
       <Route exact path="/profile/:username" component={Profile} />
-      <Route exact path="/create" component={requireAuth(GroupCreate)} />
+      <Route exact path="/group/create" component={requireAuth(GroupCreate)} />
       <Route exact path="/group/:id" component={requireAuth(GroupDetail)} />
       <Route path="*">{"404 not found"}</Route>
     </Switch>

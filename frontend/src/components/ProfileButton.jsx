@@ -5,6 +5,7 @@ import logo from "../assets/imgs/logo.png";
 
 import * as authActions from "../actions/auth";
 import { connect } from "react-redux";
+import { LinkContainer } from "react-router-bootstrap";
 
 class ProfileButton extends Component {
   onClickLogout = e => {
@@ -19,6 +20,12 @@ class ProfileButton extends Component {
     this.props.history.push(path);
   };
 
+  dropdownItems = [
+    { key: 1, name: "Crea gruppo", to: "/group/create" },
+    { key: 2, name: "Crea idea", to: "/idea/create" },
+    { key: 3, name: "Impostazioni", to: "/#" }
+  ];
+
   render() {
     return (
       <Fragment>
@@ -29,7 +36,11 @@ class ProfileButton extends Component {
           </Button>
           <Dropdown.Toggle split variant="success" />
           <Dropdown.Menu>
-            <Dropdown.Item>Impostazioni</Dropdown.Item>
+            {this.dropdownItems.map(item => (
+              <LinkContainer to={item.to} key={item.key}>
+                <Dropdown.Item>{item.name}</Dropdown.Item>
+              </LinkContainer>
+            ))}
             <Dropdown.Divider />
             <Dropdown.Item>
               <Button variant="outline-danger" onClick={this.onClickLogout}>

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Container, ProgressBar } from "react-bootstrap";
+import { Container, ProgressBar, Button } from "react-bootstrap";
 import GroupCardsManager from "../components/GroupCardsManager";
 import Panel from "../containers/Panel";
 import { connect } from "react-redux";
+import { LinkContainer } from "react-router-bootstrap";
 
 class HomePage extends Component {
   divStyle = {
@@ -16,7 +17,15 @@ class HomePage extends Component {
         {this.props.currentUser.loading ? (
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
-          <Panel title="Gruppi" component={<GroupCardsManager {...this.props} />} />
+          <Panel
+            title="Gruppi"
+            badge={
+              <LinkContainer to="/group/create">
+                <Button variant="danger">Crea nuovo</Button>
+              </LinkContainer>
+            }
+            component={<GroupCardsManager {...this.props} />}
+          />
         )}
       </Container>
     );
