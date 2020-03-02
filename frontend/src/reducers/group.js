@@ -1,4 +1,4 @@
-import { GET_GROUP, POST_GROUP } from "../actions/types";
+import { GET_GROUP, POST_GROUP, CLEAR_GROUP } from "../actions/types";
 import { updateObject } from "./utility";
 
 const initialState = {
@@ -32,12 +32,18 @@ const postGroup = (state, action) => {
   });
 };
 
+const clearGroup = (state, action) => {
+  return initialState;
+};
+
 const groupReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_GROUP:
       return getGroup(state, action);
     case POST_GROUP:
       return postGroup(state, action);
+    case CLEAR_GROUP:
+      return clearGroup(state, action);
     default:
       return state;
   }

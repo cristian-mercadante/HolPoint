@@ -1,4 +1,4 @@
-import { GET_GROUP, POST_GROUP } from "./types";
+import { GET_GROUP, POST_GROUP, CLEAR_GROUP } from "./types";
 import axios from "axios";
 import { groupsAPI } from "../server";
 
@@ -57,4 +57,8 @@ export const postGroup = (name, description, profiles) => {
         return error;
       });
   };
+};
+
+export const clearGroup = () => {
+  return { type: CLEAR_GROUP };
 };

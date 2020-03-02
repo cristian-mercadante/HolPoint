@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import { Button, ProgressBar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import Panel from "./Panel";
 import IdeaManager from "../components/IdeaManager";
@@ -34,7 +34,7 @@ class GroupDetail extends Component {
     return (
       <div>
         {this.props.group.loading ? (
-          ""
+          <ProgressBar striped variant="success" now={100} animated />
         ) : (
           <Panel
             title={this.state.name}

@@ -25,32 +25,35 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-class Group(models.Model):
+class Activity(models.Model):
     # constraints
-    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_groups")
-    profiles = models.ManyToManyField(Profile, related_name="groups")
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_activities", null=True)
+    #idea = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="activities")
+    #group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="activities")
+    likes = models.ManyToManyField(Profile, related_name="liked_activities", blank=True)
 
     # attributes
-    name = models.CharField(max_length=200)
-    description = models.TextField(max_length=2000, null=True, blank=True)
-    date_creation = models.DateField(auto_now=True)
-    is_active = models.BooleanField(default=True)
+    title = models.CharField(max_length=200)
+    description = models.CharField(max_length=2000)
+    datetime = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return "{}".format(self.name)
+        return "{}".format(self.title)
 
 
 class Idea(models.Model):
     # constraints
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_ideas")
-    groups = models.ManyToManyField(Group, related_name="groups", blank=True)
+    #groups = models.ManyToManyField(Group, related_name="groups", blank=True)
     likes = models.ManyToManyField(Profile, related_name="liked_ideas", blank=True)
 
     # attributes
     title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
     date_creation = models.DateField(auto_now=True)
     date_start = models.DateField(auto_now=True)
     date_finish = models.DateField(auto_now=True)
+    activities = models.ManyToManyField(Activity, blank=True, related_name="activities")
 
     def __str__(self):
         return "{}".format(self.title)
@@ -62,17 +65,18 @@ class Idea(models.Model):
             return None
 
 
-class Activity(models.Model):
+class Group(models.Model):
     # constraints
-    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_activities", null=True)
-    idea = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="activities")
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="activities")
-    likes = models.ManyToManyField(Profile, related_name="liked_activities", blank=True)
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_groups")
+    profiles = models.ManyToManyField(Profile, related_name="groups")
 
     # attributes
-    title = models.CharField(max_length=200)
-    description = models.CharField(max_length=2000)
-    datetime = models.DateTimeField(auto_now=True)
+    prefered_idea = models.ForeignKey(Idea, null=True, on_delete=models.SET_NULL)
+    ideas = models.ManyToManyField(Idea, blank=True, related_name="groups")
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, default="")
+    date_creation = models.DateField(auto_now=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return "{}".format(self.title)
+        return "{}".format(self.name)
