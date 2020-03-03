@@ -45,6 +45,7 @@ class Idea(models.Model):
     # constraints
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_ideas")
     #groups = models.ManyToManyField(Group, related_name="groups", blank=True)
+    activities = models.ManyToManyField(Activity, blank=True, related_name="activities")
     likes = models.ManyToManyField(Profile, related_name="liked_ideas", blank=True)
 
     # attributes
@@ -53,7 +54,6 @@ class Idea(models.Model):
     date_creation = models.DateField(auto_now=True)
     date_start = models.DateField(auto_now=True)
     date_finish = models.DateField(auto_now=True)
-    activities = models.ManyToManyField(Activity, blank=True, related_name="activities")
 
     def __str__(self):
         return "{}".format(self.title)
@@ -80,3 +80,17 @@ class Group(models.Model):
 
     def __str__(self):
         return "{}".format(self.name)
+
+
+class Comment(models.Model):
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_comments")
+    text = models.TextField(null=False, blank=False)
+    datetime = models.DateTimeField(auto_now=True)
+
+
+class IdeaComment(Comment):
+    to = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="comments")
+
+
+class ActivityComment(Comment):
+    to = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name="comments")
