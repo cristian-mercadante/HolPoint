@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { FaUserFriends } from "react-icons/fa";
 import { isAuthenticated } from "../routes";
@@ -17,7 +17,7 @@ export default class FriendUnfriendButtons extends Component {
   renderFriendButton = () => {
     return (
       <Button variant="success">
-        <FaUserFriends /> Aggiungi agli amici
+        <FaUserFriends /> Aggiungi
       </Button>
     );
   };
@@ -25,18 +25,18 @@ export default class FriendUnfriendButtons extends Component {
   renderUnfriendButton = () => {
     return (
       <Button variant="danger">
-        <FaUserFriends /> Rimuovi dagli amici
+        <FaUserFriends /> Rimuovi
       </Button>
     );
   };
 
   renderButtons = () => {
     if (isAuthenticated() && this.props.profile.id !== this.props.currentUser.id) {
-      return <Fragment>{this.isAlreadyFriend() ? this.renderUnfriendButton() : this.renderFriendButton()}</Fragment>;
+      return <span>{this.isAlreadyFriend() ? this.renderUnfriendButton() : this.renderFriendButton()}</span>;
     }
   };
 
   render() {
-    return <div>{this.renderButtons()}</div>;
+    return <span>{this.renderButtons()}</span>;
   }
 }

@@ -11,3 +11,4 @@ export const currentUserAPI = api + "current_user";
 export const userBasicAPI = api + "user/";
 
 export const groupsAPI = api + "group/";
+export const ideaAPI = api + "idea/";

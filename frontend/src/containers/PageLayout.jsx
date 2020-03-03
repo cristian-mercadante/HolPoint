@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Navbar, Nav, Container, Form, FormControl, Button } from "react-bootstrap";
+import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { withRouter } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
@@ -50,12 +50,11 @@ class PageLayout extends Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <Container>
-          <AlertsOverlayComponent alerts={this.props.alerts}>
-            <AlertComponent />
-          </AlertsOverlayComponent>
-          {this.props.children}
-        </Container>
+
+        <AlertsOverlayComponent alerts={this.props.alerts}>
+          <AlertComponent />
+        </AlertsOverlayComponent>
+        {this.props.children}
       </Fragment>
     );
   }

@@ -28,6 +28,7 @@ class FriendBall extends Component {
 
   onSelectClick = () => {
     const newState = !this.state.selected;
+
     this.setState({ selected: newState });
     this.props.selectFriend(this.props.friend.id);
   };
@@ -73,7 +74,14 @@ class FriendBall extends Component {
             />
           ) : (
             <Link to={`/profile/${this.props.friend.username}`}>
-              <Image src={logo} height={this.imgSize} width={this.imgSize} roundedCircle thumbnail className={`frndImg ${selectedClassName}`} />
+              <Image
+                src={logo}
+                height={this.imgSize}
+                width={this.imgSize}
+                roundedCircle
+                thumbnail
+                className={`frndImg ${selectedClassName}`}
+              />
             </Link>
           )}
           <legend style={this.legendStyle}>{this.props.friend.username}</legend>

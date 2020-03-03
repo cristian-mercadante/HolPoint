@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from holpoint.models import Profile, Group
+from holpoint.models import Profile, Group, Idea
 
 
 class ProfileRelatedField(serializers.RelatedField):
@@ -16,12 +16,30 @@ class ProfileRelatedField(serializers.RelatedField):
         return {'id': value.pk, 'first_name': first_name, 'last_name': last_name, 'username': username}
 
 
+class IdeaSerializer(serializers.ModelSerializer):
+    date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
+    date_start = serializers.DateField(required=False, format="%d/%m/%Y")
+    date_finish = serializers.DateField(required=False, format="%d/%m/%Y")
+    creator = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
+
+    class Meta:
+        model = Idea
+        fields = '__all__'
+
+    def create(self, validated_data):
+        current_user = self.context['request'].user.id
+        creator = Profile.objects.filter(user=current_user).first()
+        idea = Idea.objects.create(**validated_data, creator=creator)
+        return idea
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     friends = ProfileRelatedField(read_only=True, many=True)
+    ideas = IdeaSerializer(read_only=True, many=True)
 
     class Meta:
         model = Profile
-        fields = ('friends', 'groups', 'user')
+        fields = ('friends', 'groups', 'user', 'ideas')
 
 
 class GroupSerializer(serializers.ModelSerializer):

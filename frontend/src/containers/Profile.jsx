@@ -1,12 +1,15 @@
 import React, { Component, Fragment } from "react";
-import { Container, ProgressBar, Badge } from "react-bootstrap";
+import { Container, ProgressBar, Badge, Row, Col } from "react-bootstrap";
 import Panel from "./Panel";
 import FriendBallsManager from "../components/FriendBallsManager";
 import UserProfileManager from "../components/UserProfileManager";
+import FriendUnfriendButtons from "../components/FriendUnfriendButtons";
+import IdeaCardManager from "../components/IdeaCardManager";
 
 import { connect } from "react-redux";
 import * as profileActions from "../actions/profile";
 import * as alertActions from "../actions/alerts";
+import IdeaCreateButton from "../components/IdeaCreateButton";
 
 class Profile extends Component {
   handleError(err) {
@@ -48,16 +51,36 @@ class Profile extends Component {
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
           <Fragment>
-            <Panel title={this.props.profile.username} component={<UserProfileManager {...this.props} />} />
-            <Panel
-              title="Amici"
-              badge={
-                <Badge pill variant="primary">
-                  {this.props.profile.profile.friends.length}
-                </Badge>
-              }
-              component={<FriendBallsManager friends={this.props.profile.profile.friends} />}
-            />
+            <Row>
+              <Col xs={12} sm={12} md={4} lg={4} xl={4}>
+                <Panel
+                  title={this.props.profile.username}
+                  badge={<FriendUnfriendButtons {...this.props} />}
+                  component={<UserProfileManager {...this.props} />}
+                />
+                <Panel
+                  title="Amici"
+                  badge={
+                    <Badge pill variant="primary">
+                      {this.props.profile.profile.friends.length}
+                    </Badge>
+                  }
+                  component={<FriendBallsManager friends={this.props.profile.profile.friends} />}
+                />
+              </Col>
+              <Col xs={12} sm={12} md={8} lg={8} xl={8}>
+                <Panel
+                  title="Idee"
+                  component={<IdeaCardManager ideas={this.props.profile.profile.ideas} />}
+                  badge={
+                    <IdeaCreateButton
+                      currentUsername={this.props.currentUser.username}
+                      username={this.props.match.params.username}
+                    />
+                  }
+                />
+              </Col>
+            </Row>
           </Fragment>
         )}
       </Container>
@@ -78,7 +101,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getProfile: (username, token) => dispatch(profileActions.getProfile(username, token)),
     addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
-    removeAllAlerts: (text, style) => dispatch(alertActions.removeAllAlerts())
+    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };
 

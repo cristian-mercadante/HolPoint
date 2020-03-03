@@ -25,27 +25,9 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-class Activity(models.Model):
-    # constraints
-    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_activities", null=True)
-    #idea = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="activities")
-    #group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="activities")
-    likes = models.ManyToManyField(Profile, related_name="liked_activities", blank=True)
-
-    # attributes
-    title = models.CharField(max_length=200)
-    description = models.CharField(max_length=2000)
-    datetime = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return "{}".format(self.title)
-
-
 class Idea(models.Model):
     # constraints
-    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_ideas")
-    #groups = models.ManyToManyField(Group, related_name="groups", blank=True)
-    activities = models.ManyToManyField(Activity, blank=True, related_name="activities")
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="ideas")
     likes = models.ManyToManyField(Profile, related_name="liked_ideas", blank=True)
 
     # attributes
@@ -69,10 +51,11 @@ class Group(models.Model):
     # constraints
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_groups")
     profiles = models.ManyToManyField(Profile, related_name="groups")
-
-    # attributes
     prefered_idea = models.ForeignKey(Idea, null=True, on_delete=models.SET_NULL)
     ideas = models.ManyToManyField(Idea, blank=True, related_name="groups")
+
+    # attributes
+
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, default="")
     date_creation = models.DateField(auto_now=True)
@@ -80,6 +63,21 @@ class Group(models.Model):
 
     def __str__(self):
         return "{}".format(self.name)
+
+
+class Activity(models.Model):
+    # constraints
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_activities", null=True)
+    group = models.ForeignKey(Group, null=True, on_delete=models.CASCADE, related_name="activities")
+    likes = models.ManyToManyField(Profile, related_name="liked_activities", blank=True)
+
+    # attributes
+    title = models.CharField(max_length=200)
+    description = models.CharField(max_length=2000)
+    datetime = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return "{}".format(self.title)
 
 
 class Comment(models.Model):

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Button, ProgressBar } from "react-bootstrap";
+import { Button, ProgressBar, Container } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import Panel from "./Panel";
-import IdeaManager from "../components/IdeaManager";
+
 import { connect } from "react-redux";
 import * as groupActions from "../actions/group";
 
@@ -32,7 +32,7 @@ class GroupDetail extends Component {
 
   render() {
     return (
-      <div>
+      <Container>
         {this.props.group.loading ? (
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
@@ -43,10 +43,9 @@ class GroupDetail extends Component {
                 <Button variant="warning">Modifica</Button>
               </LinkContainer>
             }
-            component={<IdeaManager />}
           />
         )}
-      </div>
+      </Container>
     );
   }
 }

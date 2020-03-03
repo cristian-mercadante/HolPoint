@@ -3,11 +3,12 @@ from .views import (
     UserDetailView, UserBasicDetailView, CurrentUserDetailView,
 )
 
-from .views import GroupViewSet
+from .views import GroupViewSet, IdeaViewSet
 from rest_framework.routers import DefaultRouter
 
-group_router = DefaultRouter()
-group_router.register(r'group', GroupViewSet, basename="group")
+router = DefaultRouter()
+router.register(r'group', GroupViewSet, basename="group")
+router.register(r'idea', IdeaViewSet, basename="idea")
 
 urlpatterns = [
     path('profile/<username>', UserDetailView.as_view()),
@@ -15,4 +16,4 @@ urlpatterns = [
     path('current_user', CurrentUserDetailView.as_view()),
 ]
 
-urlpatterns += group_router.urls
+urlpatterns += router.urls

@@ -8,9 +8,10 @@ from .serializers import (
     UserSerializer,
     BasicUserSerializer,
     GroupSerializer,
+    IdeaSerializer,
 )
 
-from holpoint.models import Group
+from holpoint.models import Group, Idea
 
 
 class CurrentUserDetailView(RetrieveAPIView):
@@ -43,3 +44,12 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.request.user.profile.groups.all()
+
+
+class IdeaViewSet(viewsets.ModelViewSet):
+    queryset = Idea.objects.all()
+    serializer_class = IdeaSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        return self.request.user.profile.ideas.all()

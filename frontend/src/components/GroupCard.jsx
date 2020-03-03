@@ -11,11 +11,6 @@ import { LinkContainer } from "react-router-bootstrap";
 const MAIN_COLOR = colors.RED;
 
 class GroupCard extends Component {
-  onClick = e => {
-    e.preventDefault();
-    this.props.history.push(`/group/${this.props.id}`);
-  };
-
   constructor(props) {
     super(props);
     this.state = {
