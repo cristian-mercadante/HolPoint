@@ -23,7 +23,7 @@ class ProfileButton extends Component {
   dropdownItems = [
     { key: 1, name: "Crea gruppo", to: "/group/create" },
     { key: 2, name: "Crea idea", to: "/idea/create" },
-    { key: 3, name: "Impostazioni", to: "/#" }
+    { key: 3, name: "Impostazioni", to: "/settings" }
   ];
 
   render() {

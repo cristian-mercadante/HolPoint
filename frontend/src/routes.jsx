@@ -8,10 +8,11 @@ import LandingPage from "./containers/LandingPage";
 import Profile from "./containers/Profile";
 import GroupCreate from "./containers/GroupCreate";
 import IdeaCreate from "./containers/IdeaCreate";
+import GroupDetail from "./containers/GroupDetail";
+import Settings from "./containers/Settings";
 
 import LoginForm from "./components/auth/LoginForm";
 import SignupForm from "./components/auth/SignupForm";
-import GroupDetail from "./containers/GroupDetail";
 
 export const isAuthenticated = () => {
   const token = localStorage.getItem("token");
@@ -44,6 +45,7 @@ const BaseRouter = props => (
       <Route exact path="/group/create" component={requireAuth(GroupCreate)} />
       <Route exact path="/group/:id" component={requireAuth(GroupDetail)} />
       <Route exact path="/idea/create" component={requireAuth(IdeaCreate)} />
+      <Route exact path="/settings" component={requireAuth(Settings)} />
       <Route path="*">{"404 not found"}</Route>
     </Switch>
   </div>

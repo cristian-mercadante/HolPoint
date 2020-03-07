@@ -6,6 +6,7 @@ const initialState = {
   username: "",
   first_name: "",
   last_name: "",
+  email: "",
   profile: {},
   error: null,
   loading: true
@@ -19,7 +20,7 @@ const getCurrentUserStart = (state, action) => {
 };
 
 const getCurrentUserSuccess = (state, action) => {
-  const { id, username, first_name, last_name, profile } = action;
+  const { id, username, first_name, last_name, email, profile } = action;
   return updateObject(state, {
     error: null,
     loading: false,
@@ -27,6 +28,7 @@ const getCurrentUserSuccess = (state, action) => {
     username,
     first_name,
     last_name,
+    email,
     profile
   });
 };
@@ -42,6 +44,24 @@ const getCurrentUserLogout = (state, action) => {
   return updateObject(state, initialState);
 };
 
+const putCurrentUser = (state, action) => {
+  const { username, email, first_name, last_name } = action;
+  return updateObject(state, {
+    username,
+    email,
+    first_name,
+    last_name
+  });
+};
+
+const loading = (state, action) => {
+  return updateObject(state, { loading: true });
+};
+
+const done = (state, action) => {
+  return updateObject(state, { loading: false });
+};
+
 const getCurrentUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_CURRENT_USER_START:
@@ -52,6 +72,12 @@ const getCurrentUserReducer = (state = initialState, action) => {
       return getCurrentUserFail(state, action);
     case actionTypes.GET_CURRENT_USER_LOGOUT:
       return getCurrentUserLogout(state, action);
+    case actionTypes.PUT_CURRENT_USER:
+      return putCurrentUser(state, action);
+    case actionTypes.LOADING:
+      return loading(state, action);
+    case actionTypes.DONE:
+      return done(state, action);
     default:
       return state;
   }

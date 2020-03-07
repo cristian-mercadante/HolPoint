@@ -1,9 +1,13 @@
-from rest_framework.generics import RetrieveAPIView, ListAPIView
+from rest_framework import viewsets
+from rest_framework.generics import (
+    RetrieveAPIView,
+    ListAPIView,
+    RetrieveUpdateAPIView
+)
+
 #from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets
 
-from django.contrib.auth.models import User
 from .serializers import (
     UserSerializer,
     BasicUserSerializer,
@@ -11,10 +15,11 @@ from .serializers import (
     IdeaSerializer,
 )
 
+from django.contrib.auth.models import User
 from holpoint.models import Group, Idea
 
 
-class CurrentUserDetailView(RetrieveAPIView):
+class CurrentUserDetailView(RetrieveUpdateAPIView):
     lookup_field = 'username'
     permission_classes = [IsAuthenticated, ]
     queryset = User.objects.all()

@@ -28,6 +28,10 @@ const removeAllAlerts = (state, action) => {
   return initialState;
 };
 
+const error = (state, action) => {
+  addAlert(state, action);
+};
+
 const alertsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_ALERT:
@@ -36,6 +40,8 @@ const alertsReducer = (state = initialState, action) => {
       return removeAlert(state, action);
     case actionTypes.REMOVE_ALL_ALERTS:
       return removeAllAlerts(state, action);
+    case actionTypes.ERROR:
+      return error(state, action);
     default:
       return state;
   }

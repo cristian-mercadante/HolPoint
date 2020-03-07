@@ -13,7 +13,8 @@ class ProfileRelatedField(serializers.RelatedField):
         first_name = p.user.first_name
         last_name = p.user.last_name
         username = p.user.username
-        return {'id': value.pk, 'first_name': first_name, 'last_name': last_name, 'username': username}
+        email = p.user.email
+        return {'id': value.pk, 'first_name': first_name, 'last_name': last_name, 'username': username, 'email': email}
 
 
 class IdeaSerializer(serializers.ModelSerializer):
@@ -70,10 +71,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'profile')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'profile')
 
 
 class BasicUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email')
