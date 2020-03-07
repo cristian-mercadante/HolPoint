@@ -57,7 +57,7 @@ class IdeaCreateForm extends Component {
 
   render() {
     return (
-      <Form style={{ marginTop: "20px" }} onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <Form.Group controlId="title">
           <Form.Label>Titolo</Form.Label>
           <Form.Control type="text" placeholder="Bellissima vacanza a..." />
