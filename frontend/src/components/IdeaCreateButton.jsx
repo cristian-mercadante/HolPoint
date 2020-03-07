@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { LinkContainer } from "react-router-bootstrap";
 import { Button } from "react-bootstrap";
 import * as cardColors from "./IdeaCard";
 import CardModal from "./CardModal";
