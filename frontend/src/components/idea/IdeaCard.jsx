@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { Card } from "react-bootstrap";
 
-import * as colors from "../colors";
+import * as colors from "../../colors";
 
-import CardModal from "./CardModal";
+import CardModal from "../../containers/CardModal";
 
 export const MAIN_COLOR = colors.BLUE;
 export const TEXT_COLOR = "#ffffff";

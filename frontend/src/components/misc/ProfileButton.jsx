@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { Dropdown, Button, ButtonGroup, Image } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-import logo from "../assets/imgs/logo.png";
+import logo from "../../assets/imgs/logo.png";
 
-import * as authActions from "../actions/auth";
+import * as authActions from "../../actions/auth";
 import { connect } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 

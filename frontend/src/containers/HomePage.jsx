@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, ProgressBar, Button } from "react-bootstrap";
-import GroupCardsManager from "../components/GroupCardsManager";
+import { GroupCardsManager } from "../components/group";
 import Panel from "../containers/Panel";
 import { connect } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";

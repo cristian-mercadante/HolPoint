@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Button } from "react-bootstrap";
 import * as cardColors from "./IdeaCard";
-import CardModal from "./CardModal";
+import CardModal from "../../containers/CardModal";
 import IdeaCreateForm from "./IdeaCreateForm";
 
 export default class IdeaCreateButton extends Component {

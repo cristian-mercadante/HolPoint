@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-import Title from "../components/Title";
+import { Title } from "../components/misc";
 import { isAuthenticated } from "../routes";
 
 class LandingPage extends Component {

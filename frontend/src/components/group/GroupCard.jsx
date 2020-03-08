@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from "react";
 import { Card } from "react-bootstrap";
 
-import * as colors from "../colors";
+import * as colors from "../../colors";
 
 import axios from "axios";
-import { userBasicAPI } from "../server";
-import ProfileBadge from "./ProfileBadge";
+import { userBasicAPI } from "../../server";
+import { ProfileBadge } from "../misc";
 import { LinkContainer } from "react-router-bootstrap";
 
 const MAIN_COLOR = colors.RED;

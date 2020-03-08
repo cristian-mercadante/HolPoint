@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Form, ProgressBar, Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-import FriendBallsManagerSelect from "../components/FriendBallsManagerSelect";
-import Panel from "../containers/Panel";
+import { FriendBallsManagerSelect } from "../friend";
+import Panel from "../../containers/Panel";
 import { connect } from "react-redux";
-import * as groupActions from "../actions/group";
-import * as alertActions from "../actions/alerts";
+import * as groupActions from "../../actions/group";
+import * as alertActions from "../../actions/alerts";
 
 class GroupCreateForm extends Component {
   constructor(props) {

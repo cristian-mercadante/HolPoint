@@ -1,6 +1,6 @@
 import React from "react";
-import "../assets/css/font.css";
-import * as colors from "../colors";
+import "../../assets/css/font.css";
+import * as colors from "../../colors";
 
 const Title = props => {
   const titleStyle = {

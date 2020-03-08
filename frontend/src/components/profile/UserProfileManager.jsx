@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Image } from "react-bootstrap";
 
-import logo from "../assets/imgs/logo.png";
+import logo from "../../assets/imgs/logo.png";
 
 class UserProfileManager extends Component {
   imageSize = 200;

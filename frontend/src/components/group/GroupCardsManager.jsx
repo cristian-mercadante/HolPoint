@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import GroupCard from "./GroupCard";
-//import GroupCardEmpty from "../discarded/GroupCardEmpty";
 import { CardColumns } from "react-bootstrap";
 
-import * as groupActions from "../actions/group";
+import * as groupActions from "../../actions/group";
 import { connect } from "react-redux";
 
 class GroupCardsManager extends Component {

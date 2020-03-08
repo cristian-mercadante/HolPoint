@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Container, ProgressBar } from "react-bootstrap";
 import Panel from "./Panel";
-import SettingsUser from "../components/SettingsUser";
+import { SettingsUser } from "../components/profile";
 import { connect } from "react-redux";
 
 class Settings extends Component {

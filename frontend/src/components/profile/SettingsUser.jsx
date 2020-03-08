@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import * as currentUserActions from "../actions/currentUser";
+import * as currentUserActions from "../../actions/currentUser";
 
 class SettingsUser extends Component {
   handleSubmit = e => {

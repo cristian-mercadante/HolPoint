@@ -1,15 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { Container, ProgressBar, Badge, Row, Col } from "react-bootstrap";
 import Panel from "./Panel";
-import FriendBallsManager from "../components/FriendBallsManager";
-import UserProfileManager from "../components/UserProfileManager";
-import FriendUnfriendButtons from "../components/FriendUnfriendButtons";
-import IdeaCardManager from "../components/IdeaCardManager";
+import { FriendBallsManager } from "../components/friend";
+import { UserProfileManager } from "../components/profile";
+import { FriendUnfriendButtons } from "../components/misc";
+import { IdeaCardManager, IdeaCreateButton } from "../components/idea";
 
 import { connect } from "react-redux";
 import * as profileActions from "../actions/profile";
-import * as alertActions from "../actions/alerts";
-import IdeaCreateButton from "../components/IdeaCreateButton";
 
 class Profile extends Component {
   componentDidMount() {

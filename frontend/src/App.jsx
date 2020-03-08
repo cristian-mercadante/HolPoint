@@ -6,7 +6,6 @@ import PageLayout from "./containers/PageLayout";
 import history from "./history";
 
 import * as authActions from "./actions/auth";
-import * as alertActions from "./actions/alerts";
 
 class App extends Component {
   componentDidMount() {

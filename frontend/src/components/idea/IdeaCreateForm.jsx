@@ -4,9 +4,9 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 
 import { connect } from "react-redux";
-import * as alertActions from "../actions/alerts";
-import * as currentUserActions from "../actions/currentUser";
-import { ideaAPI } from "../server";
+import * as alertActions from "../../actions/alerts";
+import * as currentUserActions from "../../actions/currentUser";
+import { ideaAPI } from "../../server";
 
 class IdeaCreateForm extends Component {
   handleSubmit = e => {
@@ -31,7 +31,8 @@ class IdeaCreateForm extends Component {
         headers
       )
       .then(res => {
-        this.props.addIdea(res.data);
+        //this.props.addIdea(res.data);
+        this.props.getCurrentUser();
         this.props.onHide();
         this.props.removeAllAlerts();
         this.props.history.push(`/profile/${this.props.currentUser.username}`);
@@ -68,7 +69,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addIdea: data => dispatch(currentUserActions.addIdea(data)),
+    getCurrentUser: () => dispatch(currentUserActions.getCurrentUser()),
     error: error => dispatch(alertActions.error(error)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };

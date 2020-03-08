@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Panel from "./Panel";
 
 import { Container } from "react-bootstrap";
-import GroupCreateForm from "../components/GroupCreateForm";
+import { GroupCreateForm } from "../components/group";
 
 class GroupCreate extends Component {
   render() {

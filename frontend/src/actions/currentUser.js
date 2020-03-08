@@ -103,10 +103,4 @@ export const putCurrentUser = (username, email, first_name, last_name) => {
   };
 };
 
-export const addIdea = data => {
-  return {
-    type: "ADD_IDEA",
-    data
-  };
-};
 //export const clearCurrentUser = () => {};

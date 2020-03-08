@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { FaUserFriends } from "react-icons/fa";
-import { isAuthenticated } from "../routes";
+import { isAuthenticated } from "../../routes";
 
 export default class FriendUnfriendButtons extends Component {
   isAlreadyFriend = () => {

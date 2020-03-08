@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
-import AlertComponent from "../components/alerts/AlertComponent";
-import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
+// import AlertComponent from "../components/alerts/AlertComponent";
+// import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
+import { AlertComponent, AlertsOverlayComponent } from "../components/alerts";
 import { connect } from "react-redux";
 
 class CardModal extends React.Component {

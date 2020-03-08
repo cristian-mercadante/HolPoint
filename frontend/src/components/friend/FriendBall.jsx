@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { Image } from "react-bootstrap";
 
-import logo from "../assets/imgs/logo.png";
-import * as colors from "../colors";
+import logo from "../../assets/imgs/logo.png";
+import * as colors from "../../colors";
 
 const MAIN_COLOR = colors.YELLOW;
 const SELECTED_COLOR = colors.GREEN;

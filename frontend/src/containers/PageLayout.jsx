@@ -4,13 +4,12 @@ import { LinkContainer } from "react-router-bootstrap";
 import { withRouter } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 
-import AlertComponent from "../components/alerts/AlertComponent";
-import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
+// import AlertComponent from "../components/alerts/AlertComponent";
+// import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
+import { AlertComponent, AlertsOverlayComponent } from "../components/alerts/index";
 
-import Title from "../components/Title";
 import * as colors from "../colors";
-import ProfileButton from "../components/ProfileButton";
-import LogInSignUp from "../components/LogInSignUp";
+import { Title, LogInSignUp, ProfileButton } from "../components/misc";
 
 class PageLayout extends Component {
   navbarStyle = {
