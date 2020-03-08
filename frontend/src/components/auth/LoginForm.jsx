@@ -14,29 +14,12 @@ class LoginForm extends Component {
     const username = form.username.value;
     const password = form.password.value;
     this.props.onAuth(username, password).then(err => {
-      if (err) {
-        if (err.response) {
-          let message = "";
-          for (const v of Object.values(err.response.data)) {
-            message += v;
-            message += "\n";
-          }
-          this.props.addAlert(message, "danger");
-        } else {
-          this.props.addAlert(err.message, "danger");
-        }
-      } else {
+      if (!err) {
         this.props.history.push("/home");
         this.props.removeAllAlerts();
       }
     });
   };
-
-  /*
-  componentWillUnmount() {
-    this.props.removeAllAlerts();
-  }
-  */
 
   render() {
     return (
@@ -81,7 +64,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (username, password) => dispatch(authActions.authLogin(username, password)),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };

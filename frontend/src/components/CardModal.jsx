@@ -1,5 +1,8 @@
 import React, { Fragment } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Card } from "react-bootstrap";
+import AlertComponent from "../components/alerts/AlertComponent";
+import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
+import { connect } from "react-redux";
 
 class CardModal extends React.Component {
   render() {
@@ -35,20 +38,31 @@ class CardModal extends React.Component {
             }
             `}
         </style>
-        <Modal className="card-modal" {...this.props} size="xl" centered>
-          <Modal.Header closeButton>
+        <Modal as={Card} className="card-modal" {...this.props} size="xl" centered>
+          <Card.Header closeButton>
             <Modal.Title>{this.props.header}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{this.props.body}</Modal.Body>
-          <Modal.Footer>
+          </Card.Header>
+          <Card.Body>
+            <AlertsOverlayComponent alerts={this.props.alerts}>
+              <AlertComponent />
+            </AlertsOverlayComponent>
+            {this.props.body}
+          </Card.Body>
+          <Card.Footer>
             <Button onClick={this.props.onHide} variant="warning">
               Close
             </Button>
-          </Modal.Footer>
+          </Card.Footer>
         </Modal>
       </Fragment>
     );
   }
 }
 
-export default CardModal;
+const mapStateToProps = state => {
+  return {
+    alerts: state.alerts
+  };
+};
+
+export default connect(mapStateToProps)(CardModal);

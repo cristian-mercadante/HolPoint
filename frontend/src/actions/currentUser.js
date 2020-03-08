@@ -51,6 +51,7 @@ export const getCurrentUser = () => {
       })
       .catch(error => {
         dispatch(getCurrentUserFail(error));
+        dispatch(alertActions.error(error));
         return error;
       });
   };
@@ -97,8 +98,15 @@ export const putCurrentUser = (username, email, first_name, last_name) => {
       .catch(error => {
         dispatch(done());
         dispatch(alertActions.error(error));
+        return error;
       });
   };
 };
 
+export const addIdea = data => {
+  return {
+    type: "ADD_IDEA",
+    data
+  };
+};
 //export const clearCurrentUser = () => {};

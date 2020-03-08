@@ -3,6 +3,7 @@ import axios from "axios";
 import { loginURL, signupURL } from "../server";
 import * as getCurrentUserActions from "./currentUser";
 import * as groupActions from "./group";
+import * as alertActions from "./alerts";
 
 export const authStart = () => {
   return {
@@ -70,6 +71,7 @@ export const authLogin = (username, password) => {
       })
       .catch(error => {
         dispatch(authFail(error));
+        dispatch(alertActions.error(error));
         return error;
       });
   };
@@ -99,9 +101,10 @@ export const authSignup = (username, email, password1, password2) => {
         dispatch(getCurrentUserActions.getCurrentUser());
         dispatch(checkAuthTimeout(3600));
       })
-      .catch(err => {
-        dispatch(authFail(err));
-        return err;
+      .catch(error => {
+        dispatch(authFail(error));
+        dispatch(alertActions.error(error));
+        return error;
       });
   };
 };

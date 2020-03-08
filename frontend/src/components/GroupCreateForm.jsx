@@ -51,18 +51,7 @@ class GroupCreateForm extends Component {
     const description = form.description.value;
     const profiles = this.state.selectedFriends;
     this.props.postGroup(name, description, profiles).then(err => {
-      if (err) {
-        if (err.response) {
-          let message = "";
-          for (const v of Object.values(err.response.data)) {
-            message += v;
-            message += "\n";
-          }
-          this.props.addAlert(message, "danger");
-        } else {
-          this.props.addAlert(err.message, "danger");
-        }
-      } else {
+      if (!err) {
         this.props.removeAllAlerts();
         this.props.history.push("/home");
       }
@@ -85,7 +74,12 @@ class GroupCreateForm extends Component {
         ) : (
           <Panel
             title="Aggiungi amici"
-            component={<FriendBallsManagerSelect friends={this.props.currentUser.profile.friends} selectFriend={this.selectFriend} />}
+            component={
+              <FriendBallsManagerSelect
+                friends={this.props.currentUser.profile.friends}
+                selectFriend={this.selectFriend}
+              />
+            }
           />
         )}
         <Button type="submit">Crea!</Button>
@@ -103,7 +97,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     postGroup: (name, description, profiles) => dispatch(groupActions.postGroup(name, description, profiles)),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };

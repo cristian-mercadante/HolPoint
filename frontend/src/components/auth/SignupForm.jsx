@@ -16,18 +16,7 @@ class SignupForm extends Component {
     const password1 = form.password1.value;
     const password2 = form.password2.value;
     this.props.onAuth(username, email, password1, password2).then(err => {
-      if (err) {
-        if (err.response) {
-          let message = "";
-          for (const v of Object.values(err.response.data)) {
-            message += v;
-            message += "\n";
-          }
-          this.props.addAlert(message, "danger");
-        } else {
-          this.props.addAlert(err.message, "danger");
-        }
-      } else {
+      if (!err) {
         this.props.history.push("/home");
         this.props.removeAllAlerts();
       }
@@ -91,8 +80,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (username, email, password1, password2) => dispatch(authActions.authSignup(username, email, password1, password2)),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
+    onAuth: (username, email, password1, password2) =>
+      dispatch(authActions.authSignup(username, email, password1, password2)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };

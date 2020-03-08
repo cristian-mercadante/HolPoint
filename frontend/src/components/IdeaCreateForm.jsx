@@ -5,27 +5,10 @@ import axios from "axios";
 
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
+import * as currentUserActions from "../actions/currentUser";
 import { ideaAPI } from "../server";
 
 class IdeaCreateForm extends Component {
-  handleError = err => {
-    if (err) {
-      if (err.response) {
-        let message = "";
-        for (const v of Object.values(err.response.data)) {
-          message += v;
-          message += "\n";
-        }
-        this.props.addAlert(message, "danger");
-      } else {
-        this.props.addAlert(err.message, "danger");
-      }
-    } else {
-      this.props.removeAllAlerts();
-      this.props.history.push("/home");
-    }
-  };
-
   handleSubmit = e => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -48,10 +31,13 @@ class IdeaCreateForm extends Component {
         headers
       )
       .then(res => {
+        this.props.addIdea(res.data);
+        this.props.onHide();
+        this.props.removeAllAlerts();
         this.props.history.push(`/profile/${this.props.currentUser.username}`);
       })
       .catch(error => {
-        console.log(error);
+        this.props.error(error);
       });
   };
 
@@ -66,7 +52,9 @@ class IdeaCreateForm extends Component {
           <Form.Label>Descrizione</Form.Label>
           <Form.Control as="textarea" rows="10" />
         </Form.Group>
-        <Button type="submit">Crea!</Button>
+        <Button variant="outline-warning" type="submit">
+          Crea!
+        </Button>
       </Form>
     );
   }
@@ -80,7 +68,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
+    addIdea: data => dispatch(currentUserActions.addIdea(data)),
+    error: error => dispatch(alertActions.error(error)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };

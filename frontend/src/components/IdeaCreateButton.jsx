@@ -26,7 +26,7 @@ export default class IdeaCreateButton extends Component {
           textColor={cardColors.TEXT_COLOR}
           darkColor={cardColors.DARK_COLOR}
           header="Crea idea"
-          body={<IdeaCreateForm />}
+          body={<IdeaCreateForm onHide={this.showCreate} />}
         />
       </Fragment>
     ) : (

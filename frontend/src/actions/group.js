@@ -1,6 +1,7 @@
 import { GET_GROUP, POST_GROUP, CLEAR_GROUP } from "./types";
 import axios from "axios";
 import { groupsAPI } from "../server";
+import * as alertActions from "./alerts";
 
 // detailAPI
 export const getGroup = id => {
@@ -21,7 +22,7 @@ export const getGroup = id => {
         });
       })
       .catch(error => {
-        console.log(error);
+        dispatch(alertActions.error(error));
         return error;
       });
   };
@@ -53,7 +54,7 @@ export const postGroup = (name, description, profiles) => {
         });
       })
       .catch(error => {
-        console.log(error);
+        dispatch(alertActions.error(error));
         return error;
       });
   };

@@ -1,6 +1,7 @@
 import * as actionTypes from "./types";
 import axios from "axios";
 import { profileAPI } from "../server";
+import * as alertActions from "./alerts";
 
 export const getProfile = username => {
   return dispatch => {
@@ -20,7 +21,7 @@ export const getProfile = username => {
         });
       })
       .catch(error => {
-        console.log(error);
+        dispatch(alertActions.error(error));
         return error;
       });
   };

@@ -8,7 +8,13 @@ class AlertComponent extends Component {
     const { alert } = this.props;
 
     return (
-      <Alert variant={alert.style} key={alert.id} onClose={() => this.props.removeAlert(alert.id)} dismissible>
+      <Alert
+        variant={alert.style}
+        style={{ marginBottom: "0" }}
+        key={alert.id}
+        onClose={() => this.props.removeAlert(alert.id)}
+        dismissible
+      >
         {alert.text}
       </Alert>
     );

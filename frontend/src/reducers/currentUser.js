@@ -62,6 +62,12 @@ const done = (state, action) => {
   return updateObject(state, { loading: false });
 };
 
+const addIdea = (state, action) => {
+  let ideas = state.profile.ideas;
+  ideas.push(action.data);
+  return updateObject(state, { profile: { ideas: ideas } });
+};
+
 const getCurrentUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_CURRENT_USER_START:
@@ -78,6 +84,8 @@ const getCurrentUserReducer = (state = initialState, action) => {
       return loading(state, action);
     case actionTypes.DONE:
       return done(state, action);
+    case actionTypes.ADD_IDEA:
+      return addIdea(state, action);
     default:
       return state;
   }

@@ -38,8 +38,7 @@ const mapStateToProps = state => {
 // authomatic auth check
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignup: () => dispatch(authActions.authCheckState()),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
+    onTryAutoSignup: () => dispatch(authActions.authCheckState())
   };
 };
 

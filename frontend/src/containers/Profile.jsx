@@ -12,27 +12,11 @@ import * as alertActions from "../actions/alerts";
 import IdeaCreateButton from "../components/IdeaCreateButton";
 
 class Profile extends Component {
-  handleError(err) {
-    if (err) {
-      if (err.response) {
-        let message = "";
-        for (const v of Object.values(err.response.data)) {
-          message += v;
-          message += "\n";
-        }
-        this.props.addAlert(message, "danger");
-      } else {
-        this.props.addAlert(err.message, "danger");
-      }
-      this.props.history.push(`/home`);
-    } else {
-      this.props.removeAllAlerts();
-    }
-  }
-
   componentDidMount() {
     this.props.getProfile(this.props.match.params.username).then(error => {
-      this.handleError(error);
+      if (error) {
+        this.props.history.push(`/home`);
+      }
     });
   }
 
@@ -71,7 +55,15 @@ class Profile extends Component {
               <Col xs={12} sm={12} md={8} lg={8} xl={8}>
                 <Panel
                   title="Idee"
-                  component={<IdeaCardManager ideas={this.props.profile.profile.ideas} />}
+                  component={
+                    <IdeaCardManager
+                      ideas={
+                        this.props.currentUser.username === this.props.profile.username
+                          ? this.props.currentUser.profile.ideas
+                          : this.props.profile.profile.ideas
+                      }
+                    />
+                  }
                   badge={
                     <IdeaCreateButton
                       currentUsername={this.props.currentUser.username}
@@ -99,9 +91,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getProfile: (username, token) => dispatch(profileActions.getProfile(username, token)),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
-    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
+    getProfile: (username, token) => dispatch(profileActions.getProfile(username, token))
   };
 };
 

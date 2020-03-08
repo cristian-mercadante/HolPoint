@@ -11,12 +11,17 @@ export const addAlert = (text, style) => {
 export const error = error => {
   return dispatch => {
     if (error.response) {
-      let message = "";
-      for (const v of Object.values(error.response.data)) {
-        message += v;
-        message += "\n";
+      for (const e of Object.entries(error.response.data)) {
+        let message = "";
+        let k = e[0].replace(/^\w/, chr => chr.toUpperCase());
+        let v = e[1];
+        if (k !== "Non_field_errors") {
+          message += `${k}: ${v}\n`;
+        } else {
+          message += `${v}\n`;
+        }
+        dispatch(addAlert(message, "danger"));
       }
-      dispatch(addAlert(message, "danger"));
     } else {
       dispatch(addAlert(error.message, "danger"));
     }

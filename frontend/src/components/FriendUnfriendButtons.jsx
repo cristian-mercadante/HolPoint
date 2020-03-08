@@ -5,11 +5,14 @@ import { isAuthenticated } from "../routes";
 
 export default class FriendUnfriendButtons extends Component {
   isAlreadyFriend = () => {
+    let friend = null;
     if (!this.props.currentUser.loading) {
       const friends = this.props.currentUser.profile.friends;
-      let friend = friends.find(element => {
-        return element.id === this.props.profile.id;
-      });
+      if (friends) {
+        friend = friends.find(element => {
+          return element.id === this.props.profile.id;
+        });
+      }
       return Boolean(friend);
     }
   };

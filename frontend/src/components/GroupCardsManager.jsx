@@ -4,15 +4,16 @@ import GroupCard from "./GroupCard";
 import { CardColumns } from "react-bootstrap";
 
 import * as groupActions from "../actions/group";
-import * as alertActions from "../actions/alerts";
 import { connect } from "react-redux";
 
 class GroupCardsManager extends Component {
   componentDidMount() {
     const groups = this.props.currentUser.profile.groups;
-    groups.forEach(g => {
-      this.props.getGroup(g);
-    });
+    if (groups) {
+      groups.forEach(g => {
+        this.props.getGroup(g);
+      });
+    }
   }
 
   renderGroupCards = () => {
@@ -42,9 +43,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getGroup: id => dispatch(groupActions.getGroup(id)),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
-    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
+    getGroup: id => dispatch(groupActions.getGroup(id))
   };
 };
 
