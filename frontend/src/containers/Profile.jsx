@@ -80,7 +80,6 @@ class Profile extends Component {
 
 const mapStateToProps = state => {
   return {
-    token: state.auth.token,
     profileLoading: state.profile.loading,
     profile: state.profile.profile,
     currentUser: state.currentUser
@@ -89,7 +88,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getProfile: (username, token) => dispatch(profileActions.getProfile(username, token))
+    getProfile: username => dispatch(profileActions.getProfile(username))
   };
 };
 

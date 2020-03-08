@@ -6,7 +6,9 @@ class IdeaCardManager extends Component {
   renderIdeaCards = () => {
     let buffer = [];
     const ideas = this.props.ideas;
-    ideas.forEach(i => buffer.push(<IdeaCard key={i.id} {...i} />));
+    if (ideas) {
+      ideas.forEach(i => buffer.push(<IdeaCard key={i.id} {...i} />));
+    }
     return buffer;
   };
 

@@ -60,7 +60,7 @@ class GroupCreateForm extends Component {
 
   render() {
     return (
-      <Form style={{ marginTop: "20px" }} onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <Form.Group controlId="name">
           <Form.Label>Nome gruppo</Form.Label>
           <Form.Control type="text" placeholder="Super-mega-vacanza" />

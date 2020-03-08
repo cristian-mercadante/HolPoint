@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { Card } from "react-bootstrap";
 
-import * as colors from "../../colors";
-
 import axios from "axios";
 import { userBasicAPI } from "../../server";
 import { ProfileBadge } from "../misc";
 import { LinkContainer } from "react-router-bootstrap";
 
-const MAIN_COLOR = colors.RED;
+import "./style.css";
 
 class GroupCard extends Component {
   constructor(props) {
@@ -50,29 +48,11 @@ class GroupCard extends Component {
     );
   }
 
-  componentDidUpdate(prevProps, prevState) {}
-
   render() {
     return (
       <Fragment>
-        <>
-          <style type="text/css">
-            {`
-            .card{
-              color: white;
-              background-color: ${MAIN_COLOR}
-            }
-            .card:hover,
-            .card:active,
-            .card:focus,
-            .card.active {
-              opacity: 0.8
-            }
-            `}
-          </style>
-        </>
         <LinkContainer to={`/group/${this.props.id}`}>
-          <Card className="groupCard" style={{ flex: 1 }}>
+          <Card className="group-card" style={{ flex: 1 }}>
             <Card.Header>
               <h4>{this.props.name}</h4>
             </Card.Header>

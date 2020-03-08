@@ -11,7 +11,7 @@ export default function(ComposedComponent) {
     // prima era componentWillMount
     componentDidMount() {
       if (!isAuthenticated()) {
-        this.props.error("È necessario effettuare l'accesso per accedere a questa pagina.");
+        this.props.addAlert("È necessario effettuare l'accesso per accedere a questa pagina.", "danger");
         this.props.history.push("/login");
       }
     }
@@ -23,7 +23,7 @@ export default function(ComposedComponent) {
 
   const mapDispatchToProps = dispatch => {
     return {
-      error: error => dispatch(alertActions.error(error))
+      addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
     };
   };
 

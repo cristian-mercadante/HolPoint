@@ -1,9 +1,11 @@
 import React, { Fragment } from "react";
-import { Button, Modal, Card } from "react-bootstrap";
+import { Modal, Card, ButtonGroup, Button } from "react-bootstrap";
 // import AlertComponent from "../components/alerts/AlertComponent";
 // import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
 import { AlertComponent, AlertsOverlayComponent } from "../components/alerts";
 import { connect } from "react-redux";
+
+import "./CardModal.css";
 
 class CardModal extends React.Component {
   render() {
@@ -14,34 +16,24 @@ class CardModal extends React.Component {
 
     return (
       <Fragment>
-        <style type="text/css">
-          {`
-            .card-modal .modal-content{
-              background-color: ${this.props.backgroundColor};
-              color: ${this.props.textColor};
-            }
-            .modal-dialog,
-            .modal-content {
-              height: 90%;
-            }
-            .modal-body{
-              max-height: calc(100% - 120px);
-              overflow-y: auto;
-            }
-            .modal-body::-webkit-scrollbar {
-              width: 0.25rem;
-            }
-            .modal-body::-webkit-scrollbar-track {
-              background: ${this.props.darkColor};
-            }
-            .modal-body::-webkit-scrollbar-thumb {
-              background: ${this.props.textColor};
-            }
-            `}
-        </style>
-        <Modal as={Card} className="card-modal" {...this.props} size="xl" centered>
-          <Card.Header closeButton>
-            <Modal.Title>{this.props.header}</Modal.Title>
+        <Modal as={Card} className={this.props.type} {...this.props} size="xl" centered>
+          <Card.Header>
+            <Modal.Title>
+              {this.props.header}
+              <ButtonGroup className="float-right">
+                {this.props.editable === "true" ? (
+                  <Fragment>
+                    <Button variant="warning">{"Modifica"}</Button>
+                    <Button variant="danger">{"Elimina"}</Button>
+                  </Fragment>
+                ) : (
+                  ""
+                )}
+                <Button variant="success" onClick={() => this.props.onHide()}>
+                  {"Chiudi"}
+                </Button>
+              </ButtonGroup>
+            </Modal.Title>
           </Card.Header>
           <Card.Body>
             <AlertsOverlayComponent alerts={this.props.alerts}>
@@ -49,11 +41,6 @@ class CardModal extends React.Component {
             </AlertsOverlayComponent>
             {this.props.body}
           </Card.Body>
-          <Card.Footer>
-            <Button onClick={this.props.onHide} variant="warning">
-              Close
-            </Button>
-          </Card.Footer>
         </Modal>
       </Fragment>
     );

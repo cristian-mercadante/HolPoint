@@ -1,0 +1,27 @@
+.group-card {
+  color: white;
+  background-color: var(--holpoint-red);
+}
+
+.group-card:hover,
+.group-card:active,
+.group-card:focus,
+.group-card.active {
+  opacity: 0.8;
+}
+
+.group-card .card-body {
+  overflow-y: auto;
+}
+
+.card-body::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.card-body::-webkit-scrollbar-track {
+  background: var(--holpoint-dark-red);
+}
+
+.card-body::-webkit-scrollbar-thumb {
+  background: #ffffff;
+}

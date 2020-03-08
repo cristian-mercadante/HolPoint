@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { Button } from "react-bootstrap";
 import CardModal from "../../containers/CardModal";
-import IdeaCreateForm from "./IdeaCreateForm";
+import GroupCreateForm from "./GroupCreateForm";
 
-export default class IdeaCreateButton extends Component {
+export default class GroupCreateButton extends Component {
   state = {
     showCreate: false
   };
@@ -13,22 +13,20 @@ export default class IdeaCreateButton extends Component {
   };
 
   render() {
-    return this.props.currentUsername === this.props.username ? (
+    return (
       <Fragment>
-        <Button variant="info" onClick={this.showCreate}>
+        <Button variant="danger" onClick={this.showCreate}>
           Crea
         </Button>
         <CardModal
           show={this.state.showCreate}
           onHide={this.showCreate}
-          type="idea-modal"
-          header="Crea idea"
-          body={<IdeaCreateForm onHide={this.showCreate} />}
+          type="group-modal"
+          header="Crea gruppo"
+          body={<GroupCreateForm onHide={() => this.showCreate()} />}
           editable="false"
         />
       </Fragment>
-    ) : (
-      ""
     );
   }
 }

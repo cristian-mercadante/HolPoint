@@ -25,12 +25,7 @@ class GroupCardsManager extends Component {
   };
 
   render() {
-    return (
-      <React.Fragment>
-        {this.renderGroupCards()}
-        {/*<GroupCardEmpty {...this.groupCardProps} />*/}
-      </React.Fragment>
-    );
+    return <React.Fragment>{this.renderGroupCards()}</React.Fragment>;
   }
 }
 

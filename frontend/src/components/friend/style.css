@@ -1,0 +1,16 @@
+.friend-image {
+  border-width: 1px;
+  border-color: var(--holpoint-yellow);
+}
+.friend-image:hover,
+.friend-image:visited,
+.friend-image:link,
+.friend-image:active,
+.friend-image.active {
+  text-decoration: none;
+  border-width: 2px;
+}
+.friend-image.selected {
+  border-width: 3px;
+  border-color: var(--holpoint-green);
+}

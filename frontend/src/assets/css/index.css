@@ -1,3 +1,13 @@
+:root {
+  --holpoint-blue: #0099cc;
+  --holpoint-dark-blue: #006080;
+  --holpoint-red: #ff6b4f;
+  --holpoint-dark-red: #6e1100;
+  --holpoint-yellow: #ffcb31;
+  --holpoint-green: #00ce83;
+  --holpoint-violet: #250c67;
+}
+
 body::-webkit-scrollbar {
   width: 0.25rem;
 }
@@ -7,5 +17,5 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #ff6b4f;
+  background: var(--holpoint-red);
 }

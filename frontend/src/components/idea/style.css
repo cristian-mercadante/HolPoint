@@ -1,0 +1,29 @@
+.idea-card {
+  color: #fff;
+  background-color: var(--holpoint-blue);
+  margin-bottom: 10px;
+}
+
+.idea-card:hover,
+.idea-card:active,
+.idea-card:focus,
+.idea-card.active {
+  opacity: 0.8;
+}
+
+.idea-card .card-body {
+  overflow-y: auto;
+  height: 200px;
+}
+
+.card-body::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.card-body::-webkit-scrollbar-track {
+  background: var(--holpoint-dark-blue);
+}
+
+.card-body::-webkit-scrollbar-thumb {
+  background: #fff;
+}

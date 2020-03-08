@@ -1,0 +1,36 @@
+.idea-modal .modal-content {
+  background-color: var(--holpoint-blue);
+  color: #fff;
+}
+
+.idea-modal .card-body::-webkit-scrollbar-track {
+  background: var(--holpoint-dark-blue);
+}
+
+.group-modal .modal-content {
+  background-color: var(--holpoint-red);
+  color: #fff;
+}
+
+.group-modal .card-body::-webkit-scrollbar-track {
+  background: var(--holpoint-dark-red);
+}
+
+/* modal body overflow */
+.group-modal .card-body {
+  overflow: auto;
+}
+
+.idea-modal .card-body {
+  overflow: auto;
+}
+
+/* modal size */
+.modal-dialog,
+.modal-content {
+  height: 90%;
+}
+
+.modal-body {
+  max-height: calc(100% - 120px);
+}

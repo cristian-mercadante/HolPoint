@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 import { Image } from "react-bootstrap";
 
 import logo from "../../assets/imgs/logo.png";
-import * as colors from "../../colors";
-
-const MAIN_COLOR = colors.YELLOW;
-const SELECTED_COLOR = colors.GREEN;
+import "./style.css";
 
 class FriendBall extends Component {
   state = {
@@ -38,29 +35,6 @@ class FriendBall extends Component {
 
     return (
       <Fragment>
-        <>
-          <style type="text/css">
-            {`
-            .frndImg{
-              border-width: 1px;
-              border-color: ${MAIN_COLOR};
-            }
-            .frndImg:hover,
-            .frndImg:visited,
-            .frndImg:link,
-            .frndImg:active,
-            .frndImg.active{
-              text-decoration: none;
-              border-width: 2px;
-            }
-            .frndImg.selected{
-              border-width: 3px;
-              border-color: ${SELECTED_COLOR};
-            }
-
-          `}
-          </style>
-        </>
         <div style={this.divStyle}>
           {this.props.selectable ? (
             <Image
@@ -69,7 +43,7 @@ class FriendBall extends Component {
               width={this.imgSize}
               roundedCircle
               thumbnail
-              className={`frndImg ${selectedClassName}`}
+              className={`friend-image ${selectedClassName}`}
               onClick={this.onSelectClick}
             />
           ) : (
@@ -80,7 +54,7 @@ class FriendBall extends Component {
                 width={this.imgSize}
                 roundedCircle
                 thumbnail
-                className={`frndImg ${selectedClassName}`}
+                className={`friend-image ${selectedClassName}`}
               />
             </Link>
           )}
