@@ -59,7 +59,7 @@ class GroupCard extends Component {
             <Card.Body>
               <h6>Partecipanti</h6>
               {this.state.profilesBaseInfo.map(profile => (
-                <ProfileBadge key={`${this.props.id}_${profile.id}`} profile={profile} />
+                <ProfileBadge key={`${this.props.id}_${profile.id}`} variant="primary" username={profile.username} />
               ))}
             </Card.Body>
             <Card.Footer>

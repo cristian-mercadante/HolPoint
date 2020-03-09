@@ -1,7 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.generics import (
     RetrieveAPIView,
     ListAPIView,
+    DestroyAPIView,
     RetrieveUpdateAPIView
 )
 
@@ -13,10 +14,11 @@ from .serializers import (
     BasicUserSerializer,
     GroupSerializer,
     IdeaSerializer,
+    IdeaCommentSerializer,
 )
 
 from django.contrib.auth.models import User
-from holpoint.models import Group, Idea
+from holpoint.models import Group, Idea, IdeaComment
 
 
 class CurrentUserDetailView(RetrieveUpdateAPIView):
@@ -58,3 +60,20 @@ class IdeaViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.request.user.profile.ideas.all()
+
+
+class IdeaCommentViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+    serializer_class = IdeaCommentSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        return self.request.user.profile.created_comments
+
+
+class IdeaCommentListView(ListAPIView):
+    serializer_class = IdeaCommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        idea_id = self.kwargs['idea_id']
+        return IdeaComment.objects.filter(to__id=idea_id)

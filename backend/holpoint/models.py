@@ -89,6 +89,9 @@ class Comment(models.Model):
 class IdeaComment(Comment):
     to = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="comments")
 
+    def __str__(self):
+        return "{}: {}".format(self.creator, self.to)
+
 
 class ActivityComment(Comment):
     to = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name="comments")

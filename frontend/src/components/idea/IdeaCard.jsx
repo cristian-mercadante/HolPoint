@@ -1,10 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { Card } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 
 import CardModal from "../../containers/CardModal";
 
 import "./style.css";
 import { IdeaContent } from ".";
+
+import { connect } from "react-redux";
 
 class IdeaCard extends Component {
   state = {
@@ -30,11 +33,23 @@ class IdeaCard extends Component {
           onHide={this.showUpdate}
           type="idea-modal"
           header={this.props.title}
-          body={<IdeaContent {...this.props} />}
+          body={
+            <IdeaContent
+              {...this.props}
+              currentUsername={this.props.currentUsername}
+              username={this.props.match.params.username}
+            />
+          }
         />
       </Fragment>
     );
   }
 }
 
-export default IdeaCard;
+const mapStateToProps = state => {
+  return {
+    currentUsername: state.currentUser.username
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(IdeaCard));

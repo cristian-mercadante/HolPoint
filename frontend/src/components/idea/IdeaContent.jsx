@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col, Button, ButtonGroup } from "react-bootstrap";
-import CommentSection from "../../containers/CommentSection";
+import { Button, ButtonGroup } from "react-bootstrap";
+import CommentSection from "../comment/CommentSection";
 import { IdeaForm } from "../idea";
 
 import { ideaAPI } from "../../server";
@@ -16,11 +16,12 @@ class IdeaContent extends Component {
     showModalDelete: false
   };
 
-  descriptionColProps = { xs: "12", sm: "12", md: "8", lg: "8", xl: "8" };
-  commentsColProps = { xs: "12", sm: "12", md: "4", lg: "4", xl: "4" };
-
   showModalDelete = () => {
     this.setState({ showModalDelete: !this.state.showModalDelete });
+  };
+
+  edit = () => {
+    this.setState({ editing: !this.state.editing });
   };
 
   delete = () => {
@@ -41,10 +42,6 @@ class IdeaContent extends Component {
         this.props.error(error);
         return error;
       });
-  };
-
-  edit = () => {
-    this.setState({ editing: true });
   };
 
   onSubmit = e => {
@@ -79,37 +76,42 @@ class IdeaContent extends Component {
       });
   };
 
+  isCurrentUser = () => {
+    return this.props.currentUsername === this.props.username;
+  };
+
   render() {
     return (
       <Fragment>
-        <Row>
-          <Col {...this.descriptionColProps}>
-            {!this.state.editing ? (
-              <Fragment>
-                <ButtonGroup>
-                  <Button variant="warning" onClick={this.edit}>
-                    Modifica
-                  </Button>
-                  <Button variant="danger" onClick={this.showModalDelete}>
-                    Elimina
-                  </Button>
-                </ButtonGroup>
-                <div>{this.props.description}</div>
-              </Fragment>
-            ) : (
-              <Fragment>
-                <IdeaForm
-                  onSubmit={this.onSubmit}
-                  defaulttitle={this.props.title}
-                  defaultdescription={this.props.description}
-                />
-              </Fragment>
-            )}
-          </Col>
-          <Col {...this.commentsColProps}>
-            <CommentSection />
-          </Col>
-        </Row>
+        {this.isCurrentUser() ? (
+          <ButtonGroup className="float-right">
+            <Button variant="success" onClick={this.edit}>
+              {this.state.editing ? "Annulla" : "Modifica"}
+            </Button>
+            <Button variant="danger" onClick={this.showModalDelete}>
+              Elimina
+            </Button>
+          </ButtonGroup>
+        ) : (
+          ""
+        )}
+        {this.state.editing ? (
+          <IdeaForm
+            onSubmit={this.onSubmit}
+            defaulttitle={this.props.title}
+            defaultdescription={this.props.description}
+          />
+        ) : (
+          <Fragment>
+            <h3>Descrizione</h3>
+            <div className="comment-text-with-newline">{this.props.description}</div>
+          </Fragment>
+        )}
+
+        <div style={{ marginTop: "10px" }}>
+          <CommentSection {...this.props} />
+        </div>
+
         <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.delete} />
       </Fragment>
     );

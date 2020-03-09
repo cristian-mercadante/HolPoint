@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from holpoint.models import Profile, Group, Idea
+from holpoint.models import Profile, Group, Idea, IdeaComment
 
 
 class ProfileRelatedField(serializers.RelatedField):
@@ -78,3 +78,18 @@ class BasicUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'email')
+
+
+class IdeaCommentSerializer(serializers.ModelSerializer):
+    creator = ProfileRelatedField(read_only=True, required=False)
+    datetime = serializers.DateTimeField(read_only=True, format="%d/%m/%Y %H:%M")
+
+    class Meta:
+        model = IdeaComment
+        fields = '__all__'
+
+    def create(self, validated_data):
+        current_user = self.context['request'].user.id
+        creator = Profile.objects.filter(user=current_user).first()
+        comment = IdeaComment.objects.create(**validated_data, creator=creator)
+        return comment

@@ -1,0 +1,10 @@
+.comment {
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: var(--holpoint-dark-blue);
+}
+
+.comment-text-with-newline {
+  white-space: pre-line;
+}
