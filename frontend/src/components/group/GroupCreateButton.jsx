@@ -24,7 +24,6 @@ export default class GroupCreateButton extends Component {
           type="group-modal"
           header="Crea gruppo"
           body={<GroupCreateForm onHide={() => this.showCreate()} />}
-          editable="false"
         />
       </Fragment>
     );

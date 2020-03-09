@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap";
 import CardModal from "../../containers/CardModal";
 
 import "./style.css";
+import { IdeaContent } from ".";
 
 class IdeaCard extends Component {
   state = {
@@ -29,8 +30,7 @@ class IdeaCard extends Component {
           onHide={this.showUpdate}
           type="idea-modal"
           header={this.props.title}
-          body={this.props.description}
-          editable="true"
+          body={<IdeaContent {...this.props} />}
         />
       </Fragment>
     );

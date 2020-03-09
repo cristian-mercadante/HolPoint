@@ -34,3 +34,8 @@
 .modal-body {
   max-height: calc(100% - 120px);
 }
+
+.confirm-modal .modal-dialog,
+.confirm-modal .modal-content {
+  height: auto;
+}
