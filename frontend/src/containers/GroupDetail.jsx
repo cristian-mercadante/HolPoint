@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import { Button, ProgressBar, Container } from "react-bootstrap";
+import React, { Component, Fragment } from "react";
+import { ProgressBar, Container } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
 import Panel from "./Panel";
 
 import axios from "axios";
 import { groupsAPI } from "../server";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
+import { GroupContent } from "../components/group";
+import { IdeaCardManager } from "../components/idea";
 
 class GroupDetail extends Component {
   state = {
@@ -24,7 +25,7 @@ class GroupDetail extends Component {
       }
     };
     const id = this.props.match.params.id;
-    return axios
+    axios
       .get(`${groupsAPI}${id}/`, headers)
       .then(res => {
         this.setState({ loading: false, group: res.data });
@@ -44,19 +45,21 @@ class GroupDetail extends Component {
         {this.state.loading ? (
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
-          <Panel
-            title={this.state.group.name}
-            badge={
-              <LinkContainer to={`/group/${this.state.group.id}/edit`}>
-                <Button variant="warning">Modifica</Button>
-              </LinkContainer>
-            }
-          />
+          <Fragment>
+            <Panel title={this.state.group.name} component={<GroupContent {...this.state.group} />} />
+            <Panel title="Idee proposte" component={<IdeaCardManager ideas={this.state.group.ideas} />} />
+          </Fragment>
         )}
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    currentUser: state.currentUser
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -64,4 +67,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(connect(null, mapDispatchToProps)(GroupDetail));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupDetail));

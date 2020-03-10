@@ -17,7 +17,7 @@ class App extends Component {
       <Fragment>
         <Router history={history}>
           <PageLayout {...this.props}>
-            <BaseRouter isAuthenticated={this.props.isAuthenticated} />
+            <BaseRouter />
           </PageLayout>
         </Router>
       </Fragment>

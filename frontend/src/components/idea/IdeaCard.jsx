@@ -40,6 +40,12 @@ class IdeaCard extends Component {
               username={this.props.match.params.username}
             />
           }
+          footer={
+            <Fragment>
+              <span style={{ fontWeight: "bold" }}>{this.props.creator.username}</span>
+              <span className="float-right">{this.props.date_creation}</span>
+            </Fragment>
+          }
         />
       </Fragment>
     );

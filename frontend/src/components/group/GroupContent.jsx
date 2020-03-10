@@ -1,16 +1,15 @@
 import React, { Component, Fragment } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
-import CommentSection from "../comment/CommentSection";
-import { IdeaForm } from "../idea";
-
-import { ideaAPI } from "../../server";
+import { withRouter } from "react-router-dom";
+import axios from "axios";
+import { groupsAPI } from "../../server";
+import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
 import * as currentUserActions from "../../actions/currentUser";
-import axios from "axios";
-import { connect } from "react-redux";
+import GroupForm from "./GroupForm";
 import ConfirmModal from "../../containers/ConfirmModal";
 
-class IdeaContent extends Component {
+class GroupContent extends Component {
   state = {
     editing: false,
     showModalDelete: false
@@ -33,11 +32,11 @@ class IdeaContent extends Component {
       }
     };
     axios
-      .delete(`${ideaAPI}${this.props.id}/`, headers)
+      .delete(`${groupsAPI}${this.props.id}/`, headers)
       .then(res => {
-        this.props.getCurrentUser();
         this.setState({ editing: false });
         this.showModalDelete();
+        this.props.history.push("/home");
       })
       .catch(error => {
         this.props.error(error);
@@ -46,9 +45,9 @@ class IdeaContent extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const title = form.title.value;
-    const description = form.description.value;
+    // const form = e.currentTarget;
+    // const title = form.title.value;
+    // const description = form.description.value;
     const token = localStorage.getItem("token");
     const headers = {
       headers: {
@@ -59,15 +58,14 @@ class IdeaContent extends Component {
 
     axios
       .put(
-        `${ideaAPI}${this.props.id}/`,
+        `${groupsAPI}${this.props.id}/`,
         {
-          title,
-          description
+          //TODO:
         },
         headers
       )
       .then(res => {
-        this.props.getCurrentUser();
+        //this.props.getCurrentUser();
         this.setState({ editing: false });
       })
       .catch(error => {
@@ -75,14 +73,25 @@ class IdeaContent extends Component {
       });
   };
 
-  isCurrentUser = () => {
-    return this.props.currentUsername === this.props.username;
+  isCreator = () => {
+    return this.props.currentUser.id === this.props.creator.id;
   };
 
   render() {
     return (
       <Fragment>
-        {this.isCurrentUser() ? (
+        {this.state.editing ? (
+          <GroupForm
+            onSubmit={this.onSubmit}
+            defaulttitle={this.props.title}
+            defaultdescription={this.props.description}
+          />
+        ) : (
+          <Fragment>
+            <div className="text-with-newline">{this.props.description}</div>
+          </Fragment>
+        )}
+        {this.isCreator() ? (
           <ButtonGroup className="float-right">
             <Button variant="success" onClick={this.edit}>
               {this.state.editing ? "Annulla" : "Modifica"}
@@ -94,28 +103,18 @@ class IdeaContent extends Component {
         ) : (
           ""
         )}
-        {this.state.editing ? (
-          <IdeaForm
-            onSubmit={this.onSubmit}
-            defaulttitle={this.props.title}
-            defaultdescription={this.props.description}
-          />
-        ) : (
-          <Fragment>
-            <h3>Descrizione</h3>
-            <div className="text-with-newline">{this.props.description}</div>
-          </Fragment>
-        )}
-
-        <div style={{ marginTop: "10px" }}>
-          <CommentSection {...this.props} />
-        </div>
 
         <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.delete} />
       </Fragment>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    currentUser: state.currentUser
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -124,4 +123,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(IdeaContent);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupContent));

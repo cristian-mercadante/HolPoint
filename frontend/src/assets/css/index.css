@@ -19,3 +19,7 @@ body::-webkit-scrollbar-track {
 body::-webkit-scrollbar-thumb {
   background: var(--holpoint-red);
 }
+
+.text-with-newline {
+  white-space: pre-line;
+}

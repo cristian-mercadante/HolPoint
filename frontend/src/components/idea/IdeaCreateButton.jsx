@@ -31,7 +31,7 @@ class IdeaCreateButton extends Component {
         Authorization: `Token ${token}`
       }
     };
-    return axios
+    axios
       .post(
         `${ideaAPI}`,
         {

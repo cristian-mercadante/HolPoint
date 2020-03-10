@@ -7,7 +7,7 @@ import { FaSearch } from "react-icons/fa";
 // import AlertComponent from "../components/alerts/AlertComponent";
 // import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
 import { AlertComponent, AlertsOverlayComponent } from "../components/alerts/index";
-
+import { isAuthenticated } from "../routes";
 import * as colors from "../colors";
 import { Title, LogInSignUp, ProfileButton } from "../components/misc";
 
@@ -15,6 +15,12 @@ class PageLayout extends Component {
   navbarStyle = {
     backgroundColor: colors.YELLOW
   };
+
+  componentDidMount() {
+    if (!isAuthenticated()) {
+      this.props.history.push("/login");
+    }
+  }
 
   render() {
     return (

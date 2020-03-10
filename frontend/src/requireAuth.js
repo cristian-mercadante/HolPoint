@@ -1,3 +1,5 @@
+// DEPRECATED
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as alertActions from "./actions/alerts";

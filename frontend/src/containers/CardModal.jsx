@@ -26,6 +26,7 @@ class CardModal extends React.Component {
             </AlertsOverlayComponent>
             {this.props.body}
           </Card.Body>
+          {this.props.footer ? <Card.Footer>{this.props.footer}</Card.Footer> : ""}
         </Modal>
       </Fragment>
     );

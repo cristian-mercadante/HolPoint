@@ -27,7 +27,7 @@ class HomePage extends Component {
         Authorization: `Token ${token}`
       }
     };
-    return axios
+    axios
       .get(`${groupsAPI}`, headers)
       .then(res => {
         if (this._isMounted) this.setState({ loading: false, groups: res.data });

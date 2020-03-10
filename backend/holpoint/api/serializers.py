@@ -37,7 +37,7 @@ class ProfileRelatedField(serializers.RelatedField):
 
 class IdeaSerializer(serializers.ModelSerializer):
     date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
-    creator = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
+    creator = ProfileRelatedField(read_only=True, required=False)
 
     class Meta:
         model = Idea

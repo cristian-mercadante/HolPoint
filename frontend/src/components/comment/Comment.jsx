@@ -23,7 +23,7 @@ class Comment extends Component {
         <h5>
           <ProfileBadge profile={this.props.creator} variant="warning" />
         </h5>
-        <div className="comment-text-with-newline">{this.props.text}</div>
+        <div className="text-with-newline">{this.props.text}</div>
         <div style={{ fontStyle: "italic", fontSize: "10pt" }}>{this.props.datetime}</div>
       </div>
     );
