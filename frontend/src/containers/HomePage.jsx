@@ -5,6 +5,7 @@ import Panel from "../containers/Panel";
 import { connect } from "react-redux";
 import axios from "axios";
 import { groupsAPI } from "../server";
+import * as alertActions from "../actions/alerts";
 
 class HomePage extends Component {
   _isMounted = false;
@@ -68,4 +69,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(HomePage);
+const mapDispatchToProps = dispatch => {
+  return {
+    error: error => dispatch(alertActions.error(error))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

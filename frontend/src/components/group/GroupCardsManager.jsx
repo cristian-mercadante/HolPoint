@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from "react";
 import GroupCard from "./GroupCard";
 import { CardColumns, ProgressBar } from "react-bootstrap";
-import * as alertActions from "../../actions/alerts";
-import { connect } from "react-redux";
 
 class GroupCardsManager extends Component {
   renderGroupCards = () => {
@@ -22,10 +20,4 @@ class GroupCardsManager extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    error: error => dispatch(alertActions.error(error))
-  };
-};
-
-export default connect(null, mapDispatchToProps)(GroupCardsManager);
+export default GroupCardsManager;

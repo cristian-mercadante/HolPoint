@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from holpoint.models import Profile, Group, Idea, IdeaComment
+from holpoint.models import Profile, Group, Idea, IdeaComment, VoteIdeaInGroup
 
 
 class ProfileRelatedField(serializers.RelatedField):
@@ -37,8 +37,6 @@ class ProfileRelatedField(serializers.RelatedField):
 
 class IdeaSerializer(serializers.ModelSerializer):
     date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
-    date_start = serializers.DateField(required=False, format="%d/%m/%Y")
-    date_finish = serializers.DateField(required=False, format="%d/%m/%Y")
     creator = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
 
     class Meta:
@@ -61,18 +59,31 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ('friends', 'groups', 'user', 'ideas')
 
 
+class VoteIdeaInGroupSerializer(serializers.ModelSerializer):
+    votes = ProfileRelatedField(read_only=True, many=True)
+
+    class Meta:
+        model = VoteIdeaInGroup
+        fields = ('idea', 'group', 'votes')
+
+
 class GroupSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True)
     description = serializers.CharField(required=False)
     date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
+    date_start = serializers.DateField(required=False, format="%d/%m/%Y")
+    date_finish = serializers.DateField(required=False, format="%d/%m/%Y")
     is_active = serializers.BooleanField(default=True, read_only=True)
     creator = ProfileRelatedField(read_only=True, required=False)
     profiles = ProfileRelatedField(queryset=Profile.objects.all(), many=True, required=False)
+    prefered_idea = serializers.PrimaryKeyRelatedField(queryset=Idea.objects.all(), required=False)
+    ideas = IdeaSerializer(many=True, read_only=True)
+    group_to_idea = VoteIdeaInGroupSerializer(many=True, required=False)
 
     class Meta:
         model = Group
-        fields = ('id', 'name', 'description', 'date_creation', 'is_active', 'creator', 'profiles')
+        fields = ('id', 'name', 'description', 'date_creation', 'date_start', 'date_finish', 'prefered_idea', 'is_active', 'creator', 'profiles', 'ideas', 'group_to_idea')
 
     def create(self, validated_data):
         current_user = self.context['request'].user.id

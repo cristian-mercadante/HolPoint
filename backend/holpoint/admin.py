@@ -17,8 +17,18 @@ class ProfileAdmin(admin.ModelAdmin):
     inlines = [GroupInline, IdeaInline]
 
 
+class VoteIdeaInGroupInline(admin.StackedInline):
+    model = models.VoteIdeaInGroup
+    extra = 0
+
+
+class GroupAdmin(admin.ModelAdmin):
+    inlines = [VoteIdeaInGroupInline, ]
+
+
 admin.site.register(models.Profile, ProfileAdmin)
-admin.site.register(models.Group)
+admin.site.register(models.Group, GroupAdmin)
 admin.site.register(models.Idea)
 admin.site.register(models.Activity)
 admin.site.register(models.IdeaComment)
+admin.site.register(models.VoteIdeaInGroup)

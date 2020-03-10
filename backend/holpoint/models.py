@@ -34,8 +34,6 @@ class Idea(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     date_creation = models.DateField(auto_now=True)
-    date_start = models.DateField(auto_now=True)
-    date_finish = models.DateField(auto_now=True)
 
     def __str__(self):
         return "{}".format(self.title)
@@ -51,18 +49,25 @@ class Group(models.Model):
     # constraints
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_groups")
     profiles = models.ManyToManyField(Profile, related_name="groups")
-    prefered_idea = models.ForeignKey(Idea, null=True, on_delete=models.SET_NULL)
-    ideas = models.ManyToManyField(Idea, blank=True, related_name="groups")
+    prefered_idea = models.ForeignKey(Idea, null=True, blank=True, on_delete=models.SET_NULL)
+    ideas = models.ManyToManyField(Idea, blank=True, related_name="groups", through="VoteIdeaInGroup")
 
     # attributes
-
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, default="")
     date_creation = models.DateField(auto_now=True)
+    date_start = models.DateField(auto_now=True)
+    date_finish = models.DateField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return "{}".format(self.name)
+
+
+class VoteIdeaInGroup(models.Model):
+    idea = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_to_group")
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="group_to_idea")
+    votes = models.ManyToManyField(Profile, blank=True, related_name="voted_ideas")
 
 
 class Activity(models.Model):
