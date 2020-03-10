@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Container, Image } from "react-bootstrap";
+import { FriendUnfriendButtons } from "../misc";
 
 import logo from "../../assets/imgs/logo.png";
 
@@ -19,6 +20,7 @@ class UserProfileManager extends Component {
             {this.props.profile.first_name} {this.props.profile.last_name}
           </h1>
           <h3>{this.props.profile.email}</h3>
+          <FriendUnfriendButtons {...this.props} />
         </div>
       </Container>
     );

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Form, ProgressBar, Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import { FriendBallsManagerSelect } from "../friend";
-import Panel from "../../containers/Panel";
 import { connect } from "react-redux";
-import * as groupActions from "../../actions/group";
 import * as alertActions from "../../actions/alerts";
+import axios from "axios";
+import { groupsAPI } from "../../server";
 
 class GroupCreateForm extends Component {
   constructor(props) {
@@ -44,18 +44,40 @@ class GroupCreateForm extends Component {
     }
   };
 
+  postGroup = (name, description, profiles) => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    return axios
+      .post(
+        `${groupsAPI}`,
+        {
+          name,
+          description,
+          profiles
+        },
+        headers
+      )
+      .then(res => {
+        this.props.addGroup(res.data);
+        this.props.onHide();
+      })
+      .catch(error => {
+        this.props.error(error);
+      });
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     const form = e.currentTarget;
     const name = form.name.value;
     const description = form.description.value;
     const profiles = this.state.selectedFriends;
-    this.props.postGroup(name, description, profiles).then(err => {
-      if (!err) {
-        this.props.removeAllAlerts();
-        this.props.history.push("/home");
-      }
-    });
+    this.postGroup(name, description, profiles);
   };
 
   render() {
@@ -72,15 +94,13 @@ class GroupCreateForm extends Component {
         {this.props.currentUser.loading ? (
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
-          <Panel
-            title="Aggiungi amici"
-            component={
-              <FriendBallsManagerSelect
-                friends={this.props.currentUser.profile.friends}
-                selectFriend={this.selectFriend}
-              />
-            }
-          />
+          <Fragment>
+            <h3>Aggiungi amici</h3>
+            <FriendBallsManagerSelect
+              friends={this.props.currentUser.profile.friends}
+              selectFriend={this.selectFriend}
+            />
+          </Fragment>
         )}
         <Button type="submit">Crea!</Button>
       </Form>
@@ -96,7 +116,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    postGroup: (name, description, profiles) => dispatch(groupActions.postGroup(name, description, profiles)),
+    error: error => dispatch(alertActions.error(error)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };

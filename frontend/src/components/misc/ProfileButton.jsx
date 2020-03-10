@@ -20,11 +20,7 @@ class ProfileButton extends Component {
     this.props.history.push(path);
   };
 
-  dropdownItems = [
-    { key: 1, name: "Crea gruppo", to: "/group/create" },
-    { key: 2, name: "Crea idea", to: "/idea/create" },
-    { key: 3, name: "Impostazioni", to: "/settings" }
-  ];
+  dropdownItems = [{ key: 1, name: "Impostazioni", to: "/settings" }];
 
   render() {
     return (

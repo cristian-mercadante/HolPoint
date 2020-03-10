@@ -1,44 +1,31 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import GroupCard from "./GroupCard";
-import { CardColumns } from "react-bootstrap";
-
-import * as groupActions from "../../actions/group";
+import { CardColumns, ProgressBar } from "react-bootstrap";
+import * as alertActions from "../../actions/alerts";
 import { connect } from "react-redux";
 
 class GroupCardsManager extends Component {
-  componentDidMount() {
-    const groups = this.props.currentUser.profile.groups;
-    if (groups) {
-      groups.forEach(g => {
-        this.props.getGroup(g);
-      });
-    }
-  }
-
   renderGroupCards = () => {
     let buffer = [];
-    if (!this.props.group.loading) {
-      const groups = this.props.group.groups;
-      groups.map(g => buffer.push(<GroupCard key={g.id} {...this.groupCardProps} {...g} />));
+    if (!this.props.loading) {
+      this.props.groups.forEach(group => buffer.push(<GroupCard key={group.id} {...group} />));
     }
-    return <CardColumns>{buffer}</CardColumns>;
+    return <CardColumns style={{ WebkitColumnCount: "3" }}>{buffer}</CardColumns>;
   };
 
   render() {
-    return <React.Fragment>{this.renderGroupCards()}</React.Fragment>;
+    return (
+      <Fragment>
+        {this.props.loading ? <ProgressBar striped variant="success" now={100} animated /> : this.renderGroupCards()}
+      </Fragment>
+    );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    group: state.group
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
-    getGroup: id => dispatch(groupActions.getGroup(id))
+    error: error => dispatch(alertActions.error(error))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupCardsManager);
+export default connect(null, mapDispatchToProps)(GroupCardsManager);

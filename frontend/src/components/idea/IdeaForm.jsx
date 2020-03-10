@@ -13,8 +13,8 @@ class IdeaForm extends Component {
           <Form.Label>Descrizione</Form.Label>
           <Form.Control as="textarea" rows="10" defaultValue={this.props.defaultdescription} />
         </Form.Group>
-        <Button variant="outline-warning" type="submit">
-          Ok!
+        <Button variant="warning" type="submit">
+          Invia!
         </Button>
       </Form>
     );

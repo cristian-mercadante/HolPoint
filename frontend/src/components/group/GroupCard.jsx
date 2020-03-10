@@ -1,53 +1,11 @@
 import React, { Component, Fragment } from "react";
 import { Card } from "react-bootstrap";
-
-import axios from "axios";
-import { userBasicAPI } from "../../server";
 import { ProfileBadge } from "../misc";
 import { LinkContainer } from "react-router-bootstrap";
 
 import "./style.css";
 
 class GroupCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      creatorBaseInfo: {},
-      profilesBaseInfo: []
-    };
-  }
-
-  async getUserBaseInfo(id) {
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
-    };
-    return axios
-      .get(`${userBasicAPI}${id}`, headers)
-      .then(res => {
-        return res.data;
-      })
-      .catch(error => {
-        console.log(error);
-        return error;
-      });
-  }
-
-  componentDidMount() {
-    this.getUserBaseInfo(this.props.creator).then(data => {
-      this.setState({ creatorBaseInfo: data });
-    });
-
-    this.props.profiles.forEach(profile =>
-      this.getUserBaseInfo(profile).then(data => {
-        this.setState({ profilesBaseInfo: [...this.state.profilesBaseInfo, data] });
-      })
-    );
-  }
-
   render() {
     return (
       <Fragment>
@@ -58,12 +16,12 @@ class GroupCard extends Component {
             </Card.Header>
             <Card.Body>
               <h6>Partecipanti</h6>
-              {this.state.profilesBaseInfo.map(profile => (
-                <ProfileBadge key={`${this.props.id}_${profile.id}`} variant="primary" username={profile.username} />
+              {this.props.profiles.map(profile => (
+                <ProfileBadge key={`${this.props.id}_${profile.id}`} variant="primary" profile={profile} />
               ))}
             </Card.Body>
             <Card.Footer>
-              Creato da {this.state.creatorBaseInfo.username} il {this.props.date_creation}
+              Creato da <ProfileBadge variant="warning" profile={this.props.creator} /> il {this.props.date_creation}
             </Card.Footer>
           </Card>
         </LinkContainer>

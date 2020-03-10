@@ -6,11 +6,11 @@ export default class AddComment extends Component {
   render() {
     return (
       <div className="comment">
-        <InputGroup classname="input-group-prepend">
+        <InputGroup className="input-group-prepend">
           <Button variant="success" onClick={() => this.props.addComment(document.getElementById("commentText").value)}>
             Commenta
           </Button>
-          <textarea id="commentText" class="form-control" rows="3" />
+          <textarea id="commentText" className="form-control" rows="3" />
         </InputGroup>
       </div>
     );

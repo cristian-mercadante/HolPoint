@@ -10,9 +10,6 @@ export const REMOVE_ALERT = "REMOVE_ALERT";
 export const REMOVE_ALL_ALERTS = "REMOVE_ALL_ALERTS";
 export const ERROR = "ERROR";
 
-// profile
-export const GET_PROFILE = "GET_PROFILE";
-
 // groups
 export const GET_GROUP = "GET_GROUP";
 export const POST_GROUP = "POST_GROUP";

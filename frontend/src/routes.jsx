@@ -6,8 +6,6 @@ import requireAuth from "./requireAuth";
 import HomePage from "./containers/HomePage";
 import LandingPage from "./containers/LandingPage";
 import Profile from "./containers/Profile";
-import GroupCreate from "./containers/GroupCreate";
-import IdeaCreate from "./containers/IdeaCreate";
 import GroupDetail from "./containers/GroupDetail";
 import Settings from "./containers/Settings";
 
@@ -42,9 +40,7 @@ const BaseRouter = props => (
       </Route>
       <Route exact path="/home" component={requireAuth(HomePage)} />
       <Route exact path="/profile/:username" component={Profile} />
-      <Route exact path="/group/create" component={requireAuth(GroupCreate)} />
       <Route exact path="/group/:id" component={requireAuth(GroupDetail)} />
-      <Route exact path="/idea/create" component={requireAuth(IdeaCreate)} />
       <Route exact path="/settings" component={requireAuth(Settings)} />
       <Route path="*">{"404 not found"}</Route>
     </Switch>

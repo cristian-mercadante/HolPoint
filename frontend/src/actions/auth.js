@@ -2,7 +2,6 @@ import * as actionTypes from "./types";
 import axios from "axios";
 import { loginURL, signupURL } from "../server";
 import * as getCurrentUserActions from "./currentUser";
-import * as groupActions from "./group";
 import * as alertActions from "./alerts";
 
 export const authStart = () => {
@@ -131,6 +130,5 @@ export const authLogout = () => {
   return dispatch => {
     dispatch(logout());
     dispatch(getCurrentUserActions.getCurrentUserLogout());
-    dispatch(groupActions.clearGroup());
   };
 };

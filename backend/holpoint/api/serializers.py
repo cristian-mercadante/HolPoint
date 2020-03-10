@@ -8,6 +8,24 @@ class ProfileRelatedField(serializers.RelatedField):
     def get_queryset(self):
         return Profile.objects.all()
 
+    def to_internal_value(self, data):
+        try:
+            try:
+                profile_id = data
+                return Profile.objects.get(id=profile_id)
+            except KeyError:
+                raise serializers.ValidationError(
+                    'id is a required field.'
+                )
+            except ValueError:
+                raise serializers.ValidationError(
+                    'id must be an integer.'
+                )
+        except Profile.DoesNotExist:
+            raise serializers.ValidationError(
+                'Obj does not exist.'
+            )
+
     def to_representation(self, value):
         p = Profile.objects.filter(pk=value.pk).first()
         first_name = p.user.first_name
@@ -49,8 +67,8 @@ class GroupSerializer(serializers.ModelSerializer):
     description = serializers.CharField(required=False)
     date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
     is_active = serializers.BooleanField(default=True, read_only=True)
-    creator = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
-    profiles = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all(), many=True, required=False)
+    creator = ProfileRelatedField(read_only=True, required=False)
+    profiles = ProfileRelatedField(queryset=Profile.objects.all(), many=True, required=False)
 
     class Meta:
         model = Group

@@ -83,7 +83,9 @@ class CommentSection extends Component {
   renderComments = () => {
     let buffer = [];
     if (this.state.comments) {
-      this.state.comments.forEach(comment => buffer.push(<Comment {...comment} deleteComment={this.deleteComment} />));
+      this.state.comments.forEach(comment =>
+        buffer.push(<Comment {...comment} key={comment.id} deleteComment={this.deleteComment} />)
+      );
     }
     return buffer;
   };
@@ -94,7 +96,7 @@ class CommentSection extends Component {
         <h3>Commenti</h3>
         <AddComment addComment={this.addComment} />
         {this.state.loading ? (
-          <ProgressBar striped variant="success" now={100} animated />
+          <ProgressBar striped variant="info" now={100} animated />
         ) : (
           <div>{this.renderComments()}</div>
         )}

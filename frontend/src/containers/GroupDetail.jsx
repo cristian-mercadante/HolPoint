@@ -1,45 +1,53 @@
 import React, { Component } from "react";
 import { Button, ProgressBar, Container } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import Panel from "./Panel";
 
+import axios from "axios";
+import { groupsAPI } from "../server";
 import { connect } from "react-redux";
-import * as groupActions from "../actions/group";
+import * as alertActions from "../actions/alerts";
 
 class GroupDetail extends Component {
   state = {
-    name: "empty"
+    loading: true,
+    group: {}
+  };
+
+  getGroup = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    const id = this.props.match.params.id;
+    return axios
+      .get(`${groupsAPI}${id}/`, headers)
+      .then(res => {
+        this.setState({ loading: false, group: res.data });
+      })
+      .catch(error => {
+        this.props.error(error);
+      });
   };
 
   componentDidMount() {
-    const id = this.props.match.params.id;
-    this.props.getGroup(id);
-    // LASCIARE (x.id == id) ANZICHÈ (x.id === id)
-    // eslint-disable-next-line
-    const group = this.props.group.groups.find(x => x.id == id);
-    this.setState({ ...group });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.group.groups !== this.props.group.groups) {
-      const id = this.props.match.params.id;
-      // LASCIARE (x.id == id) ANZICHÈ (x.id === id)
-      // eslint-disable-next-line
-      const group = this.props.group.groups.find(x => x.id == id);
-      this.setState({ ...group });
-    }
+    this.getGroup();
   }
 
   render() {
     return (
       <Container>
-        {this.props.group.loading ? (
+        {this.state.loading ? (
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
           <Panel
-            title={this.state.name}
+            title={this.state.group.name}
             badge={
-              <LinkContainer to={`/group/${this.state.id}/edit`}>
+              <LinkContainer to={`/group/${this.state.group.id}/edit`}>
                 <Button variant="warning">Modifica</Button>
               </LinkContainer>
             }
@@ -50,16 +58,10 @@ class GroupDetail extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    group: state.group
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
-    getGroup: id => dispatch(groupActions.getGroup(id))
+    error: error => dispatch(alertActions.error(error))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupDetail);
+export default withRouter(connect(null, mapDispatchToProps)(GroupDetail));

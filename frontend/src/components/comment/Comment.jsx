@@ -21,9 +21,9 @@ class Comment extends Component {
           ""
         )}
         <h5>
-          <ProfileBadge username={this.props.creator.username} variant="warning" />
+          <ProfileBadge profile={this.props.creator} variant="warning" />
         </h5>
-        <div>{this.props.text}</div>
+        <div className="comment-text-with-newline">{this.props.text}</div>
         <div style={{ fontStyle: "italic", fontSize: "10pt" }}>{this.props.datetime}</div>
       </div>
     );

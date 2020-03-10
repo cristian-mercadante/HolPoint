@@ -23,7 +23,7 @@ export default class GroupCreateButton extends Component {
           onHide={this.showCreate}
           type="group-modal"
           header="Crea gruppo"
-          body={<GroupCreateForm onHide={() => this.showCreate()} />}
+          body={<GroupCreateForm onHide={this.showCreate} addGroup={this.props.addGroup} />}
         />
       </Fragment>
     );

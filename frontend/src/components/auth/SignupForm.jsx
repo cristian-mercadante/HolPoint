@@ -23,12 +23,6 @@ class SignupForm extends Component {
     });
   };
 
-  /*
-  componentWillUnmount() {
-    this.props.removeAllAlerts();
-  }
-  */
-
   render() {
     return (
       <AccessFormCard>
