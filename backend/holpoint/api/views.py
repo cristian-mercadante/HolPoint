@@ -32,8 +32,8 @@ class CurrentUserDetailView(RetrieveUpdateAPIView):
 
 
 class UserDetailView(RetrieveAPIView):
-    # same as CurrentUserDetailView, but without authentication
     lookup_field = 'username'
+    permission_classes = [IsAuthenticated, ]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

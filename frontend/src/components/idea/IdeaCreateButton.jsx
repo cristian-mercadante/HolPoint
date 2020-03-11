@@ -4,11 +4,9 @@ import CardModal from "../../containers/CardModal";
 import IdeaForm from "./IdeaForm";
 import { ideaAPI } from "../../server";
 import axios from "axios";
-import { withRouter } from "react-router-dom";
 
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
-import * as currentUserActions from "../../actions/currentUser";
 
 class IdeaCreateButton extends Component {
   state = {
@@ -41,10 +39,9 @@ class IdeaCreateButton extends Component {
         headers
       )
       .then(res => {
-        this.props.getCurrentUser();
+        this.props.addIdea(res.data);
         this.showCreate();
         this.props.removeAllAlerts();
-        this.props.history.push(`/profile/${this.props.currentUser.username}`);
       })
       .catch(error => {
         this.props.error(error);
@@ -52,7 +49,7 @@ class IdeaCreateButton extends Component {
   };
 
   render() {
-    return this.props.currentUsername === this.props.username ? (
+    return (
       <Fragment>
         <Button variant="info" onClick={this.showCreate}>
           Crea
@@ -65,24 +62,15 @@ class IdeaCreateButton extends Component {
           body={<IdeaForm onSubmit={this.handleSubmit} />}
         />
       </Fragment>
-    ) : (
-      ""
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    currentUser: state.currentUser
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
-    getCurrentUser: () => dispatch(currentUserActions.getCurrentUser()),
     error: error => dispatch(alertActions.error(error)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(IdeaCreateButton));
+export default connect(null, mapDispatchToProps)(IdeaCreateButton);

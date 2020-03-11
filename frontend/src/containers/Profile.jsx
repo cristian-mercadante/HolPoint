@@ -17,13 +17,41 @@ class Profile extends Component {
     profile: {}
   };
 
+  addIdea = idea => {
+    let profile = { ...this.state.profile };
+    profile.profile.ideas = [...profile.profile.ideas, idea];
+    this.setState({ profile: profile });
+  };
+
+  updateIdea = idea => {
+    let profile = { ...this.state.profile };
+    let ideas = [...this.state.profile.profile.ideas];
+    let index = ideas.findIndex(idea_ => {
+      // eslint-disable-next-line
+      return idea_.id == idea.id;
+    });
+    ideas[index] = idea;
+    profile.profile.ideas = ideas;
+    this.setState({ profile: profile });
+  };
+
+  removeIdea = ideaId => {
+    console.log(`removeIdea id ${ideaId} called`);
+    let profile = { ...this.state.profile };
+    profile.profile.ideas = profile.profile.ideas.filter(idea => {
+      // eslint-disable-next-line
+      return idea.id != ideaId;
+    });
+    this.setState({ profile: profile });
+  };
+
   getProfile = () => {
     this.setState({ loading: true });
-    //const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const headers = {
       headers: {
-        "Content-Type": "application/json"
-        //, Authorization: `Token ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
       }
     };
     axios
@@ -76,18 +104,19 @@ class Profile extends Component {
                   title="Idee"
                   component={
                     <IdeaCardManager
-                      ideas={
-                        this.props.currentUser.username === this.state.profile.username
-                          ? this.props.currentUser.profile.ideas
-                          : this.state.profile.profile.ideas
-                      }
+                      ideas={this.state.profile.profile.ideas}
+                      removeIdea={this.removeIdea}
+                      updateIdea={this.updateIdea}
                     />
                   }
                   badge={
-                    <IdeaCreateButton
-                      currentUsername={this.props.currentUser.username}
-                      username={this.props.match.params.username}
-                    />
+                    <Fragment>
+                      {this.props.currentUser.username === this.props.match.params.username ? (
+                        <IdeaCreateButton addIdea={this.addIdea} />
+                      ) : (
+                        ""
+                      )}
+                    </Fragment>
                   }
                 />
               </Col>

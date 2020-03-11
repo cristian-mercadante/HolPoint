@@ -7,7 +7,11 @@ class IdeaCardManager extends Component {
     let buffer = [];
     const ideas = this.props.ideas;
     if (ideas) {
-      ideas.forEach(i => buffer.push(<IdeaCard key={i.id} {...i} />));
+      ideas.forEach(i =>
+        buffer.push(
+          <IdeaCard key={i.id} {...i} removeIdea={this.props.removeIdea} updateIdea={this.props.updateIdea} />
+        )
+      );
     }
     return buffer;
   };
