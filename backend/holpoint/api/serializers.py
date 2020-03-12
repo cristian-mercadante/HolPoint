@@ -96,6 +96,9 @@ class GroupSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         profiles = [Profile.objects.filter(user=p.id).first() for p in validated_data.get("profiles")]
+        creator = instance.creator
+        if creator not in profiles:
+            profiles.append(creator)
         validated_data.pop("profiles")
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)

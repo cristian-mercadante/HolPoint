@@ -36,6 +36,10 @@ class GroupContent extends Component {
       } else {
         profiles = friends;
       }
+      // we should not display creator inside friend balls
+      // because he has the privileges to delete the group
+      // and no one else should
+      profiles = profiles.filter(profile => profile.id !== this.props.creator.id);
       this.setState({ profiles: profiles });
     }
   };
