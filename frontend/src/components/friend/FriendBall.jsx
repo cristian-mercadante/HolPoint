@@ -23,6 +23,10 @@ class FriendBall extends Component {
     fontSize: "15px"
   };
 
+  componentDidMount() {
+    this.setState({ selected: this.props.selected });
+  }
+
   onSelectClick = () => {
     const newState = !this.state.selected;
 

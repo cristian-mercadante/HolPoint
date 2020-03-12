@@ -13,7 +13,8 @@ import { IdeaCardManager } from "../components/idea";
 class GroupDetail extends Component {
   state = {
     loading: true,
-    group: {}
+    group: {},
+    selectedFriends: []
   };
 
   getGroup = () => {
@@ -28,11 +29,31 @@ class GroupDetail extends Component {
     axios
       .get(`${groupsAPI}${id}/`, headers)
       .then(res => {
-        this.setState({ loading: false, group: res.data });
+        let selectedFriends = [];
+        res.data.profiles.forEach(profile => selectedFriends.push(profile.id));
+        this.setState({ loading: false, group: res.data, selectedFriends: selectedFriends });
+        return res;
       })
       .catch(error => {
         this.props.error(error);
       });
+  };
+
+  deselectFriend = id => {
+    var array = [...this.state.selectedFriends];
+    var index = array.indexOf(id);
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({ selectedFriends: array });
+    }
+  };
+
+  selectFriend = id => {
+    if (this.state.selectedFriends.includes(id)) {
+      this.deselectFriend(id);
+    } else {
+      this.setState({ selectedFriends: [...this.state.selectedFriends, id] });
+    }
   };
 
   componentDidMount() {
@@ -46,7 +67,16 @@ class GroupDetail extends Component {
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
           <Fragment>
-            <Panel title={this.state.group.name} component={<GroupContent {...this.state.group} />} />
+            <Panel
+              title={this.state.group.name}
+              component={
+                <GroupContent
+                  {...this.state.group}
+                  selectFriend={this.selectFriend}
+                  selectedFriends={this.state.selectedFriends}
+                />
+              }
+            />
             <Panel title="Idee proposte" component={<IdeaCardManager ideas={this.state.group.ideas} />} />
           </Fragment>
         )}

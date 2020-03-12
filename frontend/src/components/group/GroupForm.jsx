@@ -17,8 +17,10 @@ class GroupForm extends Component {
         </Form.Group>
         <h3>Aggiungi amici</h3>
         <FriendBallsManagerSelect
-          friends={this.props.currentUser.profile.friends}
+          //friends={this.props.currentUser.profile.friends}
+          friends={this.props.profiles}
           selectFriend={this.props.selectFriend}
+          selectedFriends={this.props.selectedFriends}
         />
         <Button type="submit">Invia!</Button>
       </Form>

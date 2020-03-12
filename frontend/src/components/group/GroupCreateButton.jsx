@@ -94,7 +94,14 @@ class GroupCreateButton extends Component {
           onHide={this.showCreate}
           type="group-modal"
           header="Crea gruppo"
-          body={<GroupForm onSubmit={this.handleSubmit} selectFriend={this.selectFriend} />}
+          body={
+            <GroupForm
+              onSubmit={this.handleSubmit}
+              selectFriend={this.selectFriend}
+              selectedFriends={this.state.selectedFriends}
+              profiles={this.props.currentUser.profile.friends}
+            />
+          }
         />
       </Fragment>
     );

@@ -83,26 +83,29 @@ class GroupContent extends Component {
         {this.state.editing ? (
           <GroupForm
             onSubmit={this.onSubmit}
-            defaulttitle={this.props.title}
+            defaultname={this.props.name}
             defaultdescription={this.props.description}
+            profiles={this.props.profiles}
+            selectFriend={this.props.selectFriend}
+            selectedFriends={this.props.selectedFriends}
           />
         ) : (
           <Fragment>
             <div className="text-with-newline">{this.props.description}</div>
           </Fragment>
         )}
-        {this.isCreator() ? (
-          <ButtonGroup className="float-right">
-            <Button variant="success" onClick={this.edit}>
-              {this.state.editing ? "Annulla" : "Modifica"}
-            </Button>
+        <ButtonGroup className="float-right">
+          <Button variant="success" onClick={this.edit}>
+            {this.state.editing ? "Annulla" : "Modifica"}
+          </Button>
+          {this.isCreator() ? (
             <Button variant="danger" onClick={this.showModalDelete}>
               Elimina
             </Button>
-          </ButtonGroup>
-        ) : (
-          ""
-        )}
+          ) : (
+            ""
+          )}
+        </ButtonGroup>
 
         <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.delete} />
       </Fragment>
