@@ -21,7 +21,8 @@ class GroupCard extends Component {
               ))}
             </Card.Body>
             <Card.Footer>
-              Creato da <ProfileBadge variant="warning" profile={this.props.creator} /> il {this.props.date_creation}
+              <ProfileBadge variant="warning" profile={this.props.creator} />
+              <span className="float-right">{this.props.date_creation}</span>
             </Card.Footer>
           </Card>
         </LinkContainer>

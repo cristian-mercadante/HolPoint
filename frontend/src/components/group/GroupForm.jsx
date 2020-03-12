@@ -9,11 +9,11 @@ class GroupForm extends Component {
       <Form onSubmit={this.props.onSubmit}>
         <Form.Group controlId="name">
           <Form.Label>Nome gruppo</Form.Label>
-          <Form.Control type="text" placeholder="Super-mega-vacanza" />
+          <Form.Control type="text" defaultValue={this.props.defaultname} />
         </Form.Group>
         <Form.Group controlId="description">
           <Form.Label>Descrizione</Form.Label>
-          <Form.Control as="textarea" rows="5" />
+          <Form.Control as="textarea" rows="10" defaultValue={this.props.defaultdescription} />
         </Form.Group>
         <h3>Aggiungi amici</h3>
         <FriendBallsManagerSelect

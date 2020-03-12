@@ -5,14 +5,14 @@ import axios from "axios";
 import { groupsAPI } from "../../server";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
-import * as currentUserActions from "../../actions/currentUser";
 import GroupForm from "./GroupForm";
 import ConfirmModal from "../../containers/ConfirmModal";
 
 class GroupContent extends Component {
   state = {
     editing: false,
-    showModalDelete: false
+    showModalDelete: false,
+    profiles: []
   };
 
   showModalDelete = () => {
@@ -22,6 +22,33 @@ class GroupContent extends Component {
   edit = () => {
     this.setState({ editing: !this.state.editing });
   };
+
+  addProfileToListNoDuplicates = () => {
+    if (!this.props.currentUser.loading) {
+      let friends = this.props.currentUser.profile.friends;
+      let profiles = [];
+      if (friends) {
+        const friendIds = friends.map(friend => friend.id);
+        const notFriends = this.props.profiles.filter(profile => {
+          return !friendIds.includes(profile.id);
+        });
+        profiles = friends.concat(notFriends);
+      } else {
+        profiles = friends;
+      }
+      this.setState({ profiles: profiles });
+    }
+  };
+
+  componentDidMount() {
+    this.addProfileToListNoDuplicates();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.currentUser.id !== this.props.currentUser.id) {
+      this.addProfileToListNoDuplicates();
+    }
+  }
 
   delete = () => {
     const token = localStorage.getItem("token");
@@ -43,11 +70,14 @@ class GroupContent extends Component {
       });
   };
 
-  onSubmit = e => {
-    e.preventDefault();
-    // const form = e.currentTarget;
-    // const title = form.title.value;
-    // const description = form.description.value;
+  isCurrentUserAPartecipant = group => {
+    let found = group.profiles.find(profile => {
+      return profile.id === this.props.currentUser.id;
+    });
+    return Boolean(found);
+  };
+
+  putGroup = (name, description, profiles) => {
     const token = localStorage.getItem("token");
     const headers = {
       headers: {
@@ -55,22 +85,37 @@ class GroupContent extends Component {
         Authorization: `Token ${token}`
       }
     };
-
     axios
       .put(
         `${groupsAPI}${this.props.id}/`,
         {
-          //TODO:
+          name,
+          description,
+          profiles
         },
         headers
       )
       .then(res => {
-        //this.props.getCurrentUser();
+        this.props.updateGroup(res.data);
         this.setState({ editing: false });
+        // checking if a user deleted himself from the group
+        if (!this.isCurrentUserAPartecipant(res.data)) {
+          this.props.addAlert(`Non fai più parte del gruppo ${this.props.name}.`, "warning");
+          this.props.history.push("/home");
+        }
       })
       .catch(error => {
         this.props.error(error);
       });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const name = form.name.value;
+    const description = form.description.value;
+    const profiles = this.props.selectedFriends;
+    this.putGroup(name, description, profiles);
   };
 
   isCreator = () => {
@@ -85,7 +130,7 @@ class GroupContent extends Component {
             onSubmit={this.onSubmit}
             defaultname={this.props.name}
             defaultdescription={this.props.description}
-            profiles={this.props.profiles}
+            profiles={this.state.profiles} // concatenation of user friends and users in group (not friends)
             selectFriend={this.props.selectFriend}
             selectedFriends={this.props.selectedFriends}
           />
@@ -121,8 +166,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getCurrentUser: () => dispatch(currentUserActions.getCurrentUser()),
-    error: error => dispatch(alertActions.error(error))
+    error: error => dispatch(alertActions.error(error)),
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
   };
 };
 

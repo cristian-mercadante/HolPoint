@@ -94,6 +94,15 @@ class GroupSerializer(serializers.ModelSerializer):
         group.profiles.set(profiles)
         return group
 
+    def update(self, instance, validated_data):
+        profiles = [Profile.objects.filter(user=p.id).first() for p in validated_data.get("profiles")]
+        validated_data.pop("profiles")
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get('description', instance.description)
+        instance.profiles.set(profiles)
+        instance.save()
+        return instance
+
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)

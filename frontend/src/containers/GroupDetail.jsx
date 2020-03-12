@@ -17,6 +17,10 @@ class GroupDetail extends Component {
     selectedFriends: []
   };
 
+  updateGroup = group => {
+    this.setState({ group: group });
+  };
+
   getGroup = () => {
     const token = localStorage.getItem("token");
     const headers = {
@@ -32,7 +36,6 @@ class GroupDetail extends Component {
         let selectedFriends = [];
         res.data.profiles.forEach(profile => selectedFriends.push(profile.id));
         this.setState({ loading: false, group: res.data, selectedFriends: selectedFriends });
-        return res;
       })
       .catch(error => {
         this.props.error(error);
@@ -74,6 +77,7 @@ class GroupDetail extends Component {
                   {...this.state.group}
                   selectFriend={this.selectFriend}
                   selectedFriends={this.state.selectedFriends}
+                  updateGroup={this.updateGroup}
                 />
               }
             />
