@@ -35,6 +35,33 @@ class ProfileRelatedField(serializers.RelatedField):
         return {'id': value.pk, 'first_name': first_name, 'last_name': last_name, 'username': username, 'email': email}
 
 
+class IdeaInGroupSerializer(serializers.ModelSerializer):
+    date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
+    creator = ProfileRelatedField(read_only=True, required=False)
+
+    class Meta:
+        model = Idea
+        fields = '__all__'
+
+    def to_internal_value(self, data):
+        try:
+            try:
+                idea_id = data
+                return Idea.objects.get(id=idea_id)
+            except KeyError:
+                raise serializers.ValidationError(
+                    'id is a required field.'
+                )
+            except ValueError:
+                raise serializers.ValidationError(
+                    'id must be an integer.'
+                )
+        except Idea.DoesNotExist:
+            raise serializers.ValidationError(
+                'Obj does not exist.'
+            )
+
+
 class IdeaSerializer(serializers.ModelSerializer):
     date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
     creator = ProfileRelatedField(read_only=True, required=False)
@@ -78,7 +105,7 @@ class GroupSerializer(serializers.ModelSerializer):
     creator = ProfileRelatedField(read_only=True, required=False)
     profiles = ProfileRelatedField(queryset=Profile.objects.all(), many=True, required=False)
     prefered_idea = serializers.PrimaryKeyRelatedField(queryset=Idea.objects.all(), required=False)
-    ideas = IdeaSerializer(many=True, read_only=True)
+    ideas = IdeaInGroupSerializer(many=True, required=False)
     group_to_idea = VoteIdeaInGroupSerializer(many=True, required=False)
 
     class Meta:
@@ -96,7 +123,12 @@ class GroupSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         profiles = [Profile.objects.filter(user=p.id).first() for p in validated_data.get("profiles")]
+        if validated_data.get("ideas") or len(validated_data.get("ideas")) == 0:
+            ideaIds = [i.id for i in validated_data.get("ideas")]
+            ideas = [Idea.objects.filter(pk=i).first() for i in ideaIds]
+            instance.ideas.set(ideas)
         creator = instance.creator
+        # creator must not be removed from profiles
         if creator not in profiles:
             profiles.append(creator)
         validated_data.pop("profiles")

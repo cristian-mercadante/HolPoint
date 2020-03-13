@@ -1,10 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
-import { withRouter } from "react-router-dom";
-import axios from "axios";
-import { groupsAPI } from "../../server";
 import { connect } from "react-redux";
-import * as alertActions from "../../actions/alerts";
 import GroupForm from "./GroupForm";
 import ConfirmModal from "../../containers/ConfirmModal";
 
@@ -54,63 +50,10 @@ class GroupContent extends Component {
     }
   }
 
-  delete = () => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
-    };
-    axios
-      .delete(`${groupsAPI}${this.props.id}/`, headers)
-      .then(res => {
-        this.setState({ editing: false });
-        this.showModalDelete();
-        this.props.history.push("/home");
-      })
-      .catch(error => {
-        this.props.error(error);
-      });
-  };
-
-  isCurrentUserAPartecipant = group => {
-    let found = group.profiles.find(profile => {
-      return profile.id === this.props.currentUser.id;
-    });
-    return Boolean(found);
-  };
-
-  putGroup = (name, description, profiles) => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
-    };
-    axios
-      .put(
-        `${groupsAPI}${this.props.id}/`,
-        {
-          name,
-          description,
-          profiles
-        },
-        headers
-      )
-      .then(res => {
-        this.props.updateGroup(res.data);
-        this.setState({ editing: false });
-        // checking if a user deleted himself from the group
-        if (!this.isCurrentUserAPartecipant(res.data)) {
-          this.props.addAlert(`Non fai più parte del gruppo ${this.props.name}.`, "warning");
-          this.props.history.push("/home");
-        }
-      })
-      .catch(error => {
-        this.props.error(error);
-      });
+  onSubmitDelete = () => {
+    this.props.deleteGroup();
+    this.setState({ editing: false });
+    this.showModalDelete();
   };
 
   onSubmit = e => {
@@ -119,7 +62,8 @@ class GroupContent extends Component {
     const name = form.name.value;
     const description = form.description.value;
     const profiles = this.props.selectedFriends;
-    this.putGroup(name, description, profiles);
+    this.props.putGroup(name, description, profiles);
+    this.setState({ editing: false });
   };
 
   isCreator = () => {
@@ -156,7 +100,7 @@ class GroupContent extends Component {
           )}
         </ButtonGroup>
 
-        <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.delete} />
+        <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.onSubmitDelete} />
       </Fragment>
     );
   }
@@ -168,11 +112,4 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    error: error => dispatch(alertActions.error(error)),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
-  };
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupContent));
+export default connect(mapStateToProps)(GroupContent);

@@ -17,9 +17,9 @@ class GroupDetail extends Component {
     selectedFriends: []
   };
 
-  updateGroup = group => {
-    this.setState({ group: group });
-  };
+  componentDidMount() {
+    this.getGroup();
+  }
 
   getGroup = () => {
     const token = localStorage.getItem("token");
@@ -36,6 +36,55 @@ class GroupDetail extends Component {
         let selectedFriends = [];
         res.data.profiles.forEach(profile => selectedFriends.push(profile.id));
         this.setState({ loading: false, group: res.data, selectedFriends: selectedFriends });
+      })
+      .catch(error => {
+        this.props.error(error);
+      });
+  };
+
+  isCurrentUserAPartecipant = group => {
+    if (group.profiles) {
+      return Boolean(group.profiles.find(profile => profile.id === this.props.currentUser.id));
+    }
+  };
+
+  putGroup = (name, description, profiles, ideas = []) => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    const data = { name, description, profiles };
+    if (ideas.length === 0) data.ideas = this.state.group.ideas.map(idea => idea.id); // fixed deleting ideas
+    axios
+      .put(`${groupsAPI}${this.state.group.id}/`, data, headers)
+      .then(res => {
+        this.setState({ group: res.data });
+        // checking if a user deleted himself from the group
+        if (!this.isCurrentUserAPartecipant(res.data)) {
+          this.props.addAlert(`Non fai più parte del gruppo ${this.props.name}.`, "warning");
+          this.props.history.push("/home");
+        }
+      })
+      .catch(error => {
+        this.props.error(error);
+      });
+  };
+
+  deleteGroup = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    axios
+      .delete(`${groupsAPI}${this.state.group.id}/`, headers)
+      .then(res => {
+        this.props.history.push("/home");
       })
       .catch(error => {
         this.props.error(error);
@@ -59,9 +108,23 @@ class GroupDetail extends Component {
     }
   };
 
-  componentDidMount() {
-    this.getGroup();
-  }
+  removeIdeaFromGroup = ideaId => {
+    let group = this.state.group;
+    let { name, description, profiles } = group;
+    if (profiles) profiles = profiles.map(profile => profile.id);
+    group.ideas = group.ideas.map(idea => idea.id);
+    group.ideas = group.ideas.filter(idea => idea !== ideaId);
+    this.putGroup(name, description, profiles, group.ideas);
+  };
+
+  updateIdeaInState = idea => {
+    let group = this.state.group;
+    let ideas = [...this.state.group.ideas];
+    let index = ideas.findIndex(idea_ => idea_.id === idea.id);
+    ideas[index] = idea;
+    group.ideas = ideas;
+    this.setState({ group: group });
+  };
 
   render() {
     return (
@@ -77,11 +140,21 @@ class GroupDetail extends Component {
                   {...this.state.group}
                   selectFriend={this.selectFriend}
                   selectedFriends={this.state.selectedFriends}
-                  updateGroup={this.updateGroup}
+                  putGroup={this.putGroup}
+                  deleteGroup={this.deleteGroup}
                 />
               }
             />
-            <Panel title="Idee proposte" component={<IdeaCardManager ideas={this.state.group.ideas} />} />
+            <Panel
+              title="Idee proposte"
+              component={
+                <IdeaCardManager
+                  ideas={this.state.group.ideas}
+                  deleteIdea={this.removeIdeaFromGroup}
+                  updateIdeaInState={this.updateIdeaInState}
+                />
+              }
+            />
           </Fragment>
         )}
       </Container>
@@ -97,7 +170,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    error: error => dispatch(alertActions.error(error))
+    error: error => dispatch(alertActions.error(error)),
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
   };
 };
 

@@ -4,14 +4,10 @@ import CommentSection from "../comment/CommentSection";
 import { IdeaForm } from "../idea";
 
 class IdeaContent extends Component {
-  isCurrentUser = () => {
-    return this.props.currentUsername === this.props.username;
-  };
-
   render() {
     return (
       <Fragment>
-        {this.isCurrentUser() ? (
+        {this.props.doesCurrentUserOwnThisIdea() ? (
           <ButtonGroup className="float-right">
             <Button variant="success" onClick={this.props.showEditFormInModal}>
               {this.props.editing ? "Annulla" : "Modifica"}
@@ -22,7 +18,7 @@ class IdeaContent extends Component {
         )}
         {this.props.editing ? (
           <IdeaForm
-            onSubmit={this.props.update}
+            onSubmit={this.props.putIdea}
             defaulttitle={this.props.title}
             defaultdescription={this.props.description}
           />

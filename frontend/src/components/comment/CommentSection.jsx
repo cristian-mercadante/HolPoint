@@ -70,8 +70,7 @@ class CommentSection extends Component {
       .then(res => {
         this.setState({
           comments: this.state.comments.filter(comment => {
-            // eslint-disable-next-line
-            return comment.id != commentId;
+            return comment.id !== commentId;
           })
         });
       })

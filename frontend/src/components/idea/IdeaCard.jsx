@@ -14,6 +14,7 @@ import * as alertActions from "../../actions/alerts";
 
 import axios from "axios";
 import { ideaAPI } from "../../server";
+import { ProfileBadge } from "../misc";
 
 class IdeaCard extends Component {
   state = {
@@ -34,27 +35,9 @@ class IdeaCard extends Component {
     this.setState({ editing: !this.state.editing });
   };
 
-  delete = () => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
-    };
-    axios
-      .delete(`${ideaAPI}${this.props.id}/`, headers)
-      .then(res => {
-        this.props.removeIdea(this.props.id);
-        this.setState({ editing: false });
-        this.showModalDelete();
-      })
-      .catch(error => {
-        this.props.error(error);
-      });
-  };
-
-  update = e => {
+  // I leave this method in IdeaCard because
+  // I need to call this method from everywhere
+  putIdea = e => {
     e.preventDefault();
     const form = e.currentTarget;
     const title = form.title.value;
@@ -77,12 +60,23 @@ class IdeaCard extends Component {
         headers
       )
       .then(res => {
-        this.props.updateIdea(res.data);
+        this.props.updateIdeaInState(res.data);
         this.setState({ editing: false });
       })
       .catch(error => {
         this.props.error(error);
       });
+  };
+
+  doesCurrentUserOwnThisIdea = () => {
+    if (this.props.currentUser.profile.ideas)
+      return Boolean(this.props.currentUser.profile.ideas.find(idea => idea.id === this.props.id));
+  };
+
+  handleDelete = () => {
+    this.props.deleteIdea(this.props.id);
+    this.setState({ editing: false });
+    this.showModalDelete();
   };
 
   render() {
@@ -92,7 +86,7 @@ class IdeaCard extends Component {
           <Card.Header>
             <h4>
               {this.props.title}
-              {this.props.currentUsername === this.props.match.params.username ? (
+              {this.doesCurrentUserOwnThisIdea() ? (
                 <Button className="float-right" variant="danger" onClick={this.showModalDelete}>
                   <FaTrashAlt />
                 </Button>
@@ -104,7 +98,10 @@ class IdeaCard extends Component {
           <Card.Body className="card-body" onClick={this.showUpdate}>
             {this.props.description}
           </Card.Body>
-          <Card.Footer>{this.props.date_creation}</Card.Footer>
+          <Card.Footer>
+            <ProfileBadge profile={this.props.creator} variant="warning" />
+            <span className="float-right">{this.props.date_creation}</span>
+          </Card.Footer>
         </Card>
         <CardModal
           show={this.state.showUpdate}
@@ -114,9 +111,8 @@ class IdeaCard extends Component {
           body={
             <IdeaContent
               {...this.props}
-              currentUsername={this.props.currentUsername}
-              username={this.props.match.params.username}
-              update={this.update}
+              doesCurrentUserOwnThisIdea={this.doesCurrentUserOwnThisIdea}
+              putIdea={this.putIdea}
               showEditFormInModal={this.showEditFormInModal}
               editing={this.state.editing}
             />
@@ -128,7 +124,7 @@ class IdeaCard extends Component {
             </Fragment>
           }
         />
-        <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.delete} />
+        <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.handleDelete} />
       </Fragment>
     );
   }
@@ -136,7 +132,7 @@ class IdeaCard extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentUsername: state.currentUser.username
+    currentUser: state.currentUser
   };
 };
 

@@ -24,7 +24,7 @@ class Comment extends Component {
           <ProfileBadge profile={this.props.creator} variant="warning" />
         </h5>
         <div className="text-with-newline">{this.props.text}</div>
-        <div style={{ fontStyle: "italic", fontSize: "10pt" }}>{this.props.datetime}</div>
+        <div style={{ fontStyle: "italic", fontSize: "10pt", textAlign: "right" }}>{this.props.datetime}</div>
       </div>
     );
   }

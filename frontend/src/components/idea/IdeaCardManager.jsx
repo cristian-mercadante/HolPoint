@@ -9,7 +9,12 @@ class IdeaCardManager extends Component {
     if (ideas) {
       ideas.forEach(i =>
         buffer.push(
-          <IdeaCard key={i.id} {...i} removeIdea={this.props.removeIdea} updateIdea={this.props.updateIdea} />
+          <IdeaCard
+            key={i.id}
+            {...i}
+            deleteIdea={this.props.deleteIdea}
+            updateIdeaInState={this.props.updateIdeaInState}
+          />
         )
       );
     }

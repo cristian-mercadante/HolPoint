@@ -7,7 +7,7 @@ import { UserProfileManager } from "../components/profile";
 import { IdeaCardManager, IdeaCreateButton } from "../components/idea";
 import * as alertActions from "../actions/alerts";
 import axios from "axios";
-import { profileAPI } from "../server";
+import { profileAPI, ideaAPI } from "../server";
 
 import { connect } from "react-redux";
 
@@ -23,7 +23,7 @@ class Profile extends Component {
     this.setState({ profile: profile });
   };
 
-  updateIdea = idea => {
+  updateIdeaInState = idea => {
     let profile = { ...this.state.profile };
     let ideas = [...this.state.profile.profile.ideas];
     let index = ideas.findIndex(idea_ => {
@@ -35,12 +35,28 @@ class Profile extends Component {
     this.setState({ profile: profile });
   };
 
-  removeIdea = ideaId => {
-    console.log(`removeIdea id ${ideaId} called`);
+  deleteIdea = ideaId => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    axios
+      .delete(`${ideaAPI}${ideaId}/`, headers)
+      .then(res => {
+        this.removeIdeaFromState(ideaId);
+      })
+      .catch(error => {
+        this.props.error(error);
+      });
+  };
+
+  removeIdeaFromState = ideaId => {
     let profile = { ...this.state.profile };
     profile.profile.ideas = profile.profile.ideas.filter(idea => {
-      // eslint-disable-next-line
-      return idea.id != ideaId;
+      return idea.id !== ideaId;
     });
     this.setState({ profile: profile });
   };
@@ -105,8 +121,8 @@ class Profile extends Component {
                   component={
                     <IdeaCardManager
                       ideas={this.state.profile.profile.ideas}
-                      removeIdea={this.removeIdea}
-                      updateIdea={this.updateIdea}
+                      deleteIdea={this.deleteIdea}
+                      updateIdeaInState={this.updateIdeaInState}
                     />
                   }
                   badge={
