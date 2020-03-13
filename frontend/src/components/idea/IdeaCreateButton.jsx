@@ -39,7 +39,7 @@ class IdeaCreateButton extends Component {
         headers
       )
       .then(res => {
-        this.props.addIdea(res.data);
+        this.props.addIdeaToState(res.data);
         this.showCreate();
         this.props.removeAllAlerts();
       })

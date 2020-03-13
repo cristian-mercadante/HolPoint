@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { ProgressBar, Container } from "react-bootstrap";
+import { ProgressBar, Container, ButtonGroup } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import Panel from "./Panel";
 
@@ -8,7 +8,7 @@ import { groupsAPI } from "../server";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
 import { GroupContent } from "../components/group";
-import { IdeaCardManager } from "../components/idea";
+import { IdeaCardManager, IdeaCreateButton, IdeaAddToGroupButton } from "../components/idea";
 
 class GroupDetail extends Component {
   state = {
@@ -56,8 +56,12 @@ class GroupDetail extends Component {
         Authorization: `Token ${token}`
       }
     };
-    const data = { name, description, profiles };
-    if (ideas.length === 0) data.ideas = this.state.group.ideas.map(idea => idea.id); // fixed deleting ideas
+    const data = {
+      name,
+      description,
+      profiles,
+      ideas: ideas.length === 0 ? this.state.group.ideas.map(idea => idea.id) : ideas // fixed deleting ideas
+    };
     axios
       .put(`${groupsAPI}${this.state.group.id}/`, data, headers)
       .then(res => {
@@ -108,13 +112,18 @@ class GroupDetail extends Component {
     }
   };
 
-  removeIdeaFromGroup = ideaId => {
+  getCleanDataForPutGroup = () => {
     let group = this.state.group;
-    let { name, description, profiles } = group;
-    if (profiles) profiles = profiles.map(profile => profile.id);
-    group.ideas = group.ideas.map(idea => idea.id);
+    if (group.profiles) group.profiles = group.profiles.map(profile => profile.id);
+    if (group.ideas) group.ideas = group.ideas.map(idea => idea.id);
+    return group;
+  };
+
+  removeIdeaFromGroup = ideaId => {
+    let group = this.getCleanDataForPutGroup();
     group.ideas = group.ideas.filter(idea => idea !== ideaId);
-    this.putGroup(name, description, profiles, group.ideas);
+    const { name, description, profiles, ideas } = group;
+    this.putGroup(name, description, profiles, ideas);
   };
 
   updateIdeaInState = idea => {
@@ -124,6 +133,27 @@ class GroupDetail extends Component {
     ideas[index] = idea;
     group.ideas = ideas;
     this.setState({ group: group });
+  };
+
+  addIdeaToState = idea => {
+    let group = this.state.group;
+    group.ideas = [...this.state.group.ideas, idea];
+    this.setState({ group: group });
+
+    // add to group
+    let group_ = this.getCleanDataForPutGroup();
+    group_.ideas = [...group_.ideas, idea.id];
+    const { name, description, profiles, ideas } = group;
+    this.putGroup(name, description, profiles, ideas);
+  };
+
+  addIdeaIdsListForPutGroup = ideasToAdd => {
+    if (ideasToAdd.length !== 0) {
+      let group = this.getCleanDataForPutGroup();
+      group.ideas = [...group.ideas, ...ideasToAdd];
+      const { name, description, profiles, ideas } = group;
+      this.putGroup(name, description, profiles, ideas);
+    }
   };
 
   render() {
@@ -153,6 +183,15 @@ class GroupDetail extends Component {
                   deleteIdea={this.removeIdeaFromGroup}
                   updateIdeaInState={this.updateIdeaInState}
                 />
+              }
+              badge={
+                <ButtonGroup>
+                  <IdeaCreateButton addIdeaToState={this.addIdeaToState} />
+                  <IdeaAddToGroupButton
+                    addIdeaToState={this.addIdeaIdsListForPutGroup}
+                    groupIdeas={this.state.group.ideas}
+                  />
+                </ButtonGroup>
               }
             />
           </Fragment>

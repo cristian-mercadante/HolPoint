@@ -17,7 +17,7 @@ class Profile extends Component {
     profile: {}
   };
 
-  addIdea = idea => {
+  addIdeaToState = idea => {
     let profile = { ...this.state.profile };
     profile.profile.ideas = [...profile.profile.ideas, idea];
     this.setState({ profile: profile });
@@ -128,7 +128,7 @@ class Profile extends Component {
                   badge={
                     <Fragment>
                       {this.props.currentUser.username === this.props.match.params.username ? (
-                        <IdeaCreateButton addIdea={this.addIdea} />
+                        <IdeaCreateButton addIdeaToState={this.addIdeaToState} />
                       ) : (
                         ""
                       )}

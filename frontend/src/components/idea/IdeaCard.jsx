@@ -69,8 +69,8 @@ class IdeaCard extends Component {
   };
 
   doesCurrentUserOwnThisIdea = () => {
-    if (this.props.currentUser.profile.ideas)
-      return Boolean(this.props.currentUser.profile.ideas.find(idea => idea.id === this.props.id));
+    if (this.props.creator && this.props.currentUser.id === this.props.creator.id) return true;
+    else return false;
   };
 
   handleDelete = () => {
@@ -119,7 +119,7 @@ class IdeaCard extends Component {
           }
           footer={
             <Fragment>
-              <span style={{ fontWeight: "bold" }}>{this.props.creator.username}</span>
+              {/* <span style={{ fontWeight: "bold" }}>{this.props.creator.username}</span> */}
               <span className="float-right">{this.props.date_creation}</span>
             </Fragment>
           }
