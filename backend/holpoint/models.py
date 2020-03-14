@@ -28,7 +28,6 @@ def save_user_profile(sender, instance, **kwargs):
 class Idea(models.Model):
     # constraints
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="ideas")
-    likes = models.ManyToManyField(Profile, related_name="liked_ideas", blank=True)
 
     # attributes
     title = models.CharField(max_length=200)
@@ -74,7 +73,6 @@ class Activity(models.Model):
     # constraints
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_activities", null=True)
     group = models.ForeignKey(Group, null=True, on_delete=models.CASCADE, related_name="activities")
-    likes = models.ManyToManyField(Profile, related_name="liked_activities", blank=True)
 
     # attributes
     title = models.CharField(max_length=200)

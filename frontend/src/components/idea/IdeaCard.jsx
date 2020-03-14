@@ -60,8 +60,9 @@ class IdeaCard extends Component {
         headers
       )
       .then(res => {
-        this.props.updateIdeaInState(res.data);
-        this.setState({ editing: false });
+        this.props.updateIdeaInState(res.data).then(() => {
+          this.setState({ editing: false });
+        });
       })
       .catch(error => {
         this.props.error(error);
@@ -74,9 +75,10 @@ class IdeaCard extends Component {
   };
 
   handleDelete = () => {
-    this.props.deleteIdea(this.props.id);
-    this.setState({ editing: false });
-    this.showModalDelete();
+    this.props.deleteIdea(this.props.id).then(() => {
+      this.setState({ editing: false });
+      this.showModalDelete();
+    });
   };
 
   render() {
@@ -86,12 +88,10 @@ class IdeaCard extends Component {
           <Card.Header>
             <h4>
               {this.props.title}
-              {this.doesCurrentUserOwnThisIdea() ? (
+              {this.doesCurrentUserOwnThisIdea() && (
                 <Button className="float-right" variant="danger" onClick={this.showModalDelete}>
                   <FaTrashAlt />
                 </Button>
-              ) : (
-                ""
               )}
             </h4>
           </Card.Header>
@@ -119,7 +119,7 @@ class IdeaCard extends Component {
           }
           footer={
             <Fragment>
-              {/* <span style={{ fontWeight: "bold" }}>{this.props.creator.username}</span> */}
+              <ProfileBadge profile={this.props.creator} variant="warning" />
               <span className="float-right">{this.props.date_creation}</span>
             </Fragment>
           }

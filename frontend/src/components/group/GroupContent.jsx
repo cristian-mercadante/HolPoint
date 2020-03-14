@@ -51,9 +51,10 @@ class GroupContent extends Component {
   }
 
   onSubmitDelete = () => {
-    this.props.deleteGroup();
-    this.setState({ editing: false });
-    this.showModalDelete();
+    this.props.deleteGroup().then(() => {
+      this.setState({ editing: false });
+      this.showModalDelete();
+    });
   };
 
   onSubmit = e => {
@@ -94,12 +95,10 @@ class GroupContent extends Component {
           <Button variant="success" onClick={this.edit}>
             {this.state.editing ? "Annulla" : "Modifica"}
           </Button>
-          {this.isCreator() ? (
+          {this.isCreator() && (
             <Button variant="danger" onClick={this.showModalDelete}>
               Elimina
             </Button>
-          ) : (
-            ""
           )}
         </ButtonGroup>
 

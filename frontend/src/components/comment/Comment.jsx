@@ -8,7 +8,7 @@ class Comment extends Component {
   render() {
     return (
       <div className="comment">
-        {this.props.currentUserId === this.props.creator.id ? (
+        {this.props.currentUserId === this.props.creator.id && (
           <Button
             size="sm"
             variant="danger"
@@ -17,8 +17,6 @@ class Comment extends Component {
           >
             Elimina
           </Button>
-        ) : (
-          ""
         )}
         <h5>
           <ProfileBadge profile={this.props.creator} variant="warning" />

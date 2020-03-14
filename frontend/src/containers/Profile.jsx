@@ -127,10 +127,8 @@ class Profile extends Component {
                   }
                   badge={
                     <Fragment>
-                      {this.props.currentUser.username === this.props.match.params.username ? (
+                      {this.props.currentUser.username === this.props.match.params.username && (
                         <IdeaCreateButton addIdeaToState={this.addIdeaToState} />
-                      ) : (
-                        ""
                       )}
                     </Fragment>
                   }

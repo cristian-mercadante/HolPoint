@@ -125,7 +125,7 @@ class GroupDetail extends Component {
     let group = this.getCleanDataForPutGroup();
     group.ideas = group.ideas.filter(idea => idea !== ideaId);
     const { name, description, profiles, ideas } = group;
-    this.putGroup(name, description, profiles, ideas);
+    return this.putGroup(name, description, profiles, ideas);
   };
 
   updateIdeaInState = idea => {

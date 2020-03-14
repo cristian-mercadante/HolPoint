@@ -138,14 +138,14 @@ class GroupSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         creator = instance.creator
         # creator must not be removed from profiles
+        profiles = validated_data.pop("profiles")
         if creator not in profiles:
             profiles.append(creator)
-        instance.name = validated_data.get('name', instance.name)
-        instance.description = validated_data.get('description', instance.description)
-        profiles = validated_data.pop("profiles")
         instance.profiles.set(profiles)
         ideas = validated_data.pop("ideas")
         instance.ideas.set(ideas)
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get('description', instance.description)
         instance.save()
         return instance
 
