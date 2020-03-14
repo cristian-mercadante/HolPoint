@@ -30,7 +30,7 @@ class GroupDetail extends Component {
       }
     };
     const id = this.props.match.params.id;
-    axios
+    return axios
       .get(`${groupsAPI}${id}/`, headers)
       .then(res => {
         let selectedFriends = [];
@@ -62,9 +62,10 @@ class GroupDetail extends Component {
       profiles,
       ideas: ideas.length === 0 ? this.state.group.ideas.map(idea => idea.id) : ideas // fixed deleting ideas
     };
-    axios
+    return axios
       .put(`${groupsAPI}${this.state.group.id}/`, data, headers)
       .then(res => {
+        console.log(res);
         this.setState({ group: res.data });
         // checking if a user deleted himself from the group
         if (!this.isCurrentUserAPartecipant(res.data)) {
@@ -74,6 +75,7 @@ class GroupDetail extends Component {
       })
       .catch(error => {
         this.props.error(error);
+        return error;
       });
   };
 
@@ -85,7 +87,7 @@ class GroupDetail extends Component {
         Authorization: `Token ${token}`
       }
     };
-    axios
+    return axios
       .delete(`${groupsAPI}${this.state.group.id}/`, headers)
       .then(res => {
         this.props.history.push("/home");
@@ -144,7 +146,7 @@ class GroupDetail extends Component {
     let group_ = this.getCleanDataForPutGroup();
     group_.ideas = [...group_.ideas, idea.id];
     const { name, description, profiles, ideas } = group;
-    this.putGroup(name, description, profiles, ideas);
+    return this.putGroup(name, description, profiles, ideas);
   };
 
   addIdeaIdsListForPutGroup = ideasToAdd => {
@@ -152,7 +154,7 @@ class GroupDetail extends Component {
       let group = this.getCleanDataForPutGroup();
       group.ideas = [...group.ideas, ...ideasToAdd];
       const { name, description, profiles, ideas } = group;
-      this.putGroup(name, description, profiles, ideas);
+      return this.putGroup(name, description, profiles, ideas);
     }
   };
 

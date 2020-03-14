@@ -50,7 +50,7 @@ class IdeaCard extends Component {
       }
     };
 
-    axios
+    return axios
       .put(
         `${ideaAPI}${this.props.id}/`,
         {

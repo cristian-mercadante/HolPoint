@@ -35,13 +35,9 @@ class ProfileRelatedField(serializers.RelatedField):
         return {'id': value.pk, 'first_name': first_name, 'last_name': last_name, 'username': username, 'email': email}
 
 
-class IdeaInGroupSerializer(serializers.ModelSerializer):
-    date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
-    creator = ProfileRelatedField(read_only=True, required=False)
-
-    class Meta:
-        model = Idea
-        fields = '__all__'
+class IdeaRelatedField(serializers.RelatedField):
+    def get_queryset(self):
+        return Idea.objects.all()
 
     def to_internal_value(self, data):
         try:
@@ -60,6 +56,21 @@ class IdeaInGroupSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'Obj does not exist.'
             )
+
+    def to_representation(self, value):
+        idea = Idea.objects.filter(pk=value.pk).first()
+        date_creation = idea.date_creation.strftime("%d/%m/%Y")
+        creator = ProfileRelatedField().to_representation(idea.creator)
+        title = idea.title
+        description = idea.description
+
+        return {
+            'id': value.pk,
+            'date_creation': date_creation,
+            'creator': creator,
+            'title': title,
+            'description': description,
+        }
 
 
 class IdeaSerializer(serializers.ModelSerializer):
@@ -105,7 +116,8 @@ class GroupSerializer(serializers.ModelSerializer):
     creator = ProfileRelatedField(read_only=True, required=False)
     profiles = ProfileRelatedField(queryset=Profile.objects.all(), many=True, required=False)
     prefered_idea = serializers.PrimaryKeyRelatedField(queryset=Idea.objects.all(), required=False)
-    ideas = IdeaInGroupSerializer(many=True, required=False)
+    #ideas = IdeaInGroupSerializer(many=True, required=False)
+    ideas = IdeaRelatedField(queryset=Idea.objects.all(), many=True, required=False)
     group_to_idea = VoteIdeaInGroupSerializer(many=True, required=False)
 
     class Meta:
@@ -115,26 +127,25 @@ class GroupSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         current_user = self.context['request'].user.id
         creator = Profile.objects.filter(user=current_user).first()
-        profiles = [Profile.objects.filter(user=p.id).first() for p in validated_data.get("profiles")]
-        validated_data.pop("profiles")
+        # validated_data["profiles"] is already populated with model objects
+        # maybe because i used "to_internal_value" function in ProfileRelatedField
+        # profiles = [Profile.objects.filter(user=p.id).first() for p in validated_data.get("profiles")]
+        profiles = validated_data.pop("profiles")
         group = Group.objects.create(**validated_data, creator=creator)
         group.profiles.set(profiles)
         return group
 
     def update(self, instance, validated_data):
-        profiles = [Profile.objects.filter(user=p.id).first() for p in validated_data.get("profiles")]
-        if validated_data.get("ideas") or len(validated_data.get("ideas")) == 0:
-            ideaIds = [i.id for i in validated_data.get("ideas")]
-            ideas = [Idea.objects.filter(pk=i).first() for i in ideaIds]
-            instance.ideas.set(ideas)
         creator = instance.creator
         # creator must not be removed from profiles
         if creator not in profiles:
             profiles.append(creator)
-        validated_data.pop("profiles")
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)
+        profiles = validated_data.pop("profiles")
         instance.profiles.set(profiles)
+        ideas = validated_data.pop("ideas")
+        instance.ideas.set(ideas)
         instance.save()
         return instance
 

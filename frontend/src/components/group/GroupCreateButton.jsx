@@ -55,7 +55,7 @@ class GroupCreateButton extends Component {
         Authorization: `Token ${token}`
       }
     };
-    axios
+    return axios
       .post(
         `${groupsAPI}`,
         {

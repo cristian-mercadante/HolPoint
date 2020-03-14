@@ -29,7 +29,7 @@ class IdeaCreateButton extends Component {
         Authorization: `Token ${token}`
       }
     };
-    axios
+    return axios
       .post(
         `${ideaAPI}`,
         {
@@ -39,9 +39,10 @@ class IdeaCreateButton extends Component {
         headers
       )
       .then(res => {
-        this.props.addIdeaToState(res.data);
-        this.showCreate();
-        this.props.removeAllAlerts();
+        this.props.addIdeaToState(res.data).then(() => {
+          this.showCreate();
+          this.props.removeAllAlerts();
+        });
       })
       .catch(error => {
         this.props.error(error);

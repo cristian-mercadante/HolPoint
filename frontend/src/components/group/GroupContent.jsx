@@ -62,8 +62,11 @@ class GroupContent extends Component {
     const name = form.name.value;
     const description = form.description.value;
     const profiles = this.props.selectedFriends;
-    this.props.putGroup(name, description, profiles);
-    this.setState({ editing: false });
+    this.props.putGroup(name, description, profiles).then(err => {
+      if (!err) {
+        this.setState({ editing: false });
+      }
+    });
   };
 
   isCreator = () => {

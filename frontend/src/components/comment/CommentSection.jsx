@@ -21,7 +21,7 @@ class CommentSection extends Component {
         Authorization: `Token ${token}`
       }
     };
-    axios
+    return axios
       .get(`${commentIdeaAPI}${this.props.id}`, headers)
       .then(res => {
         this.setState({ loading: false, comments: res.data });
@@ -40,7 +40,7 @@ class CommentSection extends Component {
         Authorization: `Token ${token}`
       }
     };
-    axios
+    return axios
       .post(
         `${commentIdeaAPI}`,
         {
@@ -65,7 +65,7 @@ class CommentSection extends Component {
         Authorization: `Token ${token}`
       }
     };
-    axios
+    return axios
       .delete(`${commentIdeaAPI}${commentId}/`, headers)
       .then(res => {
         this.setState({

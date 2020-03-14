@@ -38,9 +38,10 @@ class IdeaAddToGroupButton extends Component {
   handleSubmit = e => {
     e.preventDefault();
     let checkedIdeas = [...document.querySelectorAll("input[name=ideas]:checked")].map(idea => parseInt(idea.id));
-    this.props.addIdeaToState(checkedIdeas);
-    this.showCreate();
-    this.props.removeAllAlerts();
+    this.props.addIdeaToState(checkedIdeas).then(() => {
+      this.showCreate();
+      this.props.removeAllAlerts();
+    });
   };
 
   render() {

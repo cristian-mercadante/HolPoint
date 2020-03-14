@@ -43,7 +43,7 @@ class Profile extends Component {
         Authorization: `Token ${token}`
       }
     };
-    axios
+    return axios
       .delete(`${ideaAPI}${ideaId}/`, headers)
       .then(res => {
         this.removeIdeaFromState(ideaId);
@@ -70,7 +70,7 @@ class Profile extends Component {
         Authorization: `Token ${token}`
       }
     };
-    axios
+    return axios
       .get(`${profileAPI}${this.props.match.params.username}`, headers)
       .then(res => {
         this.setState({ loading: false, profile: res.data });

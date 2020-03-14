@@ -27,7 +27,7 @@ export default class IdeaAddToGroupForm extends Component {
           <Form onSubmit={this.props.onSubmit}>
             {this.renderCheckBoxes()}
             <Button type="submit" variant="warning">
-              hey
+              Invia!
             </Button>
           </Form>
         ) : (

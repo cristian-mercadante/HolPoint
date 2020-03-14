@@ -10,11 +10,6 @@ export const REMOVE_ALERT = "REMOVE_ALERT";
 export const REMOVE_ALL_ALERTS = "REMOVE_ALL_ALERTS";
 export const ERROR = "ERROR";
 
-// groups
-export const GET_GROUP = "GET_GROUP";
-export const POST_GROUP = "POST_GROUP";
-export const CLEAR_GROUP = "CLEAR_GROUP";
-
 //current user
 export const GET_CURRENT_USER_START = "GET_CURRENT_USER_START";
 export const GET_CURRENT_USER_SUCCESS = "GET_CURRENT_USER_SUCCESS";
