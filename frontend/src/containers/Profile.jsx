@@ -18,21 +18,27 @@ class Profile extends Component {
   };
 
   addIdeaToState = idea => {
-    let profile = { ...this.state.profile };
-    profile.profile.ideas = [...profile.profile.ideas, idea];
-    this.setState({ profile: profile });
+    return new Promise(resolve => {
+      let profile = { ...this.state.profile };
+      profile.profile.ideas = [...profile.profile.ideas, idea];
+      this.setState({ profile: profile });
+      resolve();
+    });
   };
 
   updateIdeaInState = idea => {
-    let profile = { ...this.state.profile };
-    let ideas = [...this.state.profile.profile.ideas];
-    let index = ideas.findIndex(idea_ => {
-      // eslint-disable-next-line
-      return idea_.id == idea.id;
+    return new Promise(resolve => {
+      let profile = { ...this.state.profile };
+      let ideas = [...this.state.profile.profile.ideas];
+      let index = ideas.findIndex(idea_ => {
+        // eslint-disable-next-line
+        return idea_.id == idea.id;
+      });
+      ideas[index] = idea;
+      profile.profile.ideas = ideas;
+      this.setState({ profile: profile });
+      resolve();
     });
-    ideas[index] = idea;
-    profile.profile.ideas = ideas;
-    this.setState({ profile: profile });
   };
 
   deleteIdea = ideaId => {
