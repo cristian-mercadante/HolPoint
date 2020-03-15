@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import IdeaCard from "./IdeaCard";
-import { CardColumns } from "react-bootstrap";
 
 class IdeaCardManager extends Component {
   renderIdeaCards = () => {
@@ -22,7 +21,7 @@ class IdeaCardManager extends Component {
   };
 
   render() {
-    return <CardColumns style={{ WebkitColumnCount: "2" }}>{this.renderIdeaCards()}</CardColumns>;
+    return <div className="overflow-auto">{this.renderIdeaCards()}</div>;
   }
 }
 

@@ -6,7 +6,12 @@ from .views import (
     IdeaCommentListView,
 )
 
-from .views import GroupViewSet, IdeaViewSet, IdeaCommentViewSet
+from .views import (
+    GroupViewSet,
+    IdeaViewSet,
+    IdeaCommentViewSet,
+    VoteIdeaInGroupViewSet,
+)
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -19,6 +24,7 @@ urlpatterns = [
     path('user/<pk>', UserBasicDetailView.as_view()),
     path('current_user', CurrentUserDetailView.as_view()),
     path('comment/idea/<idea_id>', IdeaCommentListView.as_view()),
+    path('vote/<group_id>/<idea_id>', VoteIdeaInGroupViewSet.as_view({'post': 'vote'})),
 ]
 
 urlpatterns += router.urls

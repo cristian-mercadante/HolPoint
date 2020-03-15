@@ -68,6 +68,12 @@ class VoteIdeaInGroup(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="group_to_idea")
     votes = models.ManyToManyField(Profile, blank=True, related_name="voted_ideas")
 
+    class Meta:
+        unique_together = (('idea', 'group'),)
+
+    def __str__(self):
+        return "G: {} - I: {}".format(self.group, self.idea)
+
 
 class Activity(models.Model):
     # constraints

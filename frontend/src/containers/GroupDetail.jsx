@@ -8,7 +8,7 @@ import { groupsAPI } from "../server";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
 import { GroupContent } from "../components/group";
-import { IdeaCardManager, IdeaCreateButton, IdeaAddToGroupButton } from "../components/idea";
+import { IdeaCardManagerVote, IdeaCreateButton, IdeaAddToGroupButton } from "../components/idea";
 
 class GroupDetail extends Component {
   state = {
@@ -65,7 +65,6 @@ class GroupDetail extends Component {
     return axios
       .put(`${groupsAPI}${this.state.group.id}/`, data, headers)
       .then(res => {
-        console.log(res);
         this.setState({ group: res.data });
         // checking if a user deleted himself from the group
         if (!this.isCurrentUserAPartecipant(res.data)) {
@@ -180,10 +179,11 @@ class GroupDetail extends Component {
             <Panel
               title="Idee proposte"
               component={
-                <IdeaCardManager
+                <IdeaCardManagerVote
                   ideas={this.state.group.ideas}
                   deleteIdea={this.removeIdeaFromGroup}
                   updateIdeaInState={this.updateIdeaInState}
+                  group_to_idea={this.state.group.group_to_idea}
                 />
               }
               badge={

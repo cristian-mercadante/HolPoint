@@ -1,6 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from holpoint.models import Profile, Group, Idea, IdeaComment, VoteIdeaInGroup
+from holpoint.models import (
+    Profile,
+    Group,
+    Idea,
+    IdeaComment,
+    VoteIdeaInGroup,
+)
 
 
 class ProfileRelatedField(serializers.RelatedField):

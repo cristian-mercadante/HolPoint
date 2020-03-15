@@ -1,4 +1,6 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, views
+from rest_framework.exceptions import NotFound
+from rest_framework.response import Response
 from rest_framework.generics import (
     RetrieveAPIView,
     ListAPIView,
@@ -15,10 +17,16 @@ from .serializers import (
     GroupSerializer,
     IdeaSerializer,
     IdeaCommentSerializer,
+    VoteIdeaInGroupSerializer,
 )
 
 from django.contrib.auth.models import User
-from holpoint.models import Group, Idea, IdeaComment
+from holpoint.models import (
+    Group,
+    Idea,
+    IdeaComment,
+    VoteIdeaInGroup,
+)
 
 
 class CurrentUserDetailView(RetrieveUpdateAPIView):
@@ -77,3 +85,27 @@ class IdeaCommentListView(ListAPIView):
     def get_queryset(self):
         idea_id = self.kwargs['idea_id']
         return IdeaComment.objects.filter(to__id=idea_id)
+
+
+class VoteIdeaInGroupViewSet(viewsets.ModelViewSet):
+    serializer_class = VoteIdeaInGroupSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def vote(self, request, group_id=None, idea_id=None):
+        if group_id and idea_id:
+            group = Group.objects.filter(pk=group_id).first()
+            if not group:
+                raise NotFound(detail="Group not found", code=404)
+            idea = Idea.objects.filter(pk=idea_id).first()
+            if not idea:
+                raise NotFound(detail="Idea not found", code=404)
+            profile = request.user.profile
+            vote = VoteIdeaInGroup.objects.filter(group=group, idea=idea, votes__id=profile.id).first()
+            if vote:
+                vote.votes.remove(profile.id)
+            else:
+                vote = VoteIdeaInGroup.objects.get_or_create(group=group, idea=idea)[0]
+                vote.votes.add(profile.id)
+                vote.save()
+            serializer = self.serializer_class(vote)
+            return Response(serializer.data)

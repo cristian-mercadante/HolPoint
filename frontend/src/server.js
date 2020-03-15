@@ -13,3 +13,5 @@ export const userBasicAPI = api + "user/";
 export const groupsAPI = api + "group/";
 export const ideaAPI = api + "idea/";
 export const commentIdeaAPI = api + "comment/idea/";
+
+export const voteAPI = api + "vote/";

@@ -10,6 +10,10 @@
   opacity: 0.8;
 }
 
+.group-card {
+  height: 300px;
+}
+
 .group-card .card-body {
   overflow-y: auto;
 }
