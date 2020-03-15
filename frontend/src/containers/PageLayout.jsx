@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react";
-import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { withRouter } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
 
 // import AlertComponent from "../components/alerts/AlertComponent";
 // import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
@@ -10,6 +9,7 @@ import { AlertComponent, AlertsOverlayComponent } from "../components/alerts/ind
 import { isAuthenticated } from "../routes";
 import * as colors from "../colors";
 import { Title, LogInSignUp, ProfileButton } from "../components/misc";
+import { SearchBar } from "../components/search";
 
 class PageLayout extends Component {
   navbarStyle = {
@@ -41,12 +41,7 @@ class PageLayout extends Component {
                   <LinkContainer to="/home">
                     <Nav.Link className="mr-sm-2">Home</Nav.Link>
                   </LinkContainer>
-                  <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-success" className="mr-sm-2">
-                      <FaSearch /> Search
-                    </Button>
-                  </Form>
+                  <SearchBar />
                   <ProfileButton username={this.props.username} logout={this.props.logout} />
                 </Fragment>
               ) : (

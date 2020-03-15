@@ -22,6 +22,7 @@ from .serializers import (
 
 from django.contrib.auth.models import User
 from holpoint.models import (
+    Profile,
     Group,
     Idea,
     IdeaComment,
@@ -44,6 +45,15 @@ class UserDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, ]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class SearchUser(ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = BasicUserSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return User.objects.filter(username__contains=username)
 
 
 # FIXME: do I need it???

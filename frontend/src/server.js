@@ -15,3 +15,4 @@ export const ideaAPI = api + "idea/";
 export const commentIdeaAPI = api + "comment/idea/";
 
 export const voteAPI = api + "vote/";
+export const searchAPI = api + "search/user/";
