@@ -4,6 +4,7 @@ import uuid from "node-uuid";
 const initialState = [];
 
 const addAlert = (state, action) => {
+  window.scrollTo(0, 0); // scroll top in order to show alert
   return [
     ...state,
     {

@@ -7,12 +7,18 @@ import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
 import axios from "axios";
 import { groupsAPI } from "../../server";
+import { dateToString_or_Null, validateDates } from "../../dateUtils";
 
 class GroupCreateButton extends Component {
   state = {
     showCreate: false,
-    selectedFriends: []
+    selectedFriends: [],
+    dateStart: null,
+    dateFinish: null
   };
+
+  setDateStart = date => this.setState({ dateStart: date });
+  setDateFinish = date => this.setState({ dateFinish: date });
 
   componentDidMount() {
     if (!this.props.currentUser.loading) {
@@ -47,7 +53,7 @@ class GroupCreateButton extends Component {
     this.setState({ showCreate: !this.state.showCreate });
   };
 
-  postGroup = (name, description, profiles) => {
+  postGroup = (name, description, profiles, dateStart, dateFinish) => {
     const token = localStorage.getItem("token");
     const headers = {
       headers: {
@@ -61,7 +67,9 @@ class GroupCreateButton extends Component {
         {
           name,
           description,
-          profiles
+          profiles,
+          date_start: dateStart,
+          date_finish: dateFinish
         },
         headers
       )
@@ -80,7 +88,11 @@ class GroupCreateButton extends Component {
     const name = form.name.value;
     const description = form.description.value;
     const profiles = this.state.selectedFriends;
-    this.postGroup(name, description, profiles);
+    let { dateStart, dateFinish } = this.state;
+    if (!validateDates(dateStart, dateFinish, this.props.addAlert)) return;
+    dateStart = dateToString_or_Null(dateStart);
+    dateFinish = dateToString_or_Null(dateFinish);
+    this.postGroup(name, description, profiles, dateStart, dateFinish);
   };
 
   render() {
@@ -100,6 +112,10 @@ class GroupCreateButton extends Component {
               selectFriend={this.selectFriend}
               selectedFriends={this.state.selectedFriends}
               profiles={this.props.currentUser.profile.friends}
+              dateStart={this.state.dateStart}
+              dateFinish={this.state.dateFinish}
+              setDateStart={this.setDateStart}
+              setDateFinish={this.setDateFinish}
             />
           }
         />
@@ -117,6 +133,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     error: error => dispatch(alertActions.error(error)),
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };

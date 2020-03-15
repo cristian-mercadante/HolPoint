@@ -55,8 +55,8 @@ class Group(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, default="")
     date_creation = models.DateField(auto_now=True)
-    date_start = models.DateField(auto_now=True)
-    date_finish = models.DateField(auto_now=True)
+    date_start = models.DateField(null=True, blank=True)
+    date_finish = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

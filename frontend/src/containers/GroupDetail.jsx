@@ -10,12 +10,19 @@ import * as alertActions from "../actions/alerts";
 import { GroupContent } from "../components/group";
 import { IdeaCardManagerVote, IdeaCreateButton, IdeaAddToGroupButton } from "../components/idea";
 
+import { stringToDate_or_Null } from "../dateUtils";
+
 class GroupDetail extends Component {
   state = {
     loading: true,
     group: {},
-    selectedFriends: []
+    selectedFriends: [],
+    dateStart: null,
+    dateFinish: null
   };
+
+  setDateStart = date => this.setState({ dateStart: date });
+  setDateFinish = date => this.setState({ dateFinish: date });
 
   componentDidMount() {
     this.getGroup();
@@ -35,7 +42,13 @@ class GroupDetail extends Component {
       .then(res => {
         let selectedFriends = [];
         res.data.profiles.forEach(profile => selectedFriends.push(profile.id));
-        this.setState({ loading: false, group: res.data, selectedFriends: selectedFriends });
+        this.setState({
+          loading: false,
+          group: res.data,
+          selectedFriends: selectedFriends,
+          dateStart: stringToDate_or_Null(res.data.date_start),
+          dateFinish: stringToDate_or_Null(res.data.date_finish)
+        });
       })
       .catch(error => {
         this.props.error(error);
@@ -48,7 +61,7 @@ class GroupDetail extends Component {
     }
   };
 
-  putGroup = (name, description, profiles, ideas = []) => {
+  putGroup = (name, description, profiles, ideas = [], dateStart, dateFinish) => {
     const token = localStorage.getItem("token");
     const headers = {
       headers: {
@@ -60,7 +73,9 @@ class GroupDetail extends Component {
       name,
       description,
       profiles,
-      ideas: ideas.length === 0 ? this.state.group.ideas.map(idea => idea.id) : ideas // fixed deleting ideas
+      ideas: ideas.length === 0 ? this.state.group.ideas.map(idea => idea.id) : ideas, // fixed deleting ideas
+      date_start: dateStart,
+      date_finish: dateFinish
     };
     return axios
       .put(`${groupsAPI}${this.state.group.id}/`, data, headers)
@@ -173,6 +188,10 @@ class GroupDetail extends Component {
                   selectedFriends={this.state.selectedFriends}
                   putGroup={this.putGroup}
                   deleteGroup={this.deleteGroup}
+                  dateStart={this.state.dateStart}
+                  dateFinish={this.state.dateFinish}
+                  setDateStart={this.setDateStart}
+                  setDateFinish={this.setDateFinish}
                 />
               }
             />

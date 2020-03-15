@@ -116,13 +116,12 @@ class GroupSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
     description = serializers.CharField(required=False)
     date_creation = serializers.DateField(read_only=True, format="%d/%m/%Y")
-    date_start = serializers.DateField(required=False, format="%d/%m/%Y")
-    date_finish = serializers.DateField(required=False, format="%d/%m/%Y")
+    date_start = serializers.DateField(required=False, format="%d/%m/%Y", allow_null=True)
+    date_finish = serializers.DateField(required=False, format="%d/%m/%Y", allow_null=True)
     is_active = serializers.BooleanField(default=True, read_only=True)
     creator = ProfileRelatedField(read_only=True, required=False)
     profiles = ProfileRelatedField(queryset=Profile.objects.all(), many=True, required=False)
     prefered_idea = serializers.PrimaryKeyRelatedField(queryset=Idea.objects.all(), required=False)
-    #ideas = IdeaInGroupSerializer(many=True, required=False)
     ideas = IdeaRelatedField(queryset=Idea.objects.all(), many=True, required=False)
     group_to_idea = VoteIdeaInGroupSerializer(many=True, required=False)
 
@@ -152,6 +151,8 @@ class GroupSerializer(serializers.ModelSerializer):
         instance.ideas.set(ideas)
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)
+        instance.date_start = validated_data.get('date_start', instance.date_start)
+        instance.date_finish = validated_data.get('date_finish', instance.date_finish)
         instance.save()
         return instance
 
