@@ -49,7 +49,7 @@ class SearchBar extends Component {
     let buffer = [];
     const { results } = this.state;
     if (results) {
-      results.forEach(user => buffer.push(<SearchResult {...user} />));
+      results.forEach(user => buffer.push(<SearchResult key={user.id} {...user} />));
     }
     return buffer;
   };

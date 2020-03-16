@@ -6,7 +6,7 @@ export default class ProfileBadge extends Component {
   render() {
     return (
       <OverlayTrigger
-        placement="top"
+        placement={this.props.placement ? this.props.placement : "top"}
         overlay={
           <Tooltip>
             {this.props.profile.first_name || this.props.profile.last_name

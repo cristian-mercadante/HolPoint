@@ -143,12 +143,15 @@ class GroupDetail extends Component {
   };
 
   updateIdeaInState = idea => {
-    let group = this.state.group;
-    let ideas = [...this.state.group.ideas];
-    let index = ideas.findIndex(idea_ => idea_.id === idea.id);
-    ideas[index] = idea;
-    group.ideas = ideas;
-    this.setState({ group: group });
+    return new Promise(resolve => {
+      let group = this.state.group;
+      let ideas = [...this.state.group.ideas];
+      let index = ideas.findIndex(idea_ => idea_.id === idea.id);
+      ideas[index] = idea;
+      group.ideas = ideas;
+      this.setState({ group: group });
+      resolve();
+    });
   };
 
   addIdeaToState = idea => {

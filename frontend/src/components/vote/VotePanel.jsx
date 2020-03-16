@@ -6,6 +6,7 @@ import * as alertActions from "../../actions/alerts";
 import { voteAPI } from "../../server";
 import { VoteOverlay } from ".";
 import "./style.css";
+import { FaThumbsUp, FaRegThumbsUp } from "react-icons/fa";
 
 class VotePanel extends Component {
   state = {
@@ -51,15 +52,27 @@ class VotePanel extends Component {
             </h4>
           </VoteOverlay>
 
-          <Button
-            style={{ width: "100px" }}
-            variant={this.hasCurrentUserVotedThisIdea() ? "warning" : "success"}
-            onClick={() => {
-              this.vote(this.state.gti.group, this.state.gti.idea);
-            }}
-          >
-            {this.hasCurrentUserVotedThisIdea() ? "Rimuovi" : "Vota"}
-          </Button>
+          {this.hasCurrentUserVotedThisIdea() ? (
+            <Button
+              style={{ width: "60px", color: "white" }}
+              variant="success"
+              onClick={() => {
+                this.vote(this.state.gti.group, this.state.gti.idea);
+              }}
+            >
+              <FaThumbsUp />
+            </Button>
+          ) : (
+            <Button
+              style={{ width: "60px", color: "black", backgroundColor: "white" }}
+              variant="outline-success"
+              onClick={() => {
+                this.vote(this.state.gti.group, this.state.gti.idea);
+              }}
+            >
+              <FaRegThumbsUp />
+            </Button>
+          )}
         </div>
         <div>{this.props.ideaCard}</div>
       </div>
