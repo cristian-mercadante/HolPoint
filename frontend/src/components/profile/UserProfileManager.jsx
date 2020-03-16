@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Image } from "react-bootstrap";
-import { FriendUnfriendButtons } from "../misc";
+import { FriendUnfriendButtons } from "../friend_request";
 
 import logo from "../../assets/imgs/logo.png";
 

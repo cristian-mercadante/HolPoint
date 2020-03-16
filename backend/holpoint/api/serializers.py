@@ -1,7 +1,9 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.response import Response
 from django.contrib.auth.models import User
 from holpoint.models import (
     Profile,
+    FriendRequest,
     Group,
     Idea,
     IdeaComment,
@@ -94,13 +96,73 @@ class IdeaSerializer(serializers.ModelSerializer):
         return idea
 
 
+class FriendRequestSerializer(serializers.ModelSerializer):
+    sender = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all())
+    receiver = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all())
+    status = serializers.ChoiceField(choices=['Acc', 'Pen', 'Ref'], default='Pen')
+
+    class Meta:
+        model = FriendRequest
+        fields = '__all__'
+
+    def create(self, validated_data):
+        # we override create method in order to ensure that:
+        # - the sender is the current user
+        # - the status is Pen
+        sender = validated_data.get("sender")
+        receiver = validated_data.get("receiver")
+        friend = sender.friends.filter(pk=receiver.id)
+        if friend:
+            raise serializers.ValidationError('You are already friends')
+        fr_ = FriendRequest.objects.filter(sender=receiver, receiver=sender).first()
+        if fr_:
+            raise serializers.ValidationError('Request already done by the receiver')
+        if self.context["request"].user.profile.id != sender.id:
+            raise serializers.ValidationError('Unable to do this request')
+        fr = FriendRequest.objects.create(sender=sender, receiver=receiver, status="Pen")
+        return fr
+
+    def update(self, instance, validated_data):
+        sender = validated_data.get("sender")
+        receiver = validated_data.get("receiver")
+        new_status = validated_data.get("status")
+        if sender.id == instance.sender.id and self.context['request'].user.profile.id == instance.receiver.id:
+            instance.status = new_status
+            if new_status == "Acc":
+                instance.sender.friends.add(instance.receiver)
+                instance.receiver.friends.add(instance.sender)
+            self.perform_destroy(instance)
+        return instance
+
+    def perform_destroy(self, instance):
+        instance.delete()
+
+
+class CurrentUserFriendRequestSerializer(serializers.ModelSerializer):
+    sent_requests = FriendRequestSerializer(read_only=True, many=True)
+    received_requests = FriendRequestSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Profile
+        fields = ('sent_requests', 'received_requests')
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     friends = ProfileRelatedField(read_only=True, many=True)
     ideas = IdeaSerializer(read_only=True, many=True)
 
     class Meta:
         model = Profile
-        fields = ('friends', 'groups', 'user', 'ideas')
+        fields = ('friends', 'user', 'ideas')
+
+
+class CurrentUserProfileSerializer(serializers.ModelSerializer):
+    friends = ProfileRelatedField(read_only=True, many=True)
+    ideas = IdeaSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Profile
+        fields = ('friends', 'user', 'ideas')
 
 
 class VoteIdeaInGroupSerializer(serializers.ModelSerializer):
@@ -159,6 +221,14 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'profile')
+
+
+class CurrentUserSerializer(serializers.ModelSerializer):
+    profile = CurrentUserProfileSerializer(read_only=True)
 
     class Meta:
         model = User

@@ -16,3 +16,6 @@ export const commentIdeaAPI = api + "comment/idea/";
 
 export const voteAPI = api + "vote/";
 export const searchAPI = api + "search/user/";
+export const friendRequestAPI = api + "friendrequest/";
+export const friendRequestListAPI = api + "friendrequests";
+export const unfriendAPI = api + "unfriend/";

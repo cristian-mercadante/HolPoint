@@ -3,6 +3,7 @@ import axios from "axios";
 import { loginURL, signupURL } from "../server";
 import * as getCurrentUserActions from "./currentUser";
 import * as alertActions from "./alerts";
+import * as friendRequestActions from "./friendRequest";
 
 export const authStart = () => {
   return {
@@ -66,6 +67,7 @@ export const authLogin = (username, password) => {
         localStorage.setItem("expirationDate", expirationDate);
         dispatch(authSuccess(token));
         dispatch(getCurrentUserActions.getCurrentUser());
+        dispatch(friendRequestActions.loadRequests());
         dispatch(checkAuthTimeout(3600));
       })
       .catch(error => {
@@ -98,6 +100,7 @@ export const authSignup = (username, email, password1, password2) => {
         localStorage.setItem("expirationDate", expirationDate);
         dispatch(authSuccess(token));
         dispatch(getCurrentUserActions.getCurrentUser());
+        dispatch(friendRequestActions.loadRequests());
         dispatch(checkAuthTimeout(3600));
       })
       .catch(error => {
@@ -120,6 +123,7 @@ export const authCheckState = () => {
       } else {
         dispatch(authSuccess(token));
         dispatch(getCurrentUserActions.getCurrentUser());
+        dispatch(friendRequestActions.loadRequests());
         dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
       }
     }
@@ -130,5 +134,6 @@ export const authLogout = () => {
   return dispatch => {
     dispatch(logout());
     dispatch(getCurrentUserActions.getCurrentUserLogout());
+    dispatch(friendRequestActions.clearFriendRequests());
   };
 };

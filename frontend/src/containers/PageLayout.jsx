@@ -10,6 +10,7 @@ import { isAuthenticated } from "../routes";
 import * as colors from "../colors";
 import { Title, LogInSignUp, ProfileButton } from "../components/misc";
 import { SearchBar } from "../components/search";
+import { FriendRequestButton } from "../components/friend_request";
 
 class PageLayout extends Component {
   navbarStyle = {
@@ -41,6 +42,9 @@ class PageLayout extends Component {
                   <LinkContainer to="/home">
                     <Nav.Link className="mr-sm-2">Home</Nav.Link>
                   </LinkContainer>
+
+                  <FriendRequestButton />
+
                   <SearchBar />
                   <ProfileButton username={this.props.username} logout={this.props.logout} />
                 </Fragment>

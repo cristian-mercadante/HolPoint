@@ -13,16 +13,20 @@ from rest_framework.permissions import IsAuthenticated
 
 from .serializers import (
     UserSerializer,
+    CurrentUserSerializer,
     BasicUserSerializer,
+    FriendRequestSerializer,
     GroupSerializer,
     IdeaSerializer,
     IdeaCommentSerializer,
     VoteIdeaInGroupSerializer,
+    CurrentUserFriendRequestSerializer,
 )
 
 from django.contrib.auth.models import User
 from holpoint.models import (
     Profile,
+    FriendRequest,
     Group,
     Idea,
     IdeaComment,
@@ -34,7 +38,7 @@ class CurrentUserDetailView(RetrieveUpdateAPIView):
     lookup_field = 'username'
     permission_classes = [IsAuthenticated, ]
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CurrentUserSerializer
 
     def get_object(self):
         return self.request.user
@@ -54,6 +58,22 @@ class SearchUser(ListAPIView):
     def get_queryset(self):
         username = self.kwargs['username']
         return User.objects.filter(username__contains=username)
+
+
+class FriendRequestViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    serializer_class = FriendRequestSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        return FriendRequest.objects.all()
+
+
+class CurrentUserFriendRequestDetailView(RetrieveAPIView):
+    serializer_class = CurrentUserFriendRequestSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_object(self):
+        return self.request.user.profile
 
 
 # FIXME: do I need it???
@@ -118,4 +138,22 @@ class VoteIdeaInGroupViewSet(viewsets.ModelViewSet):
                 vote.votes.add(profile.id)
                 vote.save()
             serializer = self.serializer_class(vote)
+            return Response(serializer.data)
+
+
+class UnfriendViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def unfriend(self, request, friend_id=None):
+        if friend_id:
+            currentUser = request.user
+            if not currentUser:
+                raise NotFound(detail="Current user not found", code=404)
+            friend = currentUser.profile.friends.filter(pk=friend_id).first()
+            if not friend:
+                raise NotFound(detail="Friend not found", code=404)
+            currentUser.profile.friends.remove(friend)
+            currentUser.save()
+            serializer = self.serializer_class(currentUser)
             return Response(serializer.data)

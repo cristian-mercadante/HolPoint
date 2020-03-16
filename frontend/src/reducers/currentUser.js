@@ -62,6 +62,21 @@ const done = (state, action) => {
   return updateObject(state, { loading: false });
 };
 
+const addFriendToState = (state, action) => {
+  const friend = action.friend;
+  let profile = { ...state.profile };
+  profile.friends.push(friend);
+  return updateObject(state, { profile });
+};
+
+const removeFriendFromState = (state, action) => {
+  const friend = action.friend;
+  let profile = { ...state.profile };
+  profile.friends = profile.friends.filter(f => f.id !== friend.id);
+  if (!profile.friends) profile.friends = [];
+  return updateObject(state, { profile });
+};
+
 const getCurrentUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_CURRENT_USER_START:
@@ -78,6 +93,10 @@ const getCurrentUserReducer = (state = initialState, action) => {
       return loading(state, action);
     case actionTypes.DONE:
       return done(state, action);
+    case actionTypes.ADD_FRIEND_TO_STATE:
+      return addFriendToState(state, action);
+    case actionTypes.REMOVE_FRIEND_FROM_STATE:
+      return removeFriendFromState(state, action);
     default:
       return state;
   }

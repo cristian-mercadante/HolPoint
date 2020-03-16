@@ -7,7 +7,7 @@ from django.dispatch import receiver
 class Profile(models.Model):
     # constraints
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    friends = models.ManyToManyField("self")
+    friends = models.ManyToManyField("self", blank=True)
 
     def __str__(self):
         return "{}".format(self.user.username)
@@ -23,6 +23,19 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="sent_requests")
+    receiver = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="received_requests")
+    STATUS_CHOICES = [('Acc', 'Accepted'), ('Pen', 'Pending'), ('Ref', 'Refused')]
+    status = models.CharField(max_length=3, choices=STATUS_CHOICES, null=False, blank=False, default='Pen')
+
+    class Meta:
+        unique_together = (('sender', 'receiver'),)
+
+    def __str__(self):
+        return "S: {} - R: {} - status: {}".format(self.sender, self.receiver, self.status)
 
 
 class Idea(models.Model):

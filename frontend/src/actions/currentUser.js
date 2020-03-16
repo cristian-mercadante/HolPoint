@@ -103,4 +103,18 @@ export const putCurrentUser = (username, email, first_name, last_name) => {
   };
 };
 
+export const addFriendToState = friend => {
+  return {
+    type: actionTypes.ADD_FRIEND_TO_STATE,
+    friend: friend
+  };
+};
+
+export const removeFriendFromState = friend => {
+  return {
+    type: actionTypes.REMOVE_FRIEND_FROM_STATE,
+    friend: friend
+  };
+};
+
 //export const clearCurrentUser = () => {};
