@@ -19,7 +19,6 @@ class UserProfileManager extends Component {
           <h1 className="display-4">
             {this.props.profile.first_name} {this.props.profile.last_name}
           </h1>
-          <h3>{this.props.profile.email}</h3>
           <FriendUnfriendButtons {...this.props} />
         </div>
       </Container>

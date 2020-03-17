@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { Button } from "react-bootstrap";
-import { FaUserPlus, FaUserMinus } from "react-icons/fa";
 import { isAuthenticated } from "../../routes";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
@@ -8,6 +6,8 @@ import * as friendRequestActions from "../../actions/friendRequest";
 import * as currentUserActions from "../../actions/currentUser";
 import axios from "axios";
 import { unfriendAPI } from "../../server";
+import { AcceptRefuseButtons, WaitButton, AddButton } from ".";
+import RemoveButton from "./RemoveButton";
 
 class FriendUnfriendButtons extends Component {
   state = {
@@ -22,18 +22,18 @@ class FriendUnfriendButtons extends Component {
       const friendRequests = this.props.friendRequests;
       const profile = this.props.profile;
       let { sent, received } = false;
-      let id = null;
+      let requestId = null;
       if (friendRequests.sentRequests) {
-        sent = friendRequests.sentRequests.find(req => req.receiver === profile.id);
-        if (sent) id = sent.id;
+        sent = friendRequests.sentRequests.find(req => req.receiver.id === profile.id);
+        if (sent) requestId = sent.id;
         sent = Boolean(sent);
       }
       if (friendRequests.receivedRequests) {
-        received = friendRequests.receivedRequests.find(req => req.sender === profile.id);
-        if (received) id = received.id;
+        received = friendRequests.receivedRequests.find(req => req.sender.id === profile.id);
+        if (received) requestId = received.id;
         received = Boolean(received);
       }
-      this.setState({ sent, received, requestId: id });
+      this.setState({ sent, received, requestId });
     }
   };
 
@@ -71,13 +71,19 @@ class FriendUnfriendButtons extends Component {
     this.props.sendRequest(senderId, receiverId).then(this.setState({ sent: true, received: false }));
   };
 
-  acceptFriendRequest = () => {
+  acceptOrRefuseFriendRequest = status => {
+    if (!["Acc", "Ref"].includes(status)) return;
     const senderId = this.props.profile.id;
     const receiverId = this.props.currentUser.id;
     const requestId = this.state.requestId;
-    this.props.respondRequest(requestId, senderId, receiverId, "Acc").then(() => {
-      this.props.addFriendToState(this.props.profile);
-      this.setState({ sent: false, received: false, requestId: null, friend: true });
+    this.props.respondRequest(requestId, senderId, receiverId, status).then(() => {
+      status === "Acc" && this.props.addFriendToState(this.props.profile);
+      this.setState({
+        sent: false,
+        received: false,
+        requestId: null,
+        friend: status === "Acc" ? true : false
+      });
     });
   };
 
@@ -102,31 +108,15 @@ class FriendUnfriendButtons extends Component {
   renderFriendButton = () => {
     return (
       <Fragment>
-        {this.state.sent && (
-          <Button variant="info" disabled>
-            <FaUserPlus /> Attesa
-          </Button>
-        )}
-        {this.state.received && (
-          <Button variant="primary" onClick={this.acceptFriendRequest}>
-            <FaUserPlus /> Accetta
-          </Button>
-        )}
-        {!this.state.sent && !this.state.received && (
-          <Button variant="success" onClick={this.sendFriendRequest}>
-            <FaUserPlus /> Aggiungi
-          </Button>
-        )}
+        {this.state.sent && <WaitButton />}
+        {this.state.received && <AcceptRefuseButtons compact={false} onClick={this.acceptOrRefuseFriendRequest} />}
+        {!this.state.sent && !this.state.received && <AddButton onClick={this.sendFriendRequest} />}
       </Fragment>
     );
   };
 
   renderUnfriendButton = () => {
-    return (
-      <Button variant="danger" onClick={this.removeFriend}>
-        <FaUserMinus /> Rimuovi
-      </Button>
-    );
+    return <RemoveButton onClick={this.removeFriend} />;
   };
 
   renderButtons = () => {

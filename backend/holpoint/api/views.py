@@ -57,7 +57,8 @@ class SearchUser(ListAPIView):
 
     def get_queryset(self):
         username = self.kwargs['username']
-        return User.objects.filter(username__contains=username)
+        # limit to 10 results
+        return User.objects.filter(username__contains=username)[:10]
 
 
 class FriendRequestViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):

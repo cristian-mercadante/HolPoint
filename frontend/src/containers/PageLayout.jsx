@@ -2,9 +2,6 @@ import React, { Component, Fragment } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { withRouter } from "react-router-dom";
-
-// import AlertComponent from "../components/alerts/AlertComponent";
-// import AlertsOverlayComponent from "../components/alerts/AlertsOverlayComponent";
 import { AlertComponent, AlertsOverlayComponent } from "../components/alerts/index";
 import { isAuthenticated } from "../routes";
 import * as colors from "../colors";
@@ -42,11 +39,15 @@ class PageLayout extends Component {
                   <LinkContainer to="/home">
                     <Nav.Link className="mr-sm-2">Home</Nav.Link>
                   </LinkContainer>
-
-                  <FriendRequestButton />
-
-                  <SearchBar />
-                  <ProfileButton username={this.props.username} logout={this.props.logout} />
+                  <Nav.Item>
+                    <FriendRequestButton />
+                  </Nav.Item>
+                  <Nav.Item>
+                    <SearchBar />
+                  </Nav.Item>
+                  <Nav.Item>
+                    <ProfileButton username={this.props.username} logout={this.props.logout} />
+                  </Nav.Item>
                 </Fragment>
               ) : (
                 <LogInSignUp />

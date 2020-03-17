@@ -23,7 +23,7 @@ class IdeaContent extends Component {
         ) : (
           <Fragment>
             <h3>Descrizione</h3>
-            <div className="text-with-newline">{this.props.description}</div>
+            <div className="lead text-with-newline">{this.props.description}</div>
           </Fragment>
         )}
 

@@ -97,8 +97,8 @@ class IdeaSerializer(serializers.ModelSerializer):
 
 
 class FriendRequestSerializer(serializers.ModelSerializer):
-    sender = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all())
-    receiver = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all())
+    sender = ProfileRelatedField()
+    receiver = ProfileRelatedField()
     status = serializers.ChoiceField(choices=['Acc', 'Pen', 'Ref'], default='Pen')
 
     class Meta:
