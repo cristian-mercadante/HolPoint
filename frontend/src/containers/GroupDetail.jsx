@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import Panel from "./Panel";
 
 import axios from "axios";
-import { groupsAPI } from "../server";
+import { groupAPI, groupCreatorAPI } from "../server";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
 import { GroupContent } from "../components/group";
@@ -38,7 +38,7 @@ class GroupDetail extends Component {
     };
     const id = this.props.match.params.id;
     return axios
-      .get(`${groupsAPI}${id}/`, headers)
+      .get(`${groupAPI}${id}/`, headers)
       .then(res => {
         let selectedFriends = [];
         res.data.profiles.forEach(profile => selectedFriends.push(profile.id));
@@ -78,7 +78,7 @@ class GroupDetail extends Component {
       date_finish: dateFinish
     };
     return axios
-      .put(`${groupsAPI}${this.state.group.id}/`, data, headers)
+      .put(`${groupAPI}${this.state.group.id}/`, data, headers)
       .then(res => {
         this.setState({ group: res.data });
         // checking if a user deleted himself from the group
@@ -102,7 +102,7 @@ class GroupDetail extends Component {
       }
     };
     return axios
-      .delete(`${groupsAPI}${this.state.group.id}/`, headers)
+      .delete(`${groupCreatorAPI}${this.state.group.id}/`, headers)
       .then(res => {
         this.props.history.push("/home");
       })

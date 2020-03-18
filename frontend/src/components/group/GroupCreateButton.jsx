@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
 import axios from "axios";
-import { groupsAPI } from "../../server";
+import { groupAPI } from "../../server";
 import { dateToString_or_Null, validateDates } from "../../dateUtils";
 
 class GroupCreateButton extends Component {
@@ -63,7 +63,7 @@ class GroupCreateButton extends Component {
     };
     return axios
       .post(
-        `${groupsAPI}`,
+        `${groupAPI}`,
         {
           name,
           description,

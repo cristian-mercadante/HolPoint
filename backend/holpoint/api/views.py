@@ -17,6 +17,7 @@ from .serializers import (
     BasicUserSerializer,
     FriendRequestSerializer,
     GroupSerializer,
+    GroupCreatorSerializer,
     IdeaSerializer,
     IdeaCommentSerializer,
     VoteIdeaInGroupSerializer,
@@ -83,13 +84,22 @@ class UserBasicDetailView(RetrieveAPIView):
     serializer_class = BasicUserSerializer
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class GroupViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         return self.request.user.profile.groups.all()
+
+
+class GroupCreatorViewSet(mixins.DestroyModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupCreatorSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        return self.request.user.profile.created_groups.all()
 
 
 class IdeaViewSet(viewsets.ModelViewSet):

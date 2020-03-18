@@ -10,6 +10,7 @@ from .views import (
 
 from .views import (
     GroupViewSet,
+    GroupCreatorViewSet,
     IdeaViewSet,
     IdeaCommentViewSet,
     VoteIdeaInGroupViewSet,
@@ -20,6 +21,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'group', GroupViewSet, basename="group")
+router.register(r'group_creator', GroupCreatorViewSet, basename="group_creator")
 router.register(r'idea', IdeaViewSet, basename="idea")
 router.register(r'comment/idea', IdeaCommentViewSet, basename="comment_idea")
 router.register(r'friendrequest', FriendRequestViewSet, basename="friend_request")

@@ -219,6 +219,14 @@ class GroupSerializer(serializers.ModelSerializer):
         return instance
 
 
+class GroupCreatorSerializer(serializers.ModelSerializer):
+    prefered_idea = IdeaRelatedField()
+
+    class Meta:
+        model = Group
+        fields = ('prefered_idea')
+
+
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
 

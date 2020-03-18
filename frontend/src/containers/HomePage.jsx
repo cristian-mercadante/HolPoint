@@ -4,7 +4,7 @@ import { GroupCardsManager, GroupCreateButton } from "../components/group";
 import Panel from "../containers/Panel";
 import { connect } from "react-redux";
 import axios from "axios";
-import { groupsAPI } from "../server";
+import { groupAPI } from "../server";
 import * as alertActions from "../actions/alerts";
 
 class HomePage extends Component {
@@ -28,7 +28,7 @@ class HomePage extends Component {
       }
     };
     return axios
-      .get(`${groupsAPI}`, headers)
+      .get(`${groupAPI}`, headers)
       .then(res => {
         if (this._isMounted) this.setState({ loading: false, groups: res.data });
       })

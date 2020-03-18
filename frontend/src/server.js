@@ -10,7 +10,8 @@ export const profileAPI = api + "profile/";
 export const currentUserAPI = api + "current_user";
 export const userBasicAPI = api + "user/";
 
-export const groupsAPI = api + "group/";
+export const groupAPI = api + "group/";
+export const groupCreatorAPI = api + "group_creator/";
 export const ideaAPI = api + "idea/";
 export const commentIdeaAPI = api + "comment/idea/";
 
