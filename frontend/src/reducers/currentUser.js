@@ -1,5 +1,6 @@
 import * as actionTypes from "../actions/types";
 import { updateObject } from "./utility";
+import { server } from "../server";
 
 const initialState = {
   id: "",
@@ -77,6 +78,12 @@ const removeFriendFromState = (state, action) => {
   return updateObject(state, { profile });
 };
 
+const pictureUpdate = (state, action) => {
+  let profile = { ...state.profile };
+  profile.picture = `${server}${action.data.picture}`;
+  return updateObject(state, { profile });
+};
+
 const getCurrentUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_CURRENT_USER_START:
@@ -97,6 +104,8 @@ const getCurrentUserReducer = (state = initialState, action) => {
       return addFriendToState(state, action);
     case actionTypes.REMOVE_FRIEND_FROM_STATE:
       return removeFriendFromState(state, action);
+    case actionTypes.PICTURE_UPDATE:
+      return pictureUpdate(state, action);
     default:
       return state;
   }

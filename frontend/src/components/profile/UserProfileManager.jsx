@@ -15,7 +15,10 @@ class UserProfileManager extends Component {
     return (
       <Container>
         <div style={{ textAlign: "center" }}>
-          <Image src={logo} height={this.imageSize} width={this.imageSize} roundedCircle thumbnail />
+          <Image
+            src={this.props.profile.profile.picture ? this.props.profile.profile.picture : logo}
+            className="profile-pic-big"
+          />
           <h1 className="display-4">
             {this.props.profile.first_name} {this.props.profile.last_name}
           </h1>

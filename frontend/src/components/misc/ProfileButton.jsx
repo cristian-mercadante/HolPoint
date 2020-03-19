@@ -16,7 +16,7 @@ class ProfileButton extends Component {
 
   onClickProfile = e => {
     e.preventDefault();
-    const path = `/profile/${this.props.username}`;
+    const path = `/profile/${this.props.currentUser.username}`;
     this.props.history.push(path);
   };
 
@@ -25,30 +25,40 @@ class ProfileButton extends Component {
   render() {
     return (
       <Fragment>
-        <Dropdown as={ButtonGroup} alignRight>
-          <Button variant="success" onClick={this.onClickProfile}>
-            <Image src={logo} height={30} width={30} roundedCircle thumbnail />
-            {"   " + this.props.username}
-          </Button>
-          <Dropdown.Toggle split variant="success" />
-          <Dropdown.Menu>
-            {this.dropdownItems.map(item => (
-              <LinkContainer to={item.to} key={item.key}>
-                <Dropdown.Item>{item.name}</Dropdown.Item>
-              </LinkContainer>
-            ))}
-            <Dropdown.Divider />
-            <Dropdown.Item>
-              <Button variant="outline-danger" onClick={this.onClickLogout}>
-                Log Out
-              </Button>
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        {!this.props.currentUser.loading && (
+          <Dropdown as={ButtonGroup} alignRight>
+            <Button variant="success" onClick={this.onClickProfile}>
+              <Image
+                src={this.props.currentUser.profile.picture ? this.props.currentUser.profile.picture : logo}
+                className="profile-pic-small"
+              />
+              {"   " + this.props.currentUser.username}
+            </Button>
+            <Dropdown.Toggle split variant="success" />
+            <Dropdown.Menu>
+              {this.dropdownItems.map(item => (
+                <LinkContainer to={item.to} key={item.key}>
+                  <Dropdown.Item>{item.name}</Dropdown.Item>
+                </LinkContainer>
+              ))}
+              <Dropdown.Divider />
+              <Dropdown.Item>
+                <Button variant="outline-danger" onClick={this.onClickLogout}>
+                  Log Out
+                </Button>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
       </Fragment>
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    currentUser: state.currentUser
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -56,4 +66,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(connect(null, mapDispatchToProps)(ProfileButton));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProfileButton));

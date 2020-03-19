@@ -40,7 +40,13 @@ class ProfileRelatedField(serializers.RelatedField):
         last_name = p.user.last_name
         username = p.user.username
         email = p.user.email
-        return {'id': value.pk, 'first_name': first_name, 'last_name': last_name, 'username': username, 'email': email}
+        picture = None
+        request = self.context.get('request', None)
+        if p.user.profile.picture:
+            url = p.user.profile.picture.url
+            if request is not None:
+                picture = request.build_absolute_uri(url)
+        return {'id': value.pk, 'first_name': first_name, 'last_name': last_name, 'username': username, 'email': email, 'picture': picture}
 
 
 class IdeaRelatedField(serializers.RelatedField):
@@ -153,7 +159,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('friends', 'user', 'ideas')
+        fields = ('friends', 'user', 'ideas', 'picture')
 
 
 class CurrentUserProfileSerializer(serializers.ModelSerializer):
@@ -162,7 +168,7 @@ class CurrentUserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('friends', 'user', 'ideas')
+        fields = ('friends', 'user', 'ideas', 'picture')
 
 
 class VoteIdeaInGroupSerializer(serializers.ModelSerializer):
@@ -247,6 +253,12 @@ class BasicUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'email')
+
+
+class PictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('picture',)
 
 
 class IdeaCommentSerializer(serializers.ModelSerializer):

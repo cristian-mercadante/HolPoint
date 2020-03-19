@@ -8,6 +8,7 @@ class Profile(models.Model):
     # constraints
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     friends = models.ManyToManyField("self", blank=True)
+    picture = models.ImageField(blank=True, null=True, upload_to='profile_pictures')
 
     def __str__(self):
         return "{}".format(self.user.username)

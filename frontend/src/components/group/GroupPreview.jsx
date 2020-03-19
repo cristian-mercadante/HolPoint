@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { ProfileBadge } from "../misc";
 import { dateToString_or_Null } from "../../dateUtils";
+import { Badge } from "react-bootstrap";
 
 export default function GroupPreview(props) {
   return (
@@ -15,6 +16,10 @@ export default function GroupPreview(props) {
         {props.profiles.map(p => (
           <ProfileBadge profile={p} key={p.id} variant="primary" placement="bottom" />
         ))}
+      </div>
+      <div>
+        Idea preferita:{" "}
+        <Badge variant="success">{props.prefered_idea ? props.prefered_idea.title : "non definita"}</Badge>
       </div>
       <hr />
       <div className="text-with-newline lead">{props.description}</div>

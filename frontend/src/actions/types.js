@@ -20,6 +20,7 @@ export const LOADING = "LOADING";
 export const DONE = "DONE";
 export const ADD_FRIEND_TO_STATE = "ADD_FRIEND_TO_STATE";
 export const REMOVE_FRIEND_FROM_STATE = "REMOVE_FRIEND_FROM_STATE";
+export const PICTURE_UPDATE = "PICTURE_UPDATE";
 
 //friend_requests
 export const GET_FRIEND_REQUESTS = "GET_FRIEND_REQUESTS";

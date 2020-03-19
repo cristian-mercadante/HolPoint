@@ -23,3 +23,25 @@ body::-webkit-scrollbar-thumb {
 .text-with-newline {
   white-space: pre-line;
 }
+
+.profile-pic-small {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-pic-medium {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-pic-big {
+  border: 3px solid var(--holpoint-yellow);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}

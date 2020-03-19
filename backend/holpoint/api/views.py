@@ -1,4 +1,8 @@
-from rest_framework import viewsets, mixins, views
+import uuid
+import os
+from django.conf import settings
+
+from rest_framework import viewsets, mixins, views, parsers, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.generics import (
@@ -8,7 +12,7 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView
 )
 
-#from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import (
@@ -22,6 +26,7 @@ from .serializers import (
     IdeaCommentSerializer,
     VoteIdeaInGroupSerializer,
     CurrentUserFriendRequestSerializer,
+    PictureSerializer,
 )
 
 from django.contrib.auth.models import User
@@ -168,3 +173,31 @@ class UnfriendViewSet(viewsets.ModelViewSet):
             currentUser.save()
             serializer = self.serializer_class(currentUser)
             return Response(serializer.data)
+
+
+class PictureUpload(mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    permission_classes = [IsAuthenticated, ]
+    parser_classes = (parsers.MultiPartParser, parsers.FormParser)
+    serializer_class = PictureSerializer
+
+    def upload(self, request):
+        currentUser = request.user
+        if not currentUser:
+            raise NotFound(detail="Current user not found", code=404)
+        profile = currentUser.profile
+        # remove old pic
+        image_path = "{}/{}".format(settings.MEDIA_ROOT, currentUser.profile.picture.name)
+        if os.path.isfile(image_path):
+            os.remove(image_path)
+        # rename new pic
+        old_name = request.FILES['picture'].name
+        filename, file_extension = os.path.splitext(old_name)
+        request.FILES['picture'].name = "{}{}".format(str(uuid.uuid4()), file_extension)
+        # response
+        serializer = self.serializer_class(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("error", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

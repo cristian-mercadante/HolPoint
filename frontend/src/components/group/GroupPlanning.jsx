@@ -15,6 +15,7 @@ export default class GroupPlanning extends Component {
               profiles={this.props.group.profiles}
               dateStart={this.props.dateStart}
               dateFinish={this.props.dateFinish}
+              prefered_idea={this.props.group.prefered_idea}
             />
           }
         />

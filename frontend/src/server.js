@@ -9,6 +9,7 @@ const api = server + "/api/";
 export const profileAPI = api + "profile/";
 export const currentUserAPI = api + "current_user";
 export const userBasicAPI = api + "user/";
+export const pictureUploadAPI = api + "pictureupload";
 
 export const groupAPI = api + "group/";
 export const groupCreatorAPI = api + "group_creator/";

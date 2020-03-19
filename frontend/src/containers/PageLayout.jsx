@@ -46,7 +46,7 @@ class PageLayout extends Component {
                     <SearchBar />
                   </Nav.Item>
                   <Nav.Item>
-                    <ProfileButton username={this.props.username} logout={this.props.logout} />
+                    <ProfileButton />
                   </Nav.Item>
                 </Fragment>
               ) : (

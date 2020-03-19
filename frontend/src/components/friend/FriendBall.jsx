@@ -10,8 +10,6 @@ class FriendBall extends Component {
     selected: false
   };
 
-  imgSize = 80;
-
   divStyle = {
     margin: "10px",
     width: `${this.imgSize}px`,
@@ -36,30 +34,19 @@ class FriendBall extends Component {
 
   render() {
     const selectedClassName = this.state.selected ? "selected" : "";
-
+    const src = this.props.friend.picture ? this.props.friend.picture : logo;
     return (
       <Fragment>
         <div style={this.divStyle}>
           {this.props.selectable ? (
             <Image
-              src={logo}
-              height={this.imgSize}
-              width={this.imgSize}
-              roundedCircle
-              thumbnail
-              className={`friend-image ${selectedClassName}`}
+              src={src}
+              className={`profile-pic-medium friend-image ${selectedClassName}`}
               onClick={this.onSelectClick}
             />
           ) : (
             <Link to={`/profile/${this.props.friend.username}`}>
-              <Image
-                src={logo}
-                height={this.imgSize}
-                width={this.imgSize}
-                roundedCircle
-                thumbnail
-                className={`friend-image ${selectedClassName}`}
-              />
+              <Image src={src} className={`profile-pic-medium friend-image ${selectedClassName}`} />
             </Link>
           )}
           <legend style={this.legendStyle}>{this.props.friend.username}</legend>

@@ -6,6 +6,7 @@ from .views import (
     CurrentUserDetailView,
     IdeaCommentListView,
     CurrentUserFriendRequestDetailView,
+    PictureUpload,
 )
 
 from .views import (
@@ -35,6 +36,7 @@ urlpatterns = [
     path('vote/<group_id>/<idea_id>', VoteIdeaInGroupViewSet.as_view({'post': 'vote'})),
     path('friendrequests', CurrentUserFriendRequestDetailView.as_view()),
     path('unfriend/<int:friend_id>', UnfriendViewSet.as_view({'delete': 'unfriend'})),
+    path('pictureupload', PictureUpload.as_view({'put': 'upload'})),
 ]
 
 urlpatterns += router.urls

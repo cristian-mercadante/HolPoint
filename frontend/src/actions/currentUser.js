@@ -1,6 +1,6 @@
 import * as actionTypes from "./types";
 import axios from "axios";
-import { currentUserAPI } from "../server";
+import { currentUserAPI, pictureUploadAPI } from "../server";
 
 import * as alertActions from "./alerts";
 
@@ -69,9 +69,16 @@ export const done = () => {
   };
 };
 
-export const putCurrentUser = (username, email, first_name, last_name) => {
+export const pictureUpdate = data => {
+  return {
+    type: actionTypes.PICTURE_UPDATE,
+    data: data
+  };
+};
+
+export const putCurrentUser = (username, email, first_name, last_name, picture) => {
   const token = localStorage.getItem("token");
-  const headers = {
+  let headers = {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${token}`
@@ -91,14 +98,31 @@ export const putCurrentUser = (username, email, first_name, last_name) => {
         headers
       )
       .then(res => {
-        dispatch(done());
-        dispatch({ type: actionTypes.PUT_CURRENT_USER, username, email, first_name, last_name });
-        dispatch(alertActions.addAlert("Informazioni aggiornate con successo!", "success"));
+        if (picture) {
+          let form_data = new FormData();
+          form_data.append("picture", picture, picture.name);
+          headers = {
+            headers: {
+              "Content-Type": "multiplart/form-data",
+              Authorization: `Token ${token}`
+            }
+          };
+          return axios
+            .put(`${pictureUploadAPI}`, form_data, headers)
+            .then(res => {
+              dispatch(pictureUpdate(res.data));
+              dispatch(done());
+              dispatch({ type: actionTypes.PUT_CURRENT_USER, username, email, first_name, last_name });
+              dispatch(alertActions.addAlert("Informazioni aggiornate con successo!", "success"));
+            })
+            .catch(error => {
+              dispatch(alertActions.error(error));
+            });
+        }
       })
       .catch(error => {
         dispatch(done());
         dispatch(alertActions.error(error));
-        return error;
       });
   };
 };

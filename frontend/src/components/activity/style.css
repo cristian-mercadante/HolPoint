@@ -23,7 +23,7 @@
 }
 
 .hs::-webkit-scrollbar-thumb {
-  background: var(--holpoint-red);
+  background: var(--holpoint-green);
 }
 
 .column {

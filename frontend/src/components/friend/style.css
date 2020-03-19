@@ -1,6 +1,5 @@
 .friend-image {
-  border-width: 1px;
-  border-color: var(--holpoint-yellow);
+  border: 1px solid var(--holpoint-yellow);
 }
 .friend-image:hover,
 .friend-image:visited,
