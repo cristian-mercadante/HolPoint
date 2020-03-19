@@ -13,7 +13,7 @@ export default function GroupPreview(props) {
       <div>
         Partecipanti:{" "}
         {props.profiles.map(p => (
-          <ProfileBadge profile={p} variant="primary" placement="bottom" />
+          <ProfileBadge profile={p} key={p.id} variant="primary" placement="bottom" />
         ))}
       </div>
       <hr />

@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from "react";
-import { ProgressBar, Container, ButtonGroup } from "react-bootstrap";
+import { ProgressBar, Container, Nav } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-import Panel from "./Panel";
 
 import axios from "axios";
 import { groupAPI, groupCreatorAPI } from "../server";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
-import { GroupContent } from "../components/group";
-import { IdeaCardManagerVote, IdeaCreateButton, IdeaAddToGroupButton } from "../components/idea";
+import { GroupDesign, GroupPlanning } from "../components/group";
 
 import { stringToDate_or_Null } from "../dateUtils";
 
@@ -18,13 +16,16 @@ class GroupDetail extends Component {
     group: {},
     selectedFriends: [],
     dateStart: null,
-    dateFinish: null
+    dateFinish: null,
+    phase: 0 // should be 0 for "ideazione" and 1 for "planning"
   };
 
   setDateStart = date => this.setState({ dateStart: date });
   setDateFinish = date => this.setState({ dateFinish: date });
 
   componentDidMount() {
+    // TODO: change phase on prefered_idea
+    this.setState({ phase: 1 });
     this.getGroup();
   }
 
@@ -175,6 +176,29 @@ class GroupDetail extends Component {
     }
   };
 
+  putFavIdea = ideaId => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    const data = {
+      prefered_idea: ideaId
+    };
+    return axios
+      .put(`${groupCreatorAPI}${this.state.group.id}/`, data, headers)
+      .then(res => {
+        let group = this.state.group;
+        group.prefered_idea = res.data.prefered_idea;
+        this.setState({ group: group });
+      })
+      .catch(error => {
+        this.props.error(error);
+      });
+  };
+
   render() {
     return (
       <Container>
@@ -182,42 +206,43 @@ class GroupDetail extends Component {
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
           <Fragment>
-            <Panel
-              title={this.state.group.name}
-              component={
-                <GroupContent
-                  {...this.state.group}
-                  selectFriend={this.selectFriend}
-                  selectedFriends={this.state.selectedFriends}
-                  putGroup={this.putGroup}
-                  deleteGroup={this.deleteGroup}
-                  dateStart={this.state.dateStart}
-                  dateFinish={this.state.dateFinish}
-                  setDateStart={this.setDateStart}
-                  setDateFinish={this.setDateFinish}
-                />
-              }
-            />
-            <Panel
-              title="Idee proposte"
-              component={
-                <IdeaCardManagerVote
-                  ideas={this.state.group.ideas}
-                  deleteIdea={this.removeIdeaFromGroup}
-                  updateIdeaInState={this.updateIdeaInState}
-                  group_to_idea={this.state.group.group_to_idea}
-                />
-              }
-              badge={
-                <ButtonGroup>
-                  <IdeaCreateButton addIdeaToState={this.addIdeaToState} />
-                  <IdeaAddToGroupButton
-                    addIdeaToState={this.addIdeaIdsListForPutGroup}
-                    groupIdeas={this.state.group.ideas}
-                  />
-                </ButtonGroup>
-              }
-            />
+            <Nav style={{ marginTop: "10px" }} justify variant="tabs">
+              <Nav.Item>
+                <Nav.Link onClick={() => this.setState({ phase: 0 })}>Ideazione</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link
+                  onClick={() => this.setState({ phase: 1 })}
+                  disabled={this.state.group.prefered_idea ? false : true}
+                >
+                  Planning
+                </Nav.Link>
+              </Nav.Item>
+            </Nav>
+            {this.state.phase === 0 ? (
+              <GroupDesign
+                group={this.state.group}
+                selectFriend={this.selectFriend}
+                selectedFriends={this.state.selectedFriends}
+                putGroup={this.putGroup}
+                deleteGroup={this.deleteGroup}
+                dateStart={this.state.dateStart}
+                dateFinish={this.state.dateFinish}
+                setDateStart={this.setDateStart}
+                setDateFinish={this.setDateFinish}
+                removeIdeaFromGroup={this.removeIdeaFromGroup}
+                updateIdeaInState={this.updateIdeaInState}
+                addIdeaToState={this.addIdeaToState}
+                addIdeaIdsListForPutGroup={this.addIdeaIdsListForPutGroup}
+                putFavIdea={this.putFavIdea}
+              />
+            ) : (
+              <GroupPlanning
+                group={this.state.group}
+                dateStart={this.state.dateStart}
+                dateFinish={this.state.dateFinish}
+              />
+            )}
           </Fragment>
         )}
       </Container>

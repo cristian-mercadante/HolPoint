@@ -55,9 +55,9 @@ class FriendRequestButton extends Component {
           {this.state.loading ? (
             <Spinner className="float-right" size="sm" animation="border" />
           ) : (
-            <Button className="float-right" variant="plain" size="sm" onClick={this.updateList}>
+            <div className="float-right ml-3" onClick={this.updateList}>
               <FaRedo style={{ marginTop: "-10px" }} />
-            </Button>
+            </div>
           )}
         </Popover.Title>
         <Popover.Content>{this.listRequests()}</Popover.Content>

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Form, Button } from "react-bootstrap";
 
-export default class IdeaAddToGroupForm extends Component {
+export default class IdeaListForm extends Component {
   renderCheckBoxes = () => {
     let buffer = [];
     this.props.ideas.forEach(idea => {
@@ -9,7 +9,7 @@ export default class IdeaAddToGroupForm extends Component {
         <Form.Check
           custom
           style={{ fontSize: "20px" }}
-          type="checkbox"
+          type={this.props.type}
           key={idea.id}
           id={idea.id}
           label={idea.title}

@@ -17,3 +17,13 @@ export const validateDates = (first, second, addAlert) => {
   }
   return true;
 };
+
+export const differenceInDays = (date1, date2) => {
+  return Math.floor((date2 - date1) / (1000 * 60 * 60 * 24)) + 1;
+};
+
+export const incrementDate = (dateInput, increment) => {
+  var dateFormatTotime = new Date(dateInput);
+  var increasedDate = new Date(dateFormatTotime.getTime() + increment * 86400000);
+  return increasedDate;
+};

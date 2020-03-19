@@ -183,7 +183,7 @@ class GroupSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(default=True, read_only=True)
     creator = ProfileRelatedField(read_only=True, required=False)
     profiles = ProfileRelatedField(queryset=Profile.objects.all(), many=True, required=False)
-    prefered_idea = serializers.PrimaryKeyRelatedField(queryset=Idea.objects.all(), required=False)
+    prefered_idea = IdeaRelatedField(required=False, read_only=True)
     ideas = IdeaRelatedField(queryset=Idea.objects.all(), many=True, required=False)
     group_to_idea = VoteIdeaInGroupSerializer(many=True, required=False)
 
@@ -224,7 +224,7 @@ class GroupCreatorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Group
-        fields = ('prefered_idea')
+        fields = ('prefered_idea',)
 
 
 class UserSerializer(serializers.ModelSerializer):

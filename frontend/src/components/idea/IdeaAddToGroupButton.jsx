@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Button } from "react-bootstrap";
 import CardModal from "../../containers/CardModal";
-import { IdeaAddToGroupForm } from ".";
+import { IdeaListForm } from ".";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
 
@@ -38,10 +38,14 @@ class IdeaAddToGroupButton extends Component {
   handleSubmit = e => {
     e.preventDefault();
     let checkedIdeas = [...document.querySelectorAll("input[name=ideas]:checked")].map(idea => parseInt(idea.id));
-    this.props.addIdeaToState(checkedIdeas).then(() => {
-      this.showCreate();
-      this.props.removeAllAlerts();
-    });
+    if (checkedIdeas.length !== 0) {
+      this.props.addIdeaToState(checkedIdeas).then(() => {
+        this.showCreate();
+        this.props.removeAllAlerts();
+      });
+    } else {
+      this.props.addAlert("Nessuna idea selezionata", "warning");
+    }
   };
 
   render() {
@@ -55,7 +59,7 @@ class IdeaAddToGroupButton extends Component {
           type="idea-modal"
           header="Aggiungi idea"
           onHide={this.showCreate}
-          body={<IdeaAddToGroupForm onSubmit={this.handleSubmit} ideas={this.state.ideas} />}
+          body={<IdeaListForm onSubmit={this.handleSubmit} ideas={this.state.ideas} type="checkbox" />}
         />
       </Fragment>
     );
@@ -70,6 +74,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };

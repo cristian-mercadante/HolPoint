@@ -2,21 +2,27 @@ import React, { Component, Fragment } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
-import GroupForm from "./GroupForm";
+import { GroupForm, GroupPreview } from ".";
+import { IdeaListForm } from "../idea";
 import ConfirmModal from "../../containers/ConfirmModal";
+import CardModal from "../../containers/CardModal";
 
 import { dateToString_or_Null, validateDates } from "../../dateUtils";
-import GroupPreview from "./GroupPreview";
 
 class GroupContent extends Component {
   state = {
     editing: false,
     showModalDelete: false,
+    showModalFavIdea: false,
     profiles: []
   };
 
   showModalDelete = () => {
     this.setState({ showModalDelete: !this.state.showModalDelete });
+  };
+
+  showModalFavIdea = () => {
+    this.setState({ showModalFavIdea: !this.state.showModalFavIdea });
   };
 
   edit = () => {
@@ -83,6 +89,19 @@ class GroupContent extends Component {
     return this.props.currentUser.id === this.props.creator.id;
   };
 
+  selectFavIdea = e => {
+    e.preventDefault();
+    let checkedIdea = document.querySelector("input[name=ideas]:checked");
+    if (checkedIdea) {
+      this.props.putFavIdea(checkedIdea.id).then(() => {
+        this.showModalFavIdea();
+        this.props.removeAllAlerts();
+      });
+    } else {
+      this.props.addAlert("Nessuna idea selezionata", "warning");
+    }
+  };
+
   render() {
     return (
       <Fragment>
@@ -91,9 +110,14 @@ class GroupContent extends Component {
             {this.state.editing ? "Annulla" : "Modifica"}
           </Button>
           {this.isCreator() && (
-            <Button variant="danger" onClick={this.showModalDelete}>
-              Elimina
-            </Button>
+            <Fragment>
+              <Button variant="warning" onClick={this.showModalFavIdea}>
+                Seleziona idea preferita
+              </Button>
+              <Button variant="danger" onClick={this.showModalDelete}>
+                Elimina
+              </Button>
+            </Fragment>
           )}
         </ButtonGroup>
 
@@ -115,6 +139,13 @@ class GroupContent extends Component {
         )}
 
         <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.onSubmitDelete} />
+        <CardModal
+          show={this.state.showModalFavIdea}
+          type="idea-modal"
+          header="Seleziona idea preferita"
+          onHide={this.showModalFavIdea}
+          body={<IdeaListForm onSubmit={this.selectFavIdea} ideas={this.props.ideas} type="radio" />}
+        />
       </Fragment>
     );
   }
@@ -128,7 +159,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
+    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };
 

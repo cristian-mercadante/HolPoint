@@ -4,5 +4,5 @@ export { default as IdeaCreateButton } from "./IdeaCreateButton";
 export { default as IdeaForm } from "./IdeaForm";
 export { default as IdeaContent } from "./IdeaContent";
 export { default as IdeaAddToGroupButton } from "./IdeaAddToGroupButton";
-export { default as IdeaAddToGroupForm } from "./IdeaAddToGroupForm";
+export { default as IdeaListForm } from "./IdeaListForm";
 export { default as IdeaCardManagerVote } from "./IdeaCardManagerVote";
