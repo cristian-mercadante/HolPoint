@@ -8,9 +8,11 @@
 }
 
 .hs {
+  position: absolute;
+  left: 0;
+  width: 100%;
   display: flex;
   overflow-x: auto;
-  min-width: 100%;
   min-height: 200px;
 }
 
