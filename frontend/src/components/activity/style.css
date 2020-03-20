@@ -29,15 +29,34 @@
 .column {
   background-color: var(--holpoint-green);
   border-radius: 5px;
-  min-width: 400px;
+  min-width: 300px;
   overflow-y: auto;
-  min-height: 600px;
+  min-height: 400px;
   margin: 10px;
+  padding: 10px;
 }
 
-.column .title {
-  color: #fff;
-  margin-top: 10px;
+.title {
+  color: black;
+  margin: 10px;
   font-size: 20px;
   text-align: center;
+}
+
+.activity {
+  border: 1px solid var(--holpoint-blue);
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
+  min-height: 70px;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
 }

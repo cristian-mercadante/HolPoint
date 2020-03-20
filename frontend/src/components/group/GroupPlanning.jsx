@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import Panel from "../../containers/Panel";
 import { GroupPreview } from ".";
-import { ActivityManager } from "../activity";
+//import { ActivityManager } from "../activity";
+import { ActivityManagerDND } from "../activity";
 
 export default class GroupPlanning extends Component {
   render() {
@@ -24,7 +25,8 @@ export default class GroupPlanning extends Component {
           component={
             this.props.dateStart && this.props.dateFinish ? (
               <div>
-                <ActivityManager dateStart={this.props.dateStart} dateFinish={this.props.dateFinish} />
+                {/* <ActivityManager dateStart={this.props.dateStart} dateFinish={this.props.dateFinish} /> */}
+                <ActivityManagerDND />
               </div>
             ) : (
               <div style={{ textAlign: "center", color: "#777", fontSize: "20px" }}>
