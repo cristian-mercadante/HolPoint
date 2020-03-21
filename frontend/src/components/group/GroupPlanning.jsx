@@ -20,21 +20,19 @@ export default class GroupPlanning extends Component {
             />
           }
         />
-        <Panel
-          title="Attività"
-          component={
-            this.props.dateStart && this.props.dateFinish ? (
-              <div>
-                {/* <ActivityManager dateStart={this.props.dateStart} dateFinish={this.props.dateFinish} /> */}
-                <ActivityManagerDND />
-              </div>
-            ) : (
-              <div style={{ textAlign: "center", color: "#777", fontSize: "20px" }}>
-                È necessario definire la data di partenza e la data di arrivo per pianificare le attività
-              </div>
-            )
-          }
-        />
+        {this.props.dateStart && this.props.dateFinish ? (
+          <div>
+            <ActivityManagerDND
+              group={this.props.group}
+              dateStart={this.props.dateStart}
+              dateFinish={this.props.dateFinish}
+            />
+          </div>
+        ) : (
+          <div style={{ textAlign: "center", color: "#777", fontSize: "20px" }}>
+            È necessario definire la data di partenza e la data di arrivo per pianificare le attività
+          </div>
+        )}
       </Fragment>
     );
   }

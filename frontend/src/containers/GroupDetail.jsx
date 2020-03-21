@@ -24,8 +24,10 @@ class GroupDetail extends Component {
   setDateFinish = date => this.setState({ dateFinish: date });
 
   componentDidMount() {
-    // TODO: change phase on prefered_idea
+    // FIXME: NEXT LINE IS TEMPORARY!
+    // change phase on prefered_idea
     this.setState({ phase: 1 });
+    //this.setState({ phase: 0 });
     this.getGroup();
   }
 

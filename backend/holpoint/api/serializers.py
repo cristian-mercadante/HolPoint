@@ -278,6 +278,7 @@ class IdeaCommentSerializer(serializers.ModelSerializer):
 
 
 class ActivitySerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     date = serializers.DateField(required=False, allow_null=True, format="%d/%m/%Y")
     time = serializers.TimeField(required=False, allow_null=True, format="%H:%M")
     description = serializers.CharField(required=False)
@@ -290,6 +291,15 @@ class ActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Activity
         fields = '__all__'
+
+    def to_representation(self, instance):
+        # retrieve id as string.
+        # frontend "react-beautiful-dnd" needs draggables
+        # to have string as id
+        id_val = instance.id
+        output = super(ActivitySerializer, self).to_representation(instance)
+        output['id'] = str(id_val)
+        return output
 
     def create(self, validated_data):
         current_user = self.context['request'].user.id

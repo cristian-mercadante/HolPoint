@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Task from "./Task";
+import ActivityCard from "./ActivityCard";
 import { Droppable } from "react-beautiful-dnd";
 
 export default class Column extends Component {
@@ -13,10 +13,13 @@ export default class Column extends Component {
               className="column"
               ref={provided.innerRef}
               {...provided.droppableProps}
-              style={{ backgroundColor: snapshot.isDraggingOver && "var(--holpoint-red)" }}
+              style={{
+                backgroundColor: snapshot.isDraggingOver ? "var(--holpoint-red)" : "var(--holpoint-light-green)",
+                borderColor: snapshot.isDraggingOver ? "var(--holpoint-dark-red)" : "var(--holpoint-green)"
+              }}
             >
-              {this.props.tasks.map((task, index) => (
-                <Task key={task.id} task={task} index={index} />
+              {this.props.activities.map((activity, index) => (
+                <ActivityCard key={activity.id} activity={activity} index={index} />
               ))}
               {provided.placeholder}
             </div>

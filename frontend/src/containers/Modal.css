@@ -16,12 +16,25 @@
   background: var(--holpoint-dark-red);
 }
 
+.activity-modal .modal-content {
+  background-color: var(--holpoint-green);
+  color: #fff;
+}
+
+.activity-modal .card-body::-webkit-scrollbar-track {
+  background: var(--holpoint-green);
+}
+
 /* modal body overflow */
 .group-modal .card-body {
   overflow: auto;
 }
 
 .idea-modal .card-body {
+  overflow: auto;
+}
+
+.activity-modal .card-body {
   overflow: auto;
 }
 

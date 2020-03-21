@@ -1,6 +1,7 @@
 export const dateToString_or_Null = date => {
   if (date !== null) {
-    return date.toLocaleString("it-IT").split(",")[0];
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return date.toLocaleString("it-IT", options).split(",")[0];
   } else return date;
 };
 
@@ -19,7 +20,7 @@ export const validateDates = (first, second, addAlert) => {
 };
 
 export const differenceInDays = (date1, date2) => {
-  return Math.floor((date2 - date1) / (1000 * 60 * 60 * 24)) + 1;
+  return Math.floor((date2 - date1) / (1000 * 60 * 60 * 24)) + 1; // NOTICE: plus one
 };
 
 export const incrementDate = (dateInput, increment) => {
