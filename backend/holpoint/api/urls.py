@@ -16,13 +16,16 @@ from .views import (
     IdeaCommentViewSet,
     VoteIdeaInGroupViewSet,
     FriendRequestViewSet,
-    UnfriendViewSet
+    UnfriendViewSet,
+    ActivityViewSet,
+    ActivityCreatorViewSet,
 )
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'group', GroupViewSet, basename="group")
 router.register(r'group_creator', GroupCreatorViewSet, basename="group_creator")
+router.register(r'activity_creator', ActivityCreatorViewSet, basename="activity_creator")
 router.register(r'idea', IdeaViewSet, basename="idea")
 router.register(r'comment/idea', IdeaCommentViewSet, basename="comment_idea")
 router.register(r'friendrequest', FriendRequestViewSet, basename="friend_request")
@@ -37,6 +40,7 @@ urlpatterns = [
     path('friendrequests', CurrentUserFriendRequestDetailView.as_view()),
     path('unfriend/<int:friend_id>', UnfriendViewSet.as_view({'delete': 'unfriend'})),
     path('pictureupload', PictureUpload.as_view({'put': 'upload'})),
+    path('group_activity/<int:group_id>/<int:activity_id>', ActivityViewSet.as_view({'get': 'list', 'put': 'edit'})),
 ]
 
 urlpatterns += router.urls

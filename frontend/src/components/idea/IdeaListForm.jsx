@@ -31,7 +31,7 @@ export default class IdeaListForm extends Component {
             </Button>
           </Form>
         ) : (
-          <div style={{ textAlign: "center", fontSize: "30px" }}>Non ci sono altre idee da aggiungere :/</div>
+          <div style={{ textAlign: "center", fontSize: "30px" }}>Non ci sono idee :/</div>
         )}
       </Fragment>
     );

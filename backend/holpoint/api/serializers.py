@@ -8,6 +8,7 @@ from holpoint.models import (
     Idea,
     IdeaComment,
     VoteIdeaInGroup,
+    Activity,
 )
 
 
@@ -274,3 +275,26 @@ class IdeaCommentSerializer(serializers.ModelSerializer):
         creator = Profile.objects.filter(user=current_user).first()
         comment = IdeaComment.objects.create(**validated_data, creator=creator)
         return comment
+
+
+class ActivitySerializer(serializers.ModelSerializer):
+    date = serializers.DateField(required=False, allow_null=True, format="%d/%m/%Y")
+    time = serializers.TimeField(required=False, allow_null=True, format="%H:%M")
+    description = serializers.CharField(required=False)
+    url = serializers.URLField(required=False)
+    KIND_CHOICES = ['GEN', 'SPO', 'PER', 'RIS', 'VIS', 'ESC', 'SVA', 'ACQ']
+    kind = serializers.ChoiceField(choices=KIND_CHOICES, default='GEN')
+    group = serializers.PrimaryKeyRelatedField(required=True, queryset=Group.objects.all())
+    creator = ProfileRelatedField(read_only=True, required=False)
+
+    class Meta:
+        model = Activity
+        fields = '__all__'
+
+    def create(self, validated_data):
+        current_user = self.context['request'].user.id
+        creator = Profile.objects.filter(user=current_user).first()
+        if not creator:
+            raise serializers.ValidationError('creator not found')
+        activity = Activity.objects.create(**validated_data, creator=creator)
+        return activity

@@ -51,12 +51,6 @@ class Idea(models.Model):
     def __str__(self):
         return "{}".format(self.title)
 
-    def duration(self):
-        if self.date_start and self.date_finish:
-            return self.date_finish - self.date_start
-        else:
-            return None
-
 
 class Group(models.Model):
     # constraints
@@ -96,11 +90,30 @@ class Activity(models.Model):
 
     # attributes
     title = models.CharField(max_length=200)
-    description = models.CharField(max_length=2000)
-    datetime = models.DateTimeField(null=True, blank=True)
+    description = models.TextField(blank=True, default="")
+    date = models.DateField(null=True, blank=True)
+    time = models.TimeField(null=True, blank=True)
+    index = models.IntegerField(default=0)
+    url = models.URLField(null=True, blank=True)
+    KIND_CHOICES = [
+        ('GEN', 'Generico'),
+        ('SPO', 'Spostamento'),
+        ('PER', 'Pernottamento'),
+        ('RIS', 'Ristorante'),
+        ('VIS', 'Visita'),
+        ('ESC', 'Escursione'),
+        ('SVA', 'Svago'),
+        ('ACQ', 'Acquisti'),
+    ]
+    kind = models.CharField(max_length=3, choices=KIND_CHOICES, null=False, blank=False, default="GEN")
 
     def __str__(self):
         return "{}".format(self.title)
+
+
+class Attachment(models.Model):
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name="attachments")
+    file = models.FileField(upload_to='activity_attachments')
 
 
 class Comment(models.Model):

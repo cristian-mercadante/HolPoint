@@ -27,6 +27,7 @@ from .serializers import (
     VoteIdeaInGroupSerializer,
     CurrentUserFriendRequestSerializer,
     PictureSerializer,
+    ActivitySerializer,
 )
 
 from django.contrib.auth.models import User
@@ -37,6 +38,7 @@ from holpoint.models import (
     Idea,
     IdeaComment,
     VoteIdeaInGroup,
+    Activity,
 )
 
 
@@ -201,3 +203,52 @@ class PictureUpload(mixins.UpdateModelMixin, viewsets.GenericViewSet):
         else:
             print("error", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActivityViewSet(viewsets.GenericViewSet, mixins.UpdateModelMixin, mixins.ListModelMixin):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def list(self, request, group_id=None, activity_id=None):
+        # /group_activity/<int:group_id>/0
+        # 0 can't be a valid activity_id inside the DB
+        # so I can use it for this list method
+        if group_id:
+            group = self.request.user.profile.groups.filter(pk=group_id).first()
+            if not group:
+                raise NotFound(detail="Group not found", code=404)
+            activities = group.activities.all()
+            if not activities:
+                return Response([], status=status.HTTP_200_OK)
+            serializer = self.serializer_class(activities, many=True)
+            # Next code line is IMPORTANT!
+            # in order to access self.context.get('request')
+            # in ProfileRelatedField @serializers.py
+            serializer.context['request'] = self.request
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def edit(self, request, group_id=None, activity_id=None):
+        if group_id and activity_id:
+            group = self.request.user.profile.groups.filter(pk=group_id).first()
+            if not group:
+                raise NotFound(detail="Group not found", code=404)
+            activity = group.activities.filter(pk=activity_id).first()
+            if not activity:
+                raise NotFound(detail="Group not found", code=404)
+            serializer = self.serializer_class(activity, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                print("error", serializer.errors)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActivityCreatorViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        return self.request.user.profile.created_activities.all()
