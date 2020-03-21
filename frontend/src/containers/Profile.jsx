@@ -6,6 +6,7 @@ import { FriendBallsManager } from "../components/friend";
 import { UserProfileManager } from "../components/profile";
 import { IdeaCardManager, IdeaCreateButton } from "../components/idea";
 import * as alertActions from "../actions/alerts";
+import * as currentUserActions from "../actions/currentUser";
 import axios from "axios";
 import { profileAPI, ideaAPI } from "../server";
 
@@ -53,6 +54,7 @@ class Profile extends Component {
       .delete(`${ideaAPI}${ideaId}/`, headers)
       .then(res => {
         this.removeIdeaFromState(ideaId);
+        this.props.removeIdeaFromStore(ideaId);
       })
       .catch(error => {
         this.props.error(error);
@@ -156,6 +158,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    removeIdeaFromStore: ideaId => dispatch(currentUserActions.removeIdeaFromStore(ideaId)),
     error: error => dispatch(alertActions.error(error))
   };
 };

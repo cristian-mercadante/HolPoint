@@ -63,14 +63,14 @@ const done = (state, action) => {
   return updateObject(state, { loading: false });
 };
 
-const addFriendToState = (state, action) => {
+const addFriendToStore = (state, action) => {
   const friend = action.friend;
   let profile = { ...state.profile };
   profile.friends.push(friend);
   return updateObject(state, { profile });
 };
 
-const removeFriendFromState = (state, action) => {
+const removeFriendFromStore = (state, action) => {
   const friend = action.friend;
   let profile = { ...state.profile };
   profile.friends = profile.friends.filter(f => f.id !== friend.id);
@@ -82,6 +82,24 @@ const pictureUpdate = (state, action) => {
   let profile = { ...state.profile };
   profile.picture = `${server}${action.data.picture}`;
   return updateObject(state, { profile });
+};
+
+const addIdeaToStore = (state, action) => {
+  let ideas = state.profile.ideas;
+  ideas.push(action.idea);
+  return { ...state, profile: { ...state.profile, ideas } };
+};
+
+const removeIdeaFromStore = (state, action) => {
+  let ideas = state.profile.ideas;
+  ideas = ideas.filter(i => i.id !== action.ideaId);
+  return {
+    ...state,
+    profile: {
+      ...state.profile,
+      ideas: ideas ? ideas : []
+    }
+  };
 };
 
 const getCurrentUserReducer = (state = initialState, action) => {
@@ -100,12 +118,16 @@ const getCurrentUserReducer = (state = initialState, action) => {
       return loading(state, action);
     case actionTypes.DONE:
       return done(state, action);
-    case actionTypes.ADD_FRIEND_TO_STATE:
-      return addFriendToState(state, action);
-    case actionTypes.REMOVE_FRIEND_FROM_STATE:
-      return removeFriendFromState(state, action);
+    case actionTypes.ADD_FRIEND_TO_STORE:
+      return addFriendToStore(state, action);
+    case actionTypes.REMOVE_FRIEND_FROM_STORE:
+      return removeFriendFromStore(state, action);
     case actionTypes.PICTURE_UPDATE:
       return pictureUpdate(state, action);
+    case actionTypes.ADD_IDEA_TO_STORE:
+      return addIdeaToStore(state, action);
+    case actionTypes.REMOVE_IDEA_FROM_STORE:
+      return removeIdeaFromStore(state, action);
     default:
       return state;
   }

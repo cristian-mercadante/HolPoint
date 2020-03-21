@@ -7,6 +7,7 @@ import axios from "axios";
 
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
+import * as currentUserActions from "../../actions/currentUser";
 
 class IdeaCreateButton extends Component {
   state = {
@@ -43,6 +44,7 @@ class IdeaCreateButton extends Component {
           this.showCreate();
           this.props.removeAllAlerts();
         });
+        this.props.addIdeaToStore(res.data);
       })
       .catch(error => {
         this.props.error(error);
@@ -70,6 +72,7 @@ class IdeaCreateButton extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     error: error => dispatch(alertActions.error(error)),
+    addIdeaToStore: idea => dispatch(currentUserActions.addIdeaToStore(idea)),
     removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
   };
 };

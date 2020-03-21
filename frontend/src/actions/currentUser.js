@@ -98,6 +98,7 @@ export const putCurrentUser = (username, email, first_name, last_name, picture) 
         headers
       )
       .then(res => {
+        dispatch({ type: actionTypes.PUT_CURRENT_USER, username, email, first_name, last_name });
         if (picture) {
           let form_data = new FormData();
           form_data.append("picture", picture, picture.name);
@@ -111,14 +112,13 @@ export const putCurrentUser = (username, email, first_name, last_name, picture) 
             .put(`${pictureUploadAPI}`, form_data, headers)
             .then(res => {
               dispatch(pictureUpdate(res.data));
-              dispatch(done());
-              dispatch({ type: actionTypes.PUT_CURRENT_USER, username, email, first_name, last_name });
-              dispatch(alertActions.addAlert("Informazioni aggiornate con successo!", "success"));
             })
             .catch(error => {
               dispatch(alertActions.error(error));
             });
         }
+        dispatch(alertActions.addAlert("Informazioni aggiornate con successo!", "success"));
+        dispatch(done());
       })
       .catch(error => {
         dispatch(done());
@@ -127,17 +127,31 @@ export const putCurrentUser = (username, email, first_name, last_name, picture) 
   };
 };
 
-export const addFriendToState = friend => {
+export const addFriendToStore = friend => {
   return {
-    type: actionTypes.ADD_FRIEND_TO_STATE,
+    type: actionTypes.ADD_FRIEND_TO_STORE,
     friend: friend
   };
 };
 
-export const removeFriendFromState = friend => {
+export const removeFriendFromStore = friend => {
   return {
-    type: actionTypes.REMOVE_FRIEND_FROM_STATE,
+    type: actionTypes.REMOVE_FRIEND_FROM_STORE,
     friend: friend
+  };
+};
+
+export const addIdeaToStore = idea => {
+  return {
+    type: actionTypes.ADD_IDEA_TO_STORE,
+    idea: idea
+  };
+};
+
+export const removeIdeaFromStore = ideaId => {
+  return {
+    type: actionTypes.REMOVE_IDEA_FROM_STORE,
+    ideaId: ideaId
   };
 };
 

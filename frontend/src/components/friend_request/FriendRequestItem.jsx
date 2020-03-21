@@ -12,7 +12,7 @@ class FriendRequestItem extends Component {
     const receiverId = this.props.receiver.id;
     const requestId = this.props.id;
     this.props.respondRequest(requestId, senderId, receiverId, status).then(() => {
-      status === "Acc" && this.props.addFriendToState(this.props.sender);
+      status === "Acc" && this.props.addFriendToStore(this.props.sender);
     });
   };
 
@@ -37,7 +37,7 @@ const mapDispatchToProps = dispatch => {
   return {
     respondRequest: (requestId, senderId, receiverId, status) =>
       dispatch(friendRequestActions.respondRequest(requestId, senderId, receiverId, status)),
-    addFriendToState: friend => dispatch(currentUserActions.addFriendToState(friend))
+    addFriendToStore: friend => dispatch(currentUserActions.addFriendToStore(friend))
   };
 };
 

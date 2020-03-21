@@ -77,7 +77,7 @@ class FriendUnfriendButtons extends Component {
     const receiverId = this.props.currentUser.id;
     const requestId = this.state.requestId;
     this.props.respondRequest(requestId, senderId, receiverId, status).then(() => {
-      status === "Acc" && this.props.addFriendToState(this.props.profile);
+      status === "Acc" && this.props.addFriendToStore(this.props.profile);
       this.setState({
         sent: false,
         received: false,
@@ -100,7 +100,7 @@ class FriendUnfriendButtons extends Component {
 
   removeFriend = () => {
     this.unfriend().then(() => {
-      this.props.removeFriendFromState(this.props.profile);
+      this.props.removeFriendFromStore(this.props.profile);
       this.setState({ friend: false });
     });
   };
@@ -142,8 +142,8 @@ const mapDispatchToProps = dispatch => {
     sendRequest: (senderId, receiverId) => dispatch(friendRequestActions.sendRequest(senderId, receiverId)),
     respondRequest: (requestId, senderId, receiverId, status) =>
       dispatch(friendRequestActions.respondRequest(requestId, senderId, receiverId, status)),
-    addFriendToState: friend => dispatch(currentUserActions.addFriendToState(friend)),
-    removeFriendFromState: friend => dispatch(currentUserActions.removeFriendFromState(friend))
+    addFriendToStore: friend => dispatch(currentUserActions.addFriendToStore(friend)),
+    removeFriendFromStore: friend => dispatch(currentUserActions.removeFriendFromStore(friend))
   };
 };
 
