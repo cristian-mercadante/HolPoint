@@ -217,7 +217,7 @@ class GroupDetail extends Component {
                   onClick={() => this.setState({ phase: 1 })}
                   disabled={this.state.group.prefered_idea ? false : true}
                 >
-                  Planning
+                  Pianificazione
                 </Nav.Link>
               </Nav.Item>
             </Nav>

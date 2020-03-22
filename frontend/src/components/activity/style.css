@@ -31,7 +31,7 @@
 .column {
   border: 2px solid;
   border-radius: 5px;
-  min-width: 300px;
+  width: 250px;
   overflow-y: auto;
   height: calc(100% - 60px);
   margin: 10px;
@@ -40,22 +40,20 @@
 }
 
 .column::-webkit-scrollbar {
-  height: 0.25rem;
+  width: 0.25rem;
 }
 
 .column::-webkit-scrollbar-track {
-  background: #e6e6e6;
-}
-
-.column::-webkit-scrollbar-thumb {
   background: var(--holpoint-green);
 }
 
+.column::-webkit-scrollbar-thumb {
+  background: #fff;
+}
+
 .title {
-  color: black;
-  margin: 10px;
+  margin: 0px 15px 0px 15px;
   font-size: 20px;
-  text-align: center;
 }
 
 .activity-card {

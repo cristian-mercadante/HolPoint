@@ -5,7 +5,7 @@ import Column from "./Column";
 import { DragDropContext } from "react-beautiful-dnd";
 
 import axios from "axios";
-import { activityAPI, activityCreatorAPI } from "../../server";
+import { activityAPI } from "../../server";
 
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
@@ -75,6 +75,18 @@ class ActivityManagerDND extends Component {
   componentDidMount() {
     this.getActivities().then(() => this.setState({ loading: false }));
   }
+
+  addActivityToState = activity => {
+    const activities = [...this.state.activities, activity];
+    let columns = this.state.columns;
+    columns = this.addActivitiesToColumns([activity], columns);
+    this.setState({ activities, columns });
+  };
+
+  updateActivityInState = activity => {
+    //TODO:
+    alert("updateActivityInState");
+  };
 
   onDragEnd = result => {
     const { destination, source, draggableId } = result;
@@ -147,7 +159,13 @@ class ActivityManagerDND extends Component {
     return (
       <div style={{ marginTop: "10px", marginBottom: "20px" }}>
         <h1>
-          {"Attività"} <ActivityCreateButton />
+          {"Attività"}{" "}
+          <ActivityCreateButton
+            group={this.props.group}
+            addActivityToState={this.addActivityToState}
+            dateStart={this.props.dateStart}
+            dateFinish={this.props.dateFinish}
+          />
         </h1>
         {this.state.loading ? (
           <ProgressBar striped variant="success" now={100} animated />
@@ -159,7 +177,18 @@ class ActivityManagerDND extends Component {
                 const activities = column.actIds.map(activityId =>
                   this.state.activities.find(activity => activity.id === activityId)
                 );
-                return <Column key={column.id} column={column} activities={activities} />;
+                return (
+                  <Column
+                    key={column.id}
+                    column={column}
+                    activities={activities}
+                    updateActivityInState={this.updateActivityInState}
+                    group={this.props.group}
+                    addActivityToState={this.addActivityToState}
+                    dateStart={this.props.dateStart}
+                    dateFinish={this.props.dateFinish}
+                  />
+                );
               })}
             </div>
           </DragDropContext>

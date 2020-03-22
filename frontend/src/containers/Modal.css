@@ -22,7 +22,7 @@
 }
 
 .activity-modal .card-body::-webkit-scrollbar-track {
-  background: var(--holpoint-green);
+  background: var(--holpoint-dark-green);
 }
 
 /* modal body overflow */

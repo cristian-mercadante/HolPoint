@@ -30,7 +30,7 @@ const GroupForm = props => {
 
       <Form.Group controlId="description">
         <Form.Label>Descrizione</Form.Label>
-        <Form.Control as="textarea" rows="10" defaultValue={props.defaultdescription} />
+        <Form.Control as="textarea" rows="10" defaultValue={props.defaultDescription} />
       </Form.Group>
       <h3>Aggiungi amici</h3>
       <FriendBallsManagerSelect

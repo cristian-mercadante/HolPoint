@@ -61,7 +61,7 @@ class Group(models.Model):
 
     # attributes
     name = models.CharField(max_length=200)
-    description = models.TextField(blank=True, default="")
+    description = models.TextField(blank=True)
     date_creation = models.DateField(auto_now=True)
     date_start = models.DateField(null=True, blank=True)
     date_finish = models.DateField(null=True, blank=True)

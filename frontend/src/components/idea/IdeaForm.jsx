@@ -7,11 +7,11 @@ class IdeaForm extends Component {
       <Form onSubmit={this.props.onSubmit}>
         <Form.Group controlId="title">
           <Form.Label>Titolo</Form.Label>
-          <Form.Control type="text" placeholder="Bellissima vacanza a..." defaultValue={this.props.defaulttitle} />
+          <Form.Control type="text" placeholder="Bellissima vacanza a..." defaultValue={this.props.defaultTitle} />
         </Form.Group>
         <Form.Group controlId="description">
           <Form.Label>Descrizione</Form.Label>
-          <Form.Control as="textarea" rows="10" defaultValue={this.props.defaultdescription} />
+          <Form.Control as="textarea" rows="10" defaultValue={this.props.defaultDescription} />
         </Form.Group>
         <Button variant="warning" type="submit">
           Invia!

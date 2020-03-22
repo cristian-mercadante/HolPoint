@@ -1,14 +1,13 @@
 import React, { Component, Fragment } from "react";
-import Panel from "../../containers/Panel";
-import { GroupPreview } from ".";
-//import { ActivityManager } from "../activity";
 import { ActivityManagerDND } from "../activity";
+//import Panel from "../../containers/Panel";
+//import { GroupPreview } from ".";
 
 export default class GroupPlanning extends Component {
   render() {
     return (
       <Fragment>
-        <Panel
+        {/* <Panel
           title={this.props.group.name}
           component={
             <GroupPreview
@@ -19,7 +18,7 @@ export default class GroupPlanning extends Component {
               prefered_idea={this.props.group.prefered_idea}
             />
           }
-        />
+        /> */}
         {this.props.dateStart && this.props.dateFinish ? (
           <div>
             <ActivityManagerDND

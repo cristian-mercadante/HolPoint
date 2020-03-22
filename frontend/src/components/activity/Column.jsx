@@ -1,12 +1,29 @@
 import React, { Component } from "react";
 import ActivityCard from "./ActivityCard";
 import { Droppable } from "react-beautiful-dnd";
+import ActivityCreateButton from "./ActivityCreateButton";
+import { stringToDate_or_Null } from "../../dateUtils";
 
 export default class Column extends Component {
   render() {
     return (
       <div>
-        <div className="title">{this.props.column.title}</div>
+        <div>
+          <div className="title">
+            {this.props.column.title}
+            {this.props.column.id !== "default" && (
+              <ActivityCreateButton
+                className="float-right"
+                size="sm"
+                columnDate={stringToDate_or_Null(this.props.column.title)}
+                group={this.props.group}
+                addActivityToState={this.props.addActivityToState}
+                dateStart={this.props.dateStart}
+                dateFinish={this.props.dateFinish}
+              />
+            )}
+          </div>
+        </div>
         <Droppable droppableId={this.props.column.id}>
           {(provided, snapshot) => (
             <div
@@ -19,7 +36,12 @@ export default class Column extends Component {
               }}
             >
               {this.props.activities.map((activity, index) => (
-                <ActivityCard key={activity.id} activity={activity} index={index} />
+                <ActivityCard
+                  key={activity.id}
+                  activity={activity}
+                  index={index}
+                  updateActivityInState={this.props.updateActivityInState}
+                />
               ))}
               {provided.placeholder}
             </div>

@@ -281,8 +281,6 @@ class ActivitySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     date = serializers.DateField(required=False, allow_null=True, format="%d/%m/%Y")
     time = serializers.TimeField(required=False, allow_null=True, format="%H:%M")
-    description = serializers.CharField(required=False)
-    url = serializers.URLField(required=False)
     KIND_CHOICES = ['GEN', 'SPO', 'PER', 'RIS', 'VIS', 'ESC', 'SVA', 'ACQ']
     kind = serializers.ChoiceField(choices=KIND_CHOICES, default='GEN')
     group = serializers.PrimaryKeyRelatedField(required=True, queryset=Group.objects.all())

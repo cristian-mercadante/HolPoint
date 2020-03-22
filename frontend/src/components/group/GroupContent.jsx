@@ -125,7 +125,7 @@ class GroupContent extends Component {
           <GroupForm
             onSubmit={this.onSubmit}
             defaultname={this.props.name}
-            defaultdescription={this.props.description}
+            defaultDescription={this.props.description}
             profiles={this.state.profiles} // concatenation of user friends and users in group (not friends)
             selectFriend={this.props.selectFriend}
             selectedFriends={this.props.selectedFriends}

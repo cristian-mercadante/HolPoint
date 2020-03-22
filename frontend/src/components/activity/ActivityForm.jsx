@@ -1,35 +1,52 @@
 import React, { Component } from "react";
+import { Form, Button, Col } from "react-bootstrap";
+import { DatePicker, TimePicker } from "../misc";
 
 export default class ActivityForm extends Component {
   render() {
     return (
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci temporibus rerum nesciunt quam labore tempora
-        earum optio! Maiores vero maxime ipsum magnam quia commodi obcaecati repellat cupiditate impedit? Hic,
-        accusamus. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga numquam, distinctio quo asperiores
-        voluptatem explicabo eius magni neque. Aperiam accusantium eaque provident doloremque doloribus asperiores quae.
-        Excepturi qui quod rem. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores ut harum expedita unde
-        atque, nostrum id, maxime excepturi rem laudantium minima esse velit fugiat voluptas laborum aperiam delectus
-        illo amet? Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci temporibus rerum nesciunt quam
-        labore tempora earum optio! Maiores vero maxime ipsum magnam quia commodi obcaecati repellat cupiditate impedit?
-        Hic, accusamus. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga numquam, distinctio quo
-        asperiores voluptatem explicabo eius magni neque. Aperiam accusantium eaque provident doloremque doloribus
-        asperiores quae. Excepturi qui quod rem. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores ut
-        harum expedita unde atque, nostrum id, maxime excepturi rem laudantium minima esse velit fugiat voluptas laborum
-        aperiam delectus illo amet? Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci temporibus rerum
-        nesciunt quam labore tempora earum optio! Maiores vero maxime ipsum magnam quia commodi obcaecati repellat
-        cupiditate impedit? Hic, accusamus. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga numquam,
-        distinctio quo asperiores voluptatem explicabo eius magni neque. Aperiam accusantium eaque provident doloremque
-        doloribus asperiores quae. Excepturi qui quod rem. Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-        Maiores ut harum expedita unde atque, nostrum id, maxime excepturi rem laudantium minima esse velit fugiat
-        voluptas laborum aperiam delectus illo amet? Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
-        temporibus rerum nesciunt quam labore tempora earum optio! Maiores vero maxime ipsum magnam quia commodi
-        obcaecati repellat cupiditate impedit? Hic, accusamus. Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-        Fuga numquam, distinctio quo asperiores voluptatem explicabo eius magni neque. Aperiam accusantium eaque
-        provident doloremque doloribus asperiores quae. Excepturi qui quod rem. Lorem, ipsum dolor sit amet consectetur
-        adipisicing elit. Maiores ut harum expedita unde atque, nostrum id, maxime excepturi rem laudantium minima esse
-        velit fugiat voluptas laborum aperiam delectus illo amet?
-      </div>
+      <Form onSubmit={this.props.onSubmit}>
+        <Form.Group controlId="title">
+          <Form.Label>Titolo</Form.Label>
+          <Form.Control type="text" defaultValue={this.props.defaultTitle} />
+        </Form.Group>
+        <Form.Group controlId="kind">
+          <Form.Label>Tipo</Form.Label>
+          <Form.Control as="select">
+            <option value="GEN">Generico</option>
+            <option value="SPO">Spostamento</option>
+            <option value="PER">Pernottamento</option>
+            <option value="RIS">Ristorante</option>
+            <option value="VIS">Visita</option>
+            <option value="ESC">Escursione</option>
+            <option value="SVA">Svago</option>
+            <option value="ACQ">Acquisti</option>
+          </Form.Control>
+        </Form.Group>
+        <Form.Row>
+          <Form.Group as={Col} controlId="date">
+            <Form.Label>Data</Form.Label>
+            <br />
+            <DatePicker selected={this.props.date} onChange={date => this.props.setDate(date)} />
+          </Form.Group>
+          <Form.Group as={Col} controlId="time">
+            <Form.Label>Ora</Form.Label>
+            <br />
+            <TimePicker selected={this.props.time} onChange={time => this.props.setTime(time)} />
+          </Form.Group>
+        </Form.Row>
+        <Form.Group controlId="url">
+          <Form.Label>URL</Form.Label>
+          <Form.Control type="text" defaultValue={this.props.defaultUrlL} />
+        </Form.Group>
+        <Form.Group controlId="description">
+          <Form.Label>Descrizione</Form.Label>
+          <Form.Control as="textarea" rows="10" defaultValue={this.props.defaultDescription} />
+        </Form.Group>
+        <Button varian="warning" type="submit">
+          Invia!
+        </Button>
+      </Form>
     );
   }
 }

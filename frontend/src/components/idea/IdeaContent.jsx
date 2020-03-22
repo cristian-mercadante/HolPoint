@@ -17,8 +17,8 @@ class IdeaContent extends Component {
         {this.props.editing ? (
           <IdeaForm
             onSubmit={this.props.putIdea}
-            defaulttitle={this.props.title}
-            defaultdescription={this.props.description}
+            defaultTitle={this.props.title}
+            defaultDescription={this.props.description}
           />
         ) : (
           <Fragment>
