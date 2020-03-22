@@ -62,10 +62,7 @@ class GroupContent extends Component {
   }
 
   onSubmitDelete = () => {
-    this.props.deleteGroup().then(() => {
-      this.setState({ editing: false });
-      this.showModalDelete();
-    });
+    this.props.deleteGroup();
   };
 
   onSubmit = e => {

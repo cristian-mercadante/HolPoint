@@ -83,9 +83,39 @@ class ActivityManagerDND extends Component {
     this.setState({ activities, columns });
   };
 
-  updateActivityInState = activity => {
-    //TODO:
-    alert("updateActivityInState");
+  removeActivityFromState = activityId => {
+    const activities = this.state.activities.filter(act => act.id !== activityId);
+    const columns = this.state.columns;
+    for (let colKey in columns) {
+      const index = columns[colKey].actIds.indexOf(activityId);
+      if (index > -1) {
+        columns[colKey].actIds.splice(index, 1);
+        break;
+      }
+    }
+    this.setState({ activities, columns });
+  };
+
+  updateActivityInState = updatedActivity => {
+    const { activities, columns } = this.state;
+    let index = activities.findIndex(act => act.id === updatedActivity.id);
+    let oldColumn = "default";
+    if (index > -1) {
+      oldColumn = activities[index].date ? activities[index].date : "default";
+      activities[index] = updatedActivity;
+    } else {
+      console.log("not found act");
+      return;
+    }
+    const newColumn = updatedActivity.date ? updatedActivity.date : "default";
+    console.log("oldcolumn " + oldColumn);
+    console.log("newcolumn " + newColumn);
+    if (newColumn !== oldColumn) {
+      index = columns[oldColumn].actIds.indexOf(updatedActivity.id);
+      columns[oldColumn].actIds.splice(index, 1);
+      columns[newColumn].actIds.push(updatedActivity.id);
+    }
+    this.setState({ activities, columns });
   };
 
   onDragEnd = result => {
@@ -182,9 +212,10 @@ class ActivityManagerDND extends Component {
                     key={column.id}
                     column={column}
                     activities={activities}
-                    updateActivityInState={this.updateActivityInState}
-                    group={this.props.group}
                     addActivityToState={this.addActivityToState}
+                    updateActivityInState={this.updateActivityInState}
+                    removeActivityFromState={this.removeActivityFromState}
+                    group={this.props.group}
                     dateStart={this.props.dateStart}
                     dateFinish={this.props.dateFinish}
                   />

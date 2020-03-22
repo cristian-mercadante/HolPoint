@@ -39,8 +39,12 @@ export default class Column extends Component {
                 <ActivityCard
                   key={activity.id}
                   activity={activity}
+                  group={this.props.group}
                   index={index}
                   updateActivityInState={this.props.updateActivityInState}
+                  removeActivityFromState={this.props.removeActivityFromState}
+                  dateStart={this.props.dateStart}
+                  dateFinish={this.props.dateFinish}
                 />
               ))}
               {provided.placeholder}

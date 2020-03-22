@@ -44,7 +44,6 @@ class IdeaCreateButton extends Component {
           this.showCreate();
           this.props.removeAllAlerts();
         });
-        this.props.addIdeaToStore(res.data);
       })
       .catch(error => {
         this.props.error(error);

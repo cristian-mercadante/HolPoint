@@ -11,21 +11,5 @@
 }
 
 .group-card {
-  height: 300px;
-}
-
-.group-card .card-body {
-  overflow-y: auto;
-}
-
-.card-body::-webkit-scrollbar {
-  width: 0.25rem;
-}
-
-.card-body::-webkit-scrollbar-track {
-  background: var(--holpoint-dark-red);
-}
-
-.card-body::-webkit-scrollbar-thumb {
-  background: #ffffff;
+  min-height: 300px;
 }

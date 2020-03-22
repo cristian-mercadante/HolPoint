@@ -17,19 +17,25 @@ import {
   FaStore
 } from "react-icons/fa";
 import { connect } from "react-redux";
+import * as alertActions from "../../actions/alerts";
 import axios from "axios";
-import { activityAPI } from "../../server";
+import { activityAPI, activityCreatorAPI } from "../../server";
 
 class ActivityCard extends Component {
+  _isMounted = false;
+
   state = {
     showUpdate: false,
     showModalDelete: false,
     editing: false
   };
 
-  showUpdate = () => this.setState({ showUpdate: !this.state.showUpdate });
-  showModalDelete = () => this.setState({ showModalDelete: !this.state.showModalDelete });
-  showEditFormInModal = () => this.setState({ editing: !this.state.editing });
+  showUpdate = () => this._isMounted && this.setState({ showUpdate: !this.state.showUpdate, editing: false });
+  showModalDelete = () => this._isMounted && this.setState({ showModalDelete: !this.state.showModalDelete });
+  showEditFormInModal = () => this._isMounted && this.setState({ editing: !this.state.editing });
+
+  componentDidMount = () => (this._isMounted = true);
+  componentWillUnmount = () => (this._isMounted = false);
 
   getCardIcon = () => {
     switch (this.props.activity.kind) {
@@ -68,10 +74,9 @@ class ActivityCard extends Component {
       }
     };
     return axios
-      .post(
-        `${activityAPI}${this.props.activity.id}`,
+      .put(
+        `${activityAPI}${this.props.group.id}/${this.props.activity.id}`,
         {
-          group: this.props.group.id,
           title,
           description,
           url,
@@ -82,8 +87,30 @@ class ActivityCard extends Component {
         headers
       )
       .then(res => {
-        this.props.updateActivityInState(res.data);
-        this.showEditFormInModal();
+        if (this._isMounted) {
+          this.props.updateActivityInState(res.data);
+          this.showEditFormInModal();
+        }
+      })
+      .catch(error => this.props.error(error));
+  };
+
+  deleteActivity = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    return axios
+      .delete(`${activityCreatorAPI}${this.props.activity.id}/`, headers)
+      .then(res => {
+        if (this._isMounted) {
+          this.props.removeActivityFromState(this.props.activity.id);
+          // modal disappears on delete
+          // no need to call "setState"
+        }
       })
       .catch(error => this.props.error(error));
   };
@@ -132,6 +159,7 @@ class ActivityCard extends Component {
                     doesCurrentUserOwnThisActivity={this.doesCurrentUserOwnThisActivity}
                     putActivity={this.putActivity}
                     showEditFormInModal={this.showEditFormInModal}
+                    showModalDelete={this.showModalDelete}
                     editing={this.state.editing}
                   />
                 }
@@ -145,7 +173,7 @@ class ActivityCard extends Component {
             </Fragment>
           )}
         </Draggable>
-        <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.handleDelete} />
+        <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.deleteActivity} />
       </Fragment>
     );
   }
@@ -157,4 +185,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(ActivityCard);
+const mapDispatchToProps = dispatch => {
+  return {
+    error: error => dispatch(alertActions.error(error))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityCard);

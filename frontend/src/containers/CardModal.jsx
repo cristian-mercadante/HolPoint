@@ -9,7 +9,14 @@ class CardModal extends React.Component {
   render() {
     return (
       <Fragment>
-        <Modal as={Card} className={this.props.type} {...this.props} size="xl" centered>
+        <Modal
+          as={Card}
+          className={this.props.type}
+          show={this.props.show}
+          onHide={this.props.onHide}
+          size="xl"
+          centered
+        >
           <Card.Header>
             <Modal.Title>
               {this.props.header}

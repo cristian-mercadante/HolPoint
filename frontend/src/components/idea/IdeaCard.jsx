@@ -24,7 +24,7 @@ class IdeaCard extends Component {
   };
 
   showUpdate = () => {
-    this.setState({ showUpdate: !this.state.showUpdate });
+    this.setState({ showUpdate: !this.state.showUpdate, editing: false });
   };
 
   showModalDelete = () => {

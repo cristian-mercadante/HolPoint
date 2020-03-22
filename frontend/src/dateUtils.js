@@ -42,3 +42,10 @@ export const timeToString_or_Null = time => {
     return time.toLocaleString("it-IT", options).split(",")[0];
   } else return time;
 };
+
+export const stringToTime_or_Null = string => {
+  if (string === null) return null;
+  const parts = string.split(":");
+  const currentDate = new Date();
+  return new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), parts[0], parts[1]);
+};

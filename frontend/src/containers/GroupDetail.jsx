@@ -26,8 +26,8 @@ class GroupDetail extends Component {
   componentDidMount() {
     // FIXME: NEXT LINE IS TEMPORARY!
     // change phase on prefered_idea
-    this.setState({ phase: 1 });
-    //this.setState({ phase: 0 });
+    //this.setState({ phase: 1 });
+    this.setState({ phase: 0 });
     this.getGroup();
   }
 
@@ -132,7 +132,7 @@ class GroupDetail extends Component {
   };
 
   getCleanDataForPutGroup = () => {
-    let group = this.state.group;
+    let group = { ...this.state.group };
     if (group.profiles) group.profiles = group.profiles.map(profile => profile.id);
     if (group.ideas) group.ideas = group.ideas.map(idea => idea.id);
     return group;
@@ -159,13 +159,12 @@ class GroupDetail extends Component {
 
   addIdeaToState = idea => {
     let group = this.state.group;
-    group.ideas = [...this.state.group.ideas, idea];
-    this.setState({ group: group });
+    group.ideas.push(idea);
+    this.setState({ group });
 
     // add to group
     let group_ = this.getCleanDataForPutGroup();
-    group_.ideas = [...group_.ideas, idea.id];
-    const { name, description, profiles, ideas } = group;
+    const { name, description, profiles, ideas } = group_;
     return this.putGroup(name, description, profiles, ideas);
   };
 
