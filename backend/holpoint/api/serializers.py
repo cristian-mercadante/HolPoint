@@ -1,3 +1,4 @@
+from django.db.models import Max
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
@@ -304,5 +305,15 @@ class ActivitySerializer(serializers.ModelSerializer):
         creator = Profile.objects.filter(user=current_user).first()
         if not creator:
             raise serializers.ValidationError('creator not found')
-        activity = Activity.objects.create(**validated_data, creator=creator)
+        # give to the activity the highest index value for that date
+        date = validated_data.get("date")
+        group = validated_data.get("group")
+        column = Activity.objects.filter(date=date, group=group)
+        if not column:
+            index = 0
+        else:
+            act_max_index = column.aggregate(Max('index'))
+            max_index = act_max_index['index__max']
+            index = max_index + 1
+        activity = Activity.objects.create(**validated_data, creator=creator, index=index)
         return activity
