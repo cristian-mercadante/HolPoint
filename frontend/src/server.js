@@ -24,3 +24,4 @@ export const unfriendAPI = api + "unfriend/";
 
 export const activityAPI = api + "group_activity/";
 export const activityCreatorAPI = api + "activity_creator/";
+export const commentActivityAPI = api + "comment/activity/";

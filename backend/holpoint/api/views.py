@@ -28,6 +28,7 @@ from .serializers import (
     CurrentUserFriendRequestSerializer,
     PictureSerializer,
     ActivitySerializer,
+    ActivityCommentSerializer,
 )
 
 from django.contrib.auth.models import User
@@ -39,6 +40,7 @@ from holpoint.models import (
     IdeaComment,
     VoteIdeaInGroup,
     Activity,
+    ActivityComment,
 )
 
 
@@ -133,6 +135,23 @@ class IdeaCommentListView(ListAPIView):
     def get_queryset(self):
         idea_id = self.kwargs['idea_id']
         return IdeaComment.objects.filter(to__id=idea_id)
+
+
+class ActivityCommentViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+    serializer_class = ActivityCommentSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        return self.request.user.profile.created_comments
+
+
+class ActivityCommentListView(ListAPIView):
+    serializer_class = ActivityCommentSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        activity_id = self.kwargs['activity_id']
+        return ActivityComment.objects.filter(to__id=activity_id)
 
 
 class VoteIdeaInGroupViewSet(viewsets.ModelViewSet):

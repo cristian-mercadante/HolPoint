@@ -9,6 +9,7 @@ from holpoint.models import (
     IdeaComment,
     VoteIdeaInGroup,
     Activity,
+    ActivityComment,
 )
 
 
@@ -274,6 +275,21 @@ class IdeaCommentSerializer(serializers.ModelSerializer):
         current_user = self.context['request'].user.id
         creator = Profile.objects.filter(user=current_user).first()
         comment = IdeaComment.objects.create(**validated_data, creator=creator)
+        return comment
+
+
+class ActivityCommentSerializer(serializers.ModelSerializer):
+    creator = ProfileRelatedField(read_only=True, required=False)
+    datetime = serializers.DateTimeField(read_only=True, format="%d/%m/%Y %H:%M")
+
+    class Meta:
+        model = ActivityComment
+        fields = '__all__'
+
+    def create(self, validated_data):
+        current_user = self.context['request'].user.id
+        creator = Profile.objects.filter(user=current_user).first()
+        comment = ActivityComment.objects.create(**validated_data, creator=creator)
         return comment
 
 

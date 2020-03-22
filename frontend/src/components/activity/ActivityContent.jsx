@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { ButtonGroup, Button } from "react-bootstrap";
 import ActivityForm from "./ActivityForm";
+import CommentSection from "../comment/CommentSection";
 import { KIND_CHOICES } from "./kindChoices";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
@@ -80,6 +81,7 @@ class ActivityContent extends Component {
             )}
           </Fragment>
         )}
+        <CommentSection id={this.props.activity.id} kind="activity" />
       </Fragment>
     );
   }

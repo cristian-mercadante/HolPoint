@@ -1,6 +1,13 @@
-.comment {
+.idea-comment {
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 10px;
   background-color: var(--holpoint-dark-blue);
+}
+
+.activity-comment {
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: var(--holpoint-dark-green);
 }
