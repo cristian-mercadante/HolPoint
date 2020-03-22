@@ -24,9 +24,13 @@ class SearchBar extends Component {
     }, 300);
   };
 
+  isEmptyOrSpaces = str => {
+    return str === null || str.match(/^ *$/) !== null;
+  };
+
   getUsers = () => {
     const username = document.getElementById("search-text-field").value;
-    if (username === "") {
+    if (this.isEmptyOrSpaces(username)) {
       this.setState({ loading: false });
       return;
     }
