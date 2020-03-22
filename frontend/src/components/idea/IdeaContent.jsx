@@ -28,7 +28,7 @@ class IdeaContent extends Component {
         )}
 
         <div style={{ marginTop: "10px" }}>
-          <CommentSection {...this.props} />
+          <CommentSection {...this.props} kind="idea" />
         </div>
       </Fragment>
     );

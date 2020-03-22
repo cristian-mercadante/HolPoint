@@ -4,7 +4,7 @@ import Comment from "./Comment";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
-import { commentIdeaAPI } from "../../server";
+import { commentIdeaAPI, commentActivityAPI } from "../../server";
 import AddComment from "./AddComment";
 
 class CommentSection extends Component {
@@ -21,8 +21,9 @@ class CommentSection extends Component {
         Authorization: `Token ${token}`
       }
     };
+    const url = this.getCommentUrl();
     return axios
-      .get(`${commentIdeaAPI}${this.props.id}`, headers)
+      .get(`${url}${this.props.id}`, headers)
       .then(res => {
         this.setState({ loading: false, comments: res.data });
       })
@@ -30,6 +31,17 @@ class CommentSection extends Component {
         this.props.error(error);
       });
   }
+
+  getCommentUrl = () => {
+    switch (this.props.kind) {
+      case "idea":
+        return commentIdeaAPI;
+      case "activity":
+        return commentActivityAPI;
+      default:
+        return;
+    }
+  };
 
   addComment = commentText => {
     if (commentText === "") return;
@@ -40,9 +52,10 @@ class CommentSection extends Component {
         Authorization: `Token ${token}`
       }
     };
+    const url = this.getCommentUrl();
     return axios
       .post(
-        `${commentIdeaAPI}`,
+        url,
         {
           text: commentText,
           to: this.props.id
@@ -65,8 +78,9 @@ class CommentSection extends Component {
         Authorization: `Token ${token}`
       }
     };
+    const url = this.getCommentUrl();
     return axios
-      .delete(`${commentIdeaAPI}${commentId}/`, headers)
+      .delete(`${url}${commentId}/`, headers)
       .then(res => {
         this.setState({
           comments: this.state.comments.filter(comment => {
@@ -83,7 +97,7 @@ class CommentSection extends Component {
     let buffer = [];
     if (this.state.comments) {
       this.state.comments.forEach(comment =>
-        buffer.push(<Comment {...comment} key={comment.id} deleteComment={this.deleteComment} />)
+        buffer.push(<Comment {...comment} key={comment.id} deleteComment={this.deleteComment} kind={this.props.kind} />)
       );
     }
     return buffer;
@@ -93,7 +107,7 @@ class CommentSection extends Component {
     return (
       <Fragment>
         <h3>Commenti</h3>
-        <AddComment addComment={this.addComment} />
+        <AddComment addComment={this.addComment} kind={this.props.kind} />
         {this.state.loading ? (
           <ProgressBar striped variant="info" now={100} animated />
         ) : (

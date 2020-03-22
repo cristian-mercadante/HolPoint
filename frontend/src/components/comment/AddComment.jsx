@@ -10,7 +10,7 @@ export default class AddComment extends Component {
 
   render() {
     return (
-      <div className="comment">
+      <div className={`${this.props.kind}-comment`}>
         <InputGroup className="input-group-prepend">
           <Button variant="success" onClick={this.onClick}>
             Commenta

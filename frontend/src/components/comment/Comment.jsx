@@ -7,7 +7,7 @@ import { ProfileBadge } from "../misc";
 class Comment extends Component {
   render() {
     return (
-      <div className="comment">
+      <div className={`${this.props.kind}-comment`}>
         {this.props.currentUserId === this.props.creator.id && (
           <Button
             size="sm"
