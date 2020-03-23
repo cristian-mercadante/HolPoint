@@ -112,13 +112,14 @@ export const putCurrentUser = (username, email, first_name, last_name, picture) 
             .put(`${pictureUploadAPI}`, form_data, headers)
             .then(res => {
               dispatch(pictureUpdate(res.data));
+              dispatch(done());
+              dispatch(alertActions.addAlert("Informazioni aggiornate con successo!", "success"));
             })
             .catch(error => {
+              dispatch(done());
               dispatch(alertActions.error(error));
             });
         }
-        dispatch(alertActions.addAlert("Informazioni aggiornate con successo!", "success"));
-        dispatch(done());
       })
       .catch(error => {
         dispatch(done());

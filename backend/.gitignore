@@ -131,3 +131,4 @@ dmypy.json
 # DJANGO MEDIA DIRECTORY
 /media/*
 /private/*
+/static/*
