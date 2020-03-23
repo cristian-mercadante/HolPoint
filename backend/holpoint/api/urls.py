@@ -8,6 +8,9 @@ from .views import (
     CurrentUserFriendRequestDetailView,
     PictureUpload,
     ActivityCommentListView,
+    AttachmentUpload,
+    AttachmentDetailView,
+    AttachmentRemove,
 )
 
 from .views import (
@@ -45,6 +48,9 @@ urlpatterns = [
     path('pictureupload', PictureUpload.as_view({'put': 'upload'})),
     path('group_activity/<int:group_id>/<int:activity_id>', ActivityViewSet.as_view({'get': 'list', 'put': 'edit'})),
     path('comment/activity/<activity_id>', ActivityCommentListView.as_view()),
+    path('attachmentupload/<int:group_id>', AttachmentUpload.as_view({'post': 'upload'})),
+    path('attachment/<int:pk>', AttachmentDetailView.as_view()),
+    path('attachmentremove/<int:attachment_id>', AttachmentRemove.as_view({'delete': 'remove'})),
 ]
 
 urlpatterns += router.urls

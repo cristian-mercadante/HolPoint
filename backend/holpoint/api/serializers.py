@@ -11,6 +11,7 @@ from holpoint.models import (
     VoteIdeaInGroup,
     Activity,
     ActivityComment,
+    Attachment,
 )
 
 
@@ -171,7 +172,7 @@ class CurrentUserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('friends', 'user', 'ideas', 'picture')
+        fields = ('friends', 'user', 'ideas', 'picture', 'uploaded_attachments')
 
 
 class VoteIdeaInGroupSerializer(serializers.ModelSerializer):
@@ -180,6 +181,12 @@ class VoteIdeaInGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = VoteIdeaInGroup
         fields = ('idea', 'group', 'votes')
+
+
+class AttachmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attachment
+        fields = '__all__'
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -195,10 +202,11 @@ class GroupSerializer(serializers.ModelSerializer):
     prefered_idea = IdeaRelatedField(required=False, read_only=True)
     ideas = IdeaRelatedField(queryset=Idea.objects.all(), many=True, required=False)
     group_to_idea = VoteIdeaInGroupSerializer(many=True, required=False)
+    attachments = AttachmentSerializer(read_only=True, many=True)
 
     class Meta:
         model = Group
-        fields = ('id', 'name', 'description', 'date_creation', 'date_start', 'date_finish', 'prefered_idea', 'is_active', 'creator', 'profiles', 'ideas', 'group_to_idea')
+        fields = ('id', 'name', 'description', 'date_creation', 'date_start', 'date_finish', 'prefered_idea', 'is_active', 'creator', 'profiles', 'ideas', 'group_to_idea', 'attachments')
 
     def create(self, validated_data):
         current_user = self.context['request'].user.id

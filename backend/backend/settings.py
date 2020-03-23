@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'rest_auth.registration',
+
+    'private_storage',
 ]
 
 MIDDLEWARE = [
@@ -153,3 +155,19 @@ REST_FRAMEWORK = {
 # file upload
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, "private")
+PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_authenticated'
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+ALLOWED_FILE_TYPES = [
+    "image/jpeg",  # jpg jpeg
+    "image/png",  # png
+    "application/pdf",  # pdf
+    "application/msword",  # doc
+    "application/vnd.ms-excel",  # xls
+    "application/vnd.ms-powerpoint",  # ppt
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",  # docx
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",  # xlsx
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",  # pptx
+]

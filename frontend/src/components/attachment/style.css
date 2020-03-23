@@ -1,0 +1,14 @@
+.attachment-card {
+  border-radius: 5px;
+  padding: 10px;
+  margin: auto;
+  margin-top: 5px;
+  background-color: #e6e6e6;
+  overflow: hidden;
+}
+
+.attachment-card a:link,
+.attachment-card a:visited {
+  color: #000 !important;
+  text-decoration: none;
+}

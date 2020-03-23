@@ -4,3 +4,5 @@ django-cors-headers
 django-rest-auth
 django-allauth
 pillow
+django-private-storage
+python-magic

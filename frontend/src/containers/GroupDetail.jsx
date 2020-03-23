@@ -24,11 +24,13 @@ class GroupDetail extends Component {
   setDateFinish = date => this.setState({ dateFinish: date });
 
   componentDidMount() {
-    // FIXME: NEXT LINE IS TEMPORARY!
-    // change phase on prefered_idea
-    this.setState({ phase: 1 });
-    //this.setState({ phase: 0 });
-    this.getGroup();
+    this.getGroup().then(() => {
+      const { dateStart, dateFinish } = this.state;
+      const prefered_idea = this.state.group.prefered_idea;
+      if (prefered_idea && dateStart && dateFinish) {
+        this.setState({ phase: 1 });
+      }
+    });
   }
 
   getGroup = () => {
@@ -177,6 +179,26 @@ class GroupDetail extends Component {
     }
   };
 
+  removeAttFromState = id => {
+    const attachments = this.state.group.attachments.filter(att => att.id !== id);
+    this.setState({
+      group: {
+        ...this.state.group,
+        attachments
+      }
+    });
+  };
+
+  addAttToState = att => {
+    const attachments = [...this.state.group.attachments, att];
+    this.setState({
+      group: {
+        ...this.state.group,
+        attachments
+      }
+    });
+  };
+
   putFavIdea = ideaId => {
     const token = localStorage.getItem("token");
     const headers = {
@@ -239,6 +261,8 @@ class GroupDetail extends Component {
               />
             ) : (
               <GroupPlanning
+                addAttToState={this.addAttToState}
+                removeAttFromState={this.removeAttFromState}
                 group={this.state.group}
                 dateStart={this.state.dateStart}
                 dateFinish={this.state.dateFinish}
