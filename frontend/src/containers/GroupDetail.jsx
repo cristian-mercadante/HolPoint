@@ -26,8 +26,8 @@ class GroupDetail extends Component {
   componentDidMount() {
     // FIXME: NEXT LINE IS TEMPORARY!
     // change phase on prefered_idea
-    //this.setState({ phase: 1 });
-    this.setState({ phase: 0 });
+    this.setState({ phase: 1 });
+    //this.setState({ phase: 0 });
     this.getGroup();
   }
 

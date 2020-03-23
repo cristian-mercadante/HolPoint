@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { ProgressBar } from "react-bootstrap";
 import "./style.css";
-import Column from "./Column";
+import ActivityColumn from "./ActivityColumn";
 import { DragDropContext } from "react-beautiful-dnd";
 
 import axios from "axios";
@@ -10,7 +10,7 @@ import { activityAPI } from "../../server";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
 
-import { differenceInDays, incrementDate, dateToString_or_Null } from "../../dateUtils";
+import { differenceInDays, incrementDate, dateToString_or_Null, stringToTime_or_Null } from "../../dateUtils";
 import ActivityCreateButton from "./ActivityCreateButton";
 
 class ActivityManagerDND extends Component {
@@ -31,6 +31,9 @@ class ActivityManagerDND extends Component {
     this.getActivities().then(() => this.setState({ loading: false }));
   }
 
+  /* Given start and finish date,
+  creates columns and returns them.
+  Does not set them in state*/
   createColumnsFromDates = (dateStart, dateFinish) => {
     let { columns, columnOrder } = this.state;
     for (let i = 0; i < differenceInDays(dateStart, dateFinish); i++) {
@@ -42,7 +45,7 @@ class ActivityManagerDND extends Component {
       };
       columnOrder.push(columnId);
     }
-    this.setState(columnOrder);
+    this.setState({ columnOrder });
     return columns;
   };
 
@@ -52,6 +55,10 @@ class ActivityManagerDND extends Component {
     return 0;
   };
 
+  /* Takes list of activities and all columns.
+  Pushes activity ids to column.actIds, only if not already there.
+  Then, sorts each column on activity.index property (from lower to higher).
+  Returns all the columns updated */
   addActivitiesToColumns = (activities, columns) => {
     activities.forEach(act => {
       // for each activity, put its id into the corresponding column
@@ -90,7 +97,7 @@ class ActivityManagerDND extends Component {
       .catch(error => this.props.error(error));
   };
 
-  putActivityIndex = activity => {
+  putActivityIndexDate = activity => {
     const token = localStorage.getItem("token");
     const headers = {
       headers: {
@@ -99,29 +106,12 @@ class ActivityManagerDND extends Component {
       }
     };
     return axios
-      .put(`${activityAPI}${this.props.group.id}/${activity.id}`, { index: activity.index }, headers)
-      .then(res => this.updateActivityInState(res.data)) // FIXME: se facciamo un aggiornamento a livello di colonna, allora non serve più aggiornare qua
+      .put(
+        `${activityAPI}${this.props.group.id}/${activity.id}`,
+        { index: activity.index, date: activity.date },
+        headers
+      )
       .catch(error => this.props.error(error));
-  };
-
-  reIndexActivitiesInColum = column => {
-    let activities = this.state.activities;
-    let columnActivities = column.actIds.map(activityId => activities.find(activity => activityId === activity.id));
-    console.log(columnActivities);
-    columnActivities.forEach((activity, index) => {
-      activity.index = index;
-      index++;
-      this.putActivityIndex(activity);
-      return activity;
-    });
-    for (let colAct in columnActivities) {
-      let i = activities.findIndex(a => a.id === colAct.id);
-      if (i !== -1) activities[i] = colAct;
-    }
-    console.log(activities);
-    this.setState({ activities });
-    // returns array of activities (not an array of activity ids)
-    return columnActivities;
   };
 
   addActivityToState = activity => {
@@ -152,12 +142,10 @@ class ActivityManagerDND extends Component {
       oldColumn = activities[index].date ? activities[index].date : "default";
       activities[index] = updatedActivity;
     } else {
-      console.log("not found act");
+      console.error("Activity not found.");
       return;
     }
     const newColumn = updatedActivity.date ? updatedActivity.date : "default";
-    console.log("oldcolumn " + oldColumn);
-    console.log("newcolumn " + newColumn);
     if (newColumn !== oldColumn) {
       index = columns[oldColumn].actIds.indexOf(updatedActivity.id);
       columns[oldColumn].actIds.splice(index, 1);
@@ -166,14 +154,46 @@ class ActivityManagerDND extends Component {
     this.setState({ activities, columns });
   };
 
+  /* Takes a column and for each actIds, updates the corresponding in
+  this.state.activities index property, according to actIds position
+  (i.e. index in forEach loop) */
+  updateActivityIndexesInState = column => {
+    let activities = [...this.state.activities];
+    column.actIds.forEach((actId, index) => {
+      let i = activities.findIndex(a => a.id === actId);
+      // if activities[i] exists AND (new index is different OR new column is different), then...
+      if (i > -1 && (activities[i].index !== index || activities[i].date !== column.id)) {
+        activities[i].index = index;
+        activities[i].date = column.id !== "default" ? column.id : null;
+        this.putActivityIndexDate(activities[i]);
+      }
+    });
+    this.setState({ activities });
+  };
+
+  compareTime = (a, b) => {
+    const a_ = stringToTime_or_Null(a.time);
+    const b_ = stringToTime_or_Null(b.time);
+    if (a_ > b_) return 1;
+    if (b_ > a_) return -1;
+    return 0;
+  };
+
+  sortActivityIndexesByTime = column => {
+    let colActivities = column.actIds.map(actId => this.state.activities.find(a => a.id === actId));
+    colActivities.sort(this.compareTime);
+    column.actIds = colActivities.map(ca => ca.id);
+    this.updateActivityIndexesInState(column);
+    this.setState({
+      columns: {
+        ...this.state.columns,
+        [column.id]: column
+      }
+    });
+  };
+
   onDragEnd = result => {
     const { destination, source, draggableId } = result;
-
-    // console.log("destination: ");
-    // console.log(destination);
-    // console.log("source: ");
-    // console.log(source);
-
     if (!destination) {
       return;
     }
@@ -183,45 +203,27 @@ class ActivityManagerDND extends Component {
 
     const start = this.state.columns[source.droppableId];
     const finish = this.state.columns[destination.droppableId];
-
     if (start === finish) {
-      const newTaskIds = [...start.actIds];
-      newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
-      console.log(destination);
-
-      const newColumn = {
-        ...start,
-        actIds: newTaskIds
-      };
-
-      const newState = {
-        ...this.state,
-        columns: {
-          ...this.state.columns,
-          [newColumn.id]: newColumn
-        }
-      };
-
+      const newActIds = [...start.actIds];
+      newActIds.splice(source.index, 1);
+      newActIds.splice(destination.index, 0, draggableId);
+      const newColumn = { ...start, actIds: newActIds };
+      this.updateActivityIndexesInState(newColumn);
+      const newState = { ...this.state, columns: { ...this.state.columns, [newColumn.id]: newColumn } };
       this.setState(newState);
-      // QUERY DATABASE HERE
       return;
     }
 
-    //moving from one list to another
-    const startTaskIds = [...start.actIds];
-    startTaskIds.splice(source.index, 1);
-    const newStart = {
-      ...start,
-      actIds: startTaskIds
-    };
+    //moving from one column to another
+    const startActIds = [...start.actIds];
+    startActIds.splice(source.index, 1);
+    const newStart = { ...start, actIds: startActIds };
+    this.updateActivityIndexesInState(newStart);
 
-    const finishTaskIds = [...finish.actIds];
-    finishTaskIds.splice(destination.index, 0, draggableId);
-    const newFinish = {
-      ...finish,
-      actIds: finishTaskIds
-    };
+    const finishActIds = [...finish.actIds];
+    finishActIds.splice(destination.index, 0, draggableId);
+    const newFinish = { ...finish, actIds: finishActIds };
+    this.updateActivityIndexesInState(newFinish);
 
     const newState = {
       ...this.state,
@@ -257,7 +259,7 @@ class ActivityManagerDND extends Component {
                   this.state.activities.find(activity => activity.id === activityId)
                 );
                 return (
-                  <Column
+                  <ActivityColumn
                     key={column.id}
                     column={column}
                     activities={activities}
@@ -267,6 +269,7 @@ class ActivityManagerDND extends Component {
                     group={this.props.group}
                     dateStart={this.props.dateStart}
                     dateFinish={this.props.dateFinish}
+                    sortActivityIndexesByTime={this.sortActivityIndexesByTime}
                   />
                 );
               })}

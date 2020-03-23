@@ -3,8 +3,10 @@ import ActivityCard from "./ActivityCard";
 import { Droppable } from "react-beautiful-dnd";
 import ActivityCreateButton from "./ActivityCreateButton";
 import { stringToDate_or_Null } from "../../dateUtils";
+import { ButtonGroup, Button } from "react-bootstrap";
+import { FaClock } from "react-icons/fa";
 
-export default class Column extends Component {
+export default class ActivityColumn extends Component {
   render() {
     return (
       <div>
@@ -12,15 +14,23 @@ export default class Column extends Component {
           <div className="title">
             {this.props.column.title}
             {this.props.column.id !== "default" && (
-              <ActivityCreateButton
-                className="float-right"
-                size="sm"
-                columnDate={stringToDate_or_Null(this.props.column.title)}
-                group={this.props.group}
-                addActivityToState={this.props.addActivityToState}
-                dateStart={this.props.dateStart}
-                dateFinish={this.props.dateFinish}
-              />
+              <ButtonGroup className="float-right">
+                <Button
+                  variant="info"
+                  size="sm"
+                  onClick={() => this.props.sortActivityIndexesByTime(this.props.column)}
+                >
+                  <FaClock />
+                </Button>
+                <ActivityCreateButton
+                  size="sm"
+                  columnDate={stringToDate_or_Null(this.props.column.title)}
+                  group={this.props.group}
+                  addActivityToState={this.props.addActivityToState}
+                  dateStart={this.props.dateStart}
+                  dateFinish={this.props.dateFinish}
+                />
+              </ButtonGroup>
             )}
           </div>
         </div>

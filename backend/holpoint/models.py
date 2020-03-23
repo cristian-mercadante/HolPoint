@@ -112,7 +112,7 @@ class Activity(models.Model):
 
 
 class Attachment(models.Model):
-    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name="attachments")
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="attachments")
     file = models.FileField(upload_to='activity_attachments')
 
 

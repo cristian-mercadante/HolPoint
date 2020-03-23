@@ -140,7 +140,7 @@ class ActivityCard extends Component {
                 </Card.Header>
                 <Card.Footer>
                   <ProfileBadge profile={activity.creator} variant="danger" />
-                  <span className="float-right">{activity.date || "N/D"}</span>
+                  <span className="float-right">{activity.time || "N/D"}</span>
                 </Card.Footer>
               </Card>
               <CardModal
