@@ -132,3 +132,6 @@ dmypy.json
 /media/*
 /private/*
 /static/*
+
+# SECRET DATA
+secrets.py

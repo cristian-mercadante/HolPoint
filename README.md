@@ -1,13 +1,17 @@
 # Holpoint
 
 ## Requirements
+
+Developed with these versions:
+
 | SW      | version |
 | :------ | ------: |
-| python  |   3.6.9 |
-| node.js | 12.15.0 |
-| npm     |  6.13.7 |
+| python  |   3.7.3 |
+| node.js | 12.13.1 |
+| npm     |  6.12.1 |
 
 ## Backend
+
 ```bash
 cd backend
 
@@ -27,18 +31,24 @@ python manage.py runserver
 ```
 
 ## Mail
+
 Edit a file, e.g. `/etc/environment` (maybe open it with `sudo`), adding these lines:
+
 ```bash
 export EMAIL_HOST_USER="your_google_account@gmail.com"
 export EMAIL_HOST_PASSWORD="your_google_account_password"
 ```
+
 Edit `.bashrc` in your home directory, adding this line:
+
 ```bash
 source /etc/environment
 ```
+
 Then, close and re-open terminal.
 
 ## Frontend
+
 ```bash
 cd frontend
 
@@ -47,11 +57,14 @@ npm start
 ```
 
 ## Deploy
+
 ```bash
 cd frontend
 npm run build
 ```
+
 Move build directory into `backend` directory, then:
+
 ```bash
 python manage.py collectstatic
 ```
