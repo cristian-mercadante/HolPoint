@@ -37,4 +37,6 @@ admin.site.register(models.ActivityComment)
 admin.site.register(models.Attachment)
 
 # Django admin appearence
-admin.site.site_header = 'Holpoint'
+admin.site.site_header = 'HolPoint'
+admin.site.site_title = 'HolPoint'
+admin.site.index_title = "HolPoint"

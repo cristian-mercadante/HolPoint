@@ -1,0 +1,5 @@
+.forgot-password a:link,
+.forgot-password a:visited {
+  color: #000 !important;
+  text-decoration: none;
+}

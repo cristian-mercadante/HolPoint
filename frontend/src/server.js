@@ -29,3 +29,5 @@ export const commentActivityAPI = api + "comment/activity/";
 export const attachmentCreateAPI = api + "attachmentupload/";
 export const attachmentGetAPI = api + "attachment/";
 export const attachmentRemoveAPI = api + "attachmentremove/";
+
+export const resetPassword = server + "/reset-password/";

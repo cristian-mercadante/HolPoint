@@ -6,6 +6,8 @@ import * as authActions from "../../actions/auth";
 import * as alertActions from "../../actions/alerts";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { resetPassword } from "../../server";
+import "./style.css";
 
 class LoginForm extends Component {
   handleSubmit = e => {
@@ -47,6 +49,9 @@ class LoginForm extends Component {
             ) : (
               <Button type="submit">Accedi</Button>
             )}
+            <span className="forgot-password ml-2">
+              <a href={resetPassword}>Password dimenticata?</a>
+            </span>
           </Card.Footer>
         </Form>
       </AccessFormCard>
