@@ -31,6 +31,8 @@ class AttachmentManager extends Component {
         .post(`${attachmentCreateAPI}${this.props.group.id}`, form_data, headers)
         .then(res => {
           this.props.addAttToState(res.data);
+          this.setState({ file: null });
+          document.getElementById("file").value = "";
         })
         .catch(error => {
           this.props.error(error);

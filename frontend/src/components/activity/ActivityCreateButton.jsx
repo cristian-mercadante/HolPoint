@@ -103,8 +103,7 @@ class ActivityCreateButton extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     error: error => dispatch(alertActions.error(error)),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
-    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
   };
 };
 

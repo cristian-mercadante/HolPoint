@@ -14,7 +14,7 @@ import {
   FaUniversity,
   FaMountain,
   FaMusic,
-  FaStore
+  FaShoppingBag
 } from "react-icons/fa";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
@@ -54,7 +54,7 @@ class ActivityCard extends Component {
       case "SVA": // Svago
         return <FaMusic />;
       case "ACQ": // Acquisti
-        return <FaStore />;
+        return <FaShoppingBag />;
       default:
         return "";
     }
