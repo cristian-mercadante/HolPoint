@@ -30,22 +30,17 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-## Mail
+## Secrets
 
-Edit a file, e.g. `/etc/environment` (maybe open it with `sudo`), adding these lines:
+Create a `secrets.py` file with these variables:
 
-```bash
-export EMAIL_HOST_USER="your_google_account@gmail.com"
-export EMAIL_HOST_PASSWORD="your_google_account_password"
+```py
+EMAIL_HOST_USER = 'your_google_account@gmail.com'
+EMAIL_HOST_PASSWORD = 'your_google_account_password'
+SECRET_KEY = 'very_strong_django_key'
 ```
 
-Edit `.bashrc` in your home directory, adding this line:
-
-```bash
-source /etc/environment
-```
-
-Then, close and re-open terminal.
+Then, move this file into `/backend/backend/`. `settings.py` will retrieve these variables and use them. These will not be saved in GitHub, because of a `.gitignore` line.
 
 ## Frontend
 
@@ -56,7 +51,7 @@ npm install
 npm start
 ```
 
-## Deploy
+## Web deploy
 
 ```bash
 cd frontend
@@ -67,4 +62,12 @@ Move build directory into `backend` directory, then:
 
 ```bash
 python manage.py collectstatic
+```
+
+## Native
+
+```bash
+cd native
+npm install
+npm start
 ```
