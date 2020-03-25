@@ -35,3 +35,6 @@ admin.site.register(models.VoteIdeaInGroup)
 admin.site.register(models.FriendRequest)
 admin.site.register(models.ActivityComment)
 admin.site.register(models.Attachment)
+
+# Django admin appearence
+admin.site.site_header = 'Holpoint'
