@@ -92,9 +92,9 @@ class CurrentUserFriendRequestDetailView(RetrieveAPIView):
 
 
 # FIXME: do I need it???
-class UserBasicDetailView(RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = BasicUserSerializer
+# class UserBasicDetailView(RetrieveAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = BasicUserSerializer
 
 
 class GroupViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
@@ -291,10 +291,9 @@ class QueryStringBasedTokenAuthentication(TokenAuthentication):
         else:
             return super(TokenAuthSupportQueryString, self).authenticate(request)
 
+
 # https://github.com/edoburu/django-private-storage
 # https://github.com/edoburu/django-private-storage/issues/24
-
-
 class AttachmentDetailView(PrivateStorageDetailView, views.APIView):
     model = Attachment
     model_file_field = 'file'

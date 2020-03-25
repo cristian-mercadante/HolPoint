@@ -11,6 +11,7 @@ import Settings from "./containers/Settings";
 
 import LoginForm from "./components/auth/LoginForm";
 import SignupForm from "./components/auth/SignupForm";
+import NotFound404 from "./containers/NotFound404";
 
 export const isAuthenticated = () => {
   const token = localStorage.getItem("token");
@@ -42,7 +43,7 @@ const BaseRouter = props => (
       <Route exact path="/profile/:username" component={Profile} />
       <Route exact path="/group/:id" component={GroupDetail} />
       <Route exact path="/settings" component={Settings} />
-      <Route path="*">{"404 not found"}</Route>
+      <Route path="*" component={NotFound404} />
     </Switch>
   </div>
 );

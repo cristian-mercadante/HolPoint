@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     UserDetailView,
     SearchUser,
-    UserBasicDetailView,
+    # UserBasicDetailView,
     CurrentUserDetailView,
     IdeaCommentListView,
     CurrentUserFriendRequestDetailView,
@@ -39,7 +39,7 @@ router.register(r'comment/activity', ActivityCommentViewSet, basename="comment_a
 urlpatterns = [
     path('profile/<username>', UserDetailView.as_view()),
     path('search/user/<username>', SearchUser.as_view()),
-    path('user/<pk>', UserBasicDetailView.as_view()),
+    #path('user/<pk>', UserBasicDetailView.as_view()),
     path('current_user', CurrentUserDetailView.as_view()),
     path('comment/idea/<idea_id>', IdeaCommentListView.as_view()),
     path('vote/<group_id>/<idea_id>', VoteIdeaInGroupViewSet.as_view({'post': 'vote'})),
