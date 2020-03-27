@@ -91,12 +91,6 @@ class CurrentUserFriendRequestDetailView(RetrieveAPIView):
         return self.request.user.profile
 
 
-# FIXME: do I need it???
-# class UserBasicDetailView(RetrieveAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = BasicUserSerializer
-
-
 class GroupViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
@@ -347,6 +341,7 @@ class ActivityViewSet(viewsets.GenericViewSet, mixins.UpdateModelMixin, mixins.L
             activity = group.activities.filter(pk=activity_id).first()
             if not activity:
                 raise NotFound(detail="Group not found", code=404)
+            request.data['group'] = group_id
             serializer = self.serializer_class(activity, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()

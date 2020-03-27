@@ -119,6 +119,8 @@ export const putCurrentUser = (username, email, first_name, last_name, picture) 
               dispatch(done());
               dispatch(alertActions.error(error));
             });
+        } else {
+          dispatch(done());
         }
       })
       .catch(error => {

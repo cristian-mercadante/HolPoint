@@ -2,7 +2,6 @@ from django.urls import path
 from .views import (
     UserDetailView,
     SearchUser,
-    # UserBasicDetailView,
     CurrentUserDetailView,
     IdeaCommentListView,
     CurrentUserFriendRequestDetailView,
@@ -33,24 +32,23 @@ router.register(r'group_creator', GroupCreatorViewSet, basename="group_creator")
 router.register(r'activity_creator', ActivityCreatorViewSet, basename="activity_creator")
 router.register(r'idea', IdeaViewSet, basename="idea")
 router.register(r'comment/idea', IdeaCommentViewSet, basename="comment_idea")
-router.register(r'friendrequest', FriendRequestViewSet, basename="friend_request")
+router.register(r'friendrequest', FriendRequestViewSet, basename="friendrequest")
 router.register(r'comment/activity', ActivityCommentViewSet, basename="comment_activity")
 
 urlpatterns = [
-    path('profile/<username>', UserDetailView.as_view()),
-    path('search/user/<username>', SearchUser.as_view()),
-    #path('user/<pk>', UserBasicDetailView.as_view()),
-    path('current_user', CurrentUserDetailView.as_view()),
-    path('comment/idea/<idea_id>', IdeaCommentListView.as_view()),
-    path('vote/<group_id>/<idea_id>', VoteIdeaInGroupViewSet.as_view({'post': 'vote'})),
-    path('friendrequests', CurrentUserFriendRequestDetailView.as_view()),
-    path('unfriend/<int:friend_id>', UnfriendViewSet.as_view({'delete': 'unfriend'})),
-    path('pictureupload', PictureUpload.as_view({'put': 'upload'})),
-    path('group_activity/<int:group_id>/<int:activity_id>', ActivityViewSet.as_view({'get': 'list', 'put': 'edit'})),
-    path('comment/activity/<activity_id>', ActivityCommentListView.as_view()),
-    path('attachmentupload/<int:group_id>', AttachmentUpload.as_view({'post': 'upload'})),
-    path('attachment/<int:pk>', AttachmentDetailView.as_view()),
-    path('attachmentremove/<int:attachment_id>', AttachmentRemove.as_view({'delete': 'remove'})),
+    path('profile/<username>', UserDetailView.as_view(), name="profile"),
+    path('search/user/<username>', SearchUser.as_view(), name="search_user"),
+    path('current_user', CurrentUserDetailView.as_view(), name="current_user"),
+    path('comment/idea/<idea_id>', IdeaCommentListView.as_view(), name="comment_idea"),
+    path('vote/<group_id>/<idea_id>', VoteIdeaInGroupViewSet.as_view({'post': 'vote'}), name="vote_idea"),
+    path('friendrequests', CurrentUserFriendRequestDetailView.as_view(), name="current_user_friendrequests"),
+    path('unfriend/<int:friend_id>', UnfriendViewSet.as_view({'delete': 'unfriend'}), name="unfriend"),
+    path('pictureupload', PictureUpload.as_view({'put': 'upload'}), name="pictureupload"),
+    path('group_activity/<int:group_id>/<int:activity_id>', ActivityViewSet.as_view({'get': 'list', 'put': 'edit'}), name="activity"),
+    path('comment/activity/<activity_id>', ActivityCommentListView.as_view(), name="comment_activity"),
+    path('attachmentupload/<int:group_id>', AttachmentUpload.as_view({'post': 'upload'}), name="attachmentupload"),
+    path('attachment/<int:pk>', AttachmentDetailView.as_view(), name="attachmentdetail"),
+    path('attachmentremove/<int:attachment_id>', AttachmentRemove.as_view({'delete': 'remove'}), name="attachementremove"),
 ]
 
 urlpatterns += router.urls

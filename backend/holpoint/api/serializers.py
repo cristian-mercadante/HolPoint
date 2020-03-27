@@ -329,9 +329,11 @@ class ActivitySerializer(serializers.ModelSerializer):
         creator = Profile.objects.filter(user=current_user).first()
         if not creator:
             raise serializers.ValidationError('creator not found')
-        # give to the activity the highest index value for that date
         date = validated_data.get("date")
         group = validated_data.get("group")
+        if creator not in group.profiles.all():
+            raise serializers.ValidationError('creator does not partecipate to this group')
+        # give to the activity the highest index value for that date
         column = Activity.objects.filter(date=date, group=group)
         if not column:
             index = 0
