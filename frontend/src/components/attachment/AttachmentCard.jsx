@@ -49,18 +49,38 @@ class AttachmentCard extends Component {
     return this.props.currentUser.id === this.props.owner;
   };
 
+  download = () => {
+    // thanks to https://gist.github.com/javilobo8/097c30a233786be52070986d8cdb1743
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    axios({
+      url: `${attachmentGetAPI}${this.props.id}`,
+      ...headers,
+      method: 'GET',
+      responseType: 'blob', // important
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', this.props.name);
+      document.body.appendChild(link);
+      link.click();
+    }).catch(error => this.props.error(error));
+  }
+
   render() {
     return (
       <Fragment>
         <div className="attachment-card">
-          <a
-            href={`${attachmentGetAPI}${this.props.id}?auth_token=${localStorage.getItem("token")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <span onClick={this.download}>
             <span className="mr-2">{getIcon(this.props.name)}</span>
             {this.props.name}
-          </a>
+          </span>
           {this.doesCurrentUserOwnThisAttachment() && (
             <Button className="ml-2" variant="plain" onClick={this.showModalDelete}>
               <FaTimes />
@@ -68,7 +88,7 @@ class AttachmentCard extends Component {
           )}
         </div>
         <ConfirmModal show={this.state.showModalDelete} onHide={this.showModalDelete} onClick={this.handleDelete} />
-      </Fragment>
+      </Fragment >
     );
   }
 }

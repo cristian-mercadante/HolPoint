@@ -5,4 +5,4 @@ django-rest-auth
 django-allauth
 pillow
 django-private-storage
-python-magic
+python-magic-win64

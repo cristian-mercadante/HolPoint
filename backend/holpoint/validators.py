@@ -1,11 +1,16 @@
 import os
-import magic
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.core.exceptions import ValidationError
 from django.conf import settings
 
+from sys import platform
+if platform == "win32":
+    from winmagic import magic
+else:
+    import magic
+    
 
 # http://blog.hayleyanderson.us/2015/07/18/validating-file-types-in-django/
 def validate_file_type(upload):

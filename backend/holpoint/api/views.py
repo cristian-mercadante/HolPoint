@@ -275,23 +275,11 @@ class AttachmentRemove(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             return Response({}, status=status.HTTP_200_OK)
 
 
-class QueryStringBasedTokenAuthentication(TokenAuthentication):
-    def authenticate(self, request):
-        # Check if 'token_auth' is in the request query params.
-        # Give precedence to 'Authorization' header.
-        if 'auth_token' in request.query_params and \
-                'HTTP_AUTHORIZATION' not in request.META:
-            return self.authenticate_credentials(request.query_params.get('auth_token'))
-        else:
-            return super(TokenAuthSupportQueryString, self).authenticate(request)
-
-
 # https://github.com/edoburu/django-private-storage
 # https://github.com/edoburu/django-private-storage/issues/24
 class AttachmentDetailView(PrivateStorageDetailView, views.APIView):
     model = Attachment
     model_file_field = 'file'
-    authentication_classes = [QueryStringBasedTokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
