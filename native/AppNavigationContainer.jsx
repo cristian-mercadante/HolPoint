@@ -44,7 +44,7 @@ class AppNavigationContainer extends Component {
                 iconName = "search";
               } else if (route.name === "Richieste") {
                 iconName = "users";
-              } else if (route.name === "Profile") {
+              } else if (route.name === "Profilo") {
                 iconName = "user";
               } else if (route.name === "LogIn") {
                 iconName = "sign-in";
@@ -66,7 +66,7 @@ class AppNavigationContainer extends Component {
               <Tab.Screen name="Gruppi" component={GroupsStackScreen} />
               <Tab.Screen name="Cerca" component={SearchStackScreen} />
               <Tab.Screen name="Richieste" component={RequestsStackScreen} />
-              <Tab.Screen name="Profile" component={ProfileStackScreen} />
+              <Tab.Screen name="Profilo" component={ProfileStackScreen} />
             </>
           ) : (
             <>

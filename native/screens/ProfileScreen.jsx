@@ -1,8 +1,14 @@
 import React, { Component } from "react";
-import { View, Text, Button } from "react-native";
-import { connect } from "react-redux";
-import * as authActions from "../actions/auth";
-import * as colors from "../colors";
+import { View, Text, Button, Image } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+
+//temp
+import DetailsScreen from "./DetailsScreen";
+import ProfileInfoTab from "./ProfileTabs/ProfileInfoTab";
+import ProfileFriendsTab from "./ProfileTabs/ProfileFriendsTab";
+
+const Tab = createMaterialTopTabNavigator();
 
 class ProfileScreen extends Component {
   logout = () => {
@@ -12,17 +18,16 @@ class ProfileScreen extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Button title="Logout" onPress={this.logout} color={colors.RED} />
+      <View style={{ flex: 1 }}>
+        <NavigationContainer independent={true}>
+          <Tab.Navigator>
+            <Tab.Screen name="Info" component={ProfileInfoTab} />
+            <Tab.Screen name="Amici" component={ProfileFriendsTab} />
+          </Tab.Navigator>
+        </NavigationContainer>
       </View>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    logout: () => dispatch(authActions.authLogout())
-  };
-};
-
-export default connect(null, mapDispatchToProps)(ProfileScreen);
+export default ProfileScreen;
