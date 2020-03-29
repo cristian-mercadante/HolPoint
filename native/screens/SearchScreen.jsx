@@ -1,13 +1,13 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
 
-function SettingsScreen({ navigation }) {
+function SearchScreen({ navigation }) {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings screen</Text>
+      <Text>Search screen</Text>
       <Button title="Go to Details" onPress={() => navigation.navigate("Details")} />
     </View>
   );
 }
 
-export default SettingsScreen;
+export default SearchScreen;

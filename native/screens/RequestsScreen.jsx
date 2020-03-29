@@ -1,14 +1,13 @@
 import React from "react";
-import { View, StatusBar, Text, Button } from "react-native";
+import { View, Text, Button } from "react-native";
 
-function HomeScreen({ navigation }) {
+function RequestsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <StatusBar barStyle="dark-content" />
-      <Text>Home screen</Text>
+      <Text>RequestsScreen screen</Text>
       <Button title="Go to Details" onPress={() => navigation.navigate("Details")} />
     </View>
   );
 }
 
-export default HomeScreen;
+export default RequestsScreen;

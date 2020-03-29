@@ -1,12 +1,12 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as colors from "../colors";
-import HomeScreen from "../screens/HomeScreen";
+import GroupsScreen from "../screens/GroupsScreen";
 import DetailsScreen from "../screens/DetailsScreen";
 
 const HomeStack = createStackNavigator();
 
-function HomeStackScreen() {
+function GroupsStackScreen() {
   return (
     <HomeStack.Navigator
       screenOptions={{
@@ -14,10 +14,10 @@ function HomeStackScreen() {
         headerTintColor: "#000"
       }}
     >
-      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Gruppi" component={GroupsScreen} />
       <HomeStack.Screen name="Details" component={DetailsScreen} />
     </HomeStack.Navigator>
   );
 }
 
-export default HomeStackScreen;
+export default GroupsStackScreen;

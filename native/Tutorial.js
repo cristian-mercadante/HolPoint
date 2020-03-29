@@ -35,7 +35,7 @@ function CreatePostScreen({ navigation, route }) {
         title="Done"
         onPress={() => {
           // Pass params back to home screen
-          navigation.navigate("Home", { post: postText });
+          navigation.navigate("Gruppi", { post: postText });
         }}
       />
     </>
@@ -59,7 +59,7 @@ function DetailsScreen({ route, navigation }) {
           })
         }
       />
-      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
+      <Button title="Go to Home" onPress={() => navigation.navigate("Gruppi")} />
       <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
   );
@@ -75,7 +75,7 @@ function StackScreen() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
+        name="Gruppi"
         component={HomeScreen}
         options={
           {
@@ -93,13 +93,13 @@ export default function App() {
     <NavigationContainer>
       <StackScreen />
       {/* <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Gruppi"
         screenOptions={{
           headerStyle: { backgroundColor: colors.YELLOW },
           headerTintColor: "#000"
         }}
       >
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Gruppi" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} initialParams={{ itemId: 42 }} />
         <Stack.Screen name="CreatePost" component={CreatePostScreen} />
       </Stack.Navigator> */}

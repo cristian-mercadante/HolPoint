@@ -4,16 +4,22 @@ import * as Font from "expo-font";
 import * as colors from "../../colors";
 
 class Title extends Component {
+  _isMounted = false;
+
   state = {
     fontLoaded: false
   };
 
   async componentDidMount() {
+    this._isMounted = true;
     await Font.loadAsync({
       "rancho-regular": require("../../assets/fonts/Rancho-Regular.ttf")
     });
+    if (this._isMounted) this.setState({ fontLoaded: true });
+  }
 
-    this.setState({ fontLoaded: true });
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
