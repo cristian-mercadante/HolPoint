@@ -48,6 +48,7 @@ npm start
 
 # Production
 ## DynDNS configuration
+- Open ports `80` and `443` from Raspberry Pi's local IP address (mine was `192.168.1.226`) in home router.
 - Setup a FREE subscription to [DynDNS.it](https://dyndns.it/login/?usedef=0&redirect_to=%2Forder%2F%3Fservice%3Dfree%26newone%3D1%26opt%3D).
 - Chose host name: `holpoint.ns0.it` in my case.
 - Setup home router with parameters given from the website.
@@ -246,8 +247,6 @@ Include /etc/letsencrypt/options-ssl-apache.conf
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
 ```
 
-Error logs are in `/var/log/apache2`
-
 To run Apache, do `sudo service apache2 restart`
 
 ## Data ownership to Apache
@@ -268,3 +267,12 @@ sudo cerbot --apache
 # enter email and agree to terms
 ```
 
+In `frontend/src/server.js` set `https` instead of `http`:
+```javascript
+export const server = "https://holpoint.ns0.it";
+```
+
+# Troubleshooting
+- Error logs are in `/var/log/apache2`
+- After changes, restart Apache with `sudo service apache2 restart`
+- If you edit `frontend` (like `server.js` file), remember that effective changes are displayed after `npm run build` and after moving `build` directory into `backend`. Also do `python manage.py collectstatic`.
