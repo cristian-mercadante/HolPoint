@@ -1,6 +1,7 @@
 // export const server = "http://127.0.0.1:8000";
 // export const server = "http://192.168.1.2:8000";
-export const server = "http://192.168.1.226:8000";
+// export const server = "http://192.168.1.226:8000";
+export const server = "https://holpoint.ns0.it";
 
 const rest_auth = server + "/rest-auth/";
 export const loginURL = rest_auth + "login/";

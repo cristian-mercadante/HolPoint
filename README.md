@@ -133,57 +133,114 @@ Configure Apache:
 ```bash
 sudo nano /etc/apache2/sites-available/000-default.conf
 ```
-Copy-paste this:
+Copy-paste this (we will also setup for HTTPS):
 ```apache
+WSGIDaemonProcess holpoint python-path=/home/pi/HolPoint/backend:/home/pi/HolPoint/backend/venv/lib/python3.7/site-packages
+WSGIProcessGroup holpoint
+WSGIApplicationGroup holpoint
+
 <VirtualHost *:80>
-    WSGIDaemonProcess backend python-path=/home/pi/HolPoint/backend:/home/pi/HolPoint/backend/venv/lib/python3.7/site-packages
-    WSGIProcessGroup backend
-    WSGIScriptAlias / /home/pi/HolPoint/backend/backend/wsgi.py
-    WSGIPassAuthorization On
-    WSGIApplicationGroup backend
+	WSGIScriptAlias / /home/pi/HolPoint/backend/backend/wsgi.py
+	WSGIPassAuthorization On
+	
+	<Directory /home/pi/HolPoint/backend/backend>
+	<Files wsgi.py>
+		Require all granted
+	</Files>
+	</Directory>
 
-    <Directory /home/pi/HolPoint/backend/backend>
-    <Files wsgi.py>
-        Require all granted
-    </Files>
-    </Directory>
+	Alias /static /home/pi/HolPoint/backend/static
+	<Directory /home/pi/HolPoint/backend/static>
+		Require all granted
+	</Directory>
 
-    Alias /static /home/pi/HolPoint/backend/static
-    <Directory /home/pi/HolPoint/backend/static>
-        Require all granted
-    </Directory>
+	Alias /media /home/pi/HolPoint/backend/media
+	<Directory /home/pi/HolPoint/backend/media>
+		Require all granted
+	</Directory>
 
-    Alias /media /home/pi/HolPoint/backend/media
-    <Directory /home/pi/HolPoint/backend/media>
-        Require all granted
-    </Directory>
+	# The ServerName directive sets the request scheme, hostname and port that
+	# the server uses to identify itself. This is used when creating
+	# redirection URLs. In the context of virtual hosts, the ServerName
+	# specifies what hostname must appear in the request's Host: header to
+	# match this virtual host. For the default virtual host (this file) this
+	# value is not decisive as it is used as a last resort host regardless.
+	# However, you must set it for any further virtual host explicitly.
+	ServerName holpoint.ns0.it
 
-    # The ServerName directive sets the request scheme, hostname and port that
-    # the server uses to identify itself. This is used when creating
-    # redirection URLs. In the context of virtual hosts, the ServerName
-    # specifies what hostname must appear in the request's Host: header to
-    # match this virtual host. For the default virtual host (this file) this
-    # value is not decisive as it is used as a last resort host regardless.
-    # However, you must set it for any further virtual host explicitly.
-    #ServerName 192.168.1.226
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html
 
-    ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/html
+	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+	# error, crit, alert, emerg.
+	# It is also possible to configure the loglevel for particular
+	# modules, e.g.
+	#LogLevel info ssl:warn
 
-    # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
-    # error, crit, alert, emerg.
-    # It is also possible to configure the loglevel for particular
-    # modules, e.g.
-    #LogLevel info ssl:warn
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-    # For most configuration files from conf-available/, which are
-    # enabled or disabled at a global level, it is possible to
-    # include a line for only one particular virtual host. For example the
-    # following line enables the CGI configuration for this host only
-    # after it has been globally disabled with "a2disconf".
-    #Include conf-available/serve-cgi-bin.conf
+	# For most configuration files from conf-available/, which are
+	# enabled or disabled at a global level, it is possible to
+	# include a line for only one particular virtual host. For example the
+	# following line enables the CGI configuration for this host only
+	# after it has been globally disabled with "a2disconf".
+	#Include conf-available/serve-cgi-bin.conf
+RewriteEngine on
+RewriteCond %{SERVER_NAME} =holpoint.ns0.it
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+</VirtualHost>
+
+<VirtualHost *:443>
+	WSGIScriptAlias / /home/pi/HolPoint/backend/backend/wsgi.py
+	WSGIPassAuthorization On
+	
+	<Directory /home/pi/HolPoint/backend/backend>
+	<Files wsgi.py>
+		Require all granted
+	</Files>
+	</Directory>
+
+	Alias /static /home/pi/HolPoint/backend/static
+	<Directory /home/pi/HolPoint/backend/static>
+		Require all granted
+	</Directory>
+
+	Alias /media /home/pi/HolPoint/backend/media
+	<Directory /home/pi/HolPoint/backend/media>
+		Require all granted
+	</Directory>
+
+	# The ServerName directive sets the request scheme, hostname and port that
+	# the server uses to identify itself. This is used when creating
+	# redirection URLs. In the context of virtual hosts, the ServerName
+	# specifies what hostname must appear in the request's Host: header to
+	# match this virtual host. For the default virtual host (this file) this
+	# value is not decisive as it is used as a last resort host regardless.
+	# However, you must set it for any further virtual host explicitly.
+	ServerName holpoint.ns0.it
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html
+
+	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+	# error, crit, alert, emerg.
+	# It is also possible to configure the loglevel for particular
+	# modules, e.g.
+	#LogLevel info ssl:warn
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	# For most configuration files from conf-available/, which are
+	# enabled or disabled at a global level, it is possible to
+	# include a line for only one particular virtual host. For example the
+	# following line enables the CGI configuration for this host only
+	# after it has been globally disabled with "a2disconf".
+	#Include conf-available/serve-cgi-bin.conf
+SSLCertificateFile /etc/letsencrypt/live/holpoint.ns0.it/fullchain.pem
+SSLCertificateKeyFile /etc/letsencrypt/live/holpoint.ns0.it/privkey.pem
+Include /etc/letsencrypt/options-ssl-apache.conf
 </VirtualHost>
 
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
@@ -201,3 +258,13 @@ chmod g+w ./backend
 sudo chown :www-data ./backend/db.sqlite3
 sudo chown :www-data ./backend
 ```
+
+## HTTPS
+```bash
+#sudo apt-get install software-properties-common
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install python-certbot-apache
+sudo cerbot --apache
+# enter email and agree to terms
+```
+
