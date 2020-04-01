@@ -1,29 +1,11 @@
 from django.urls import path
-from .views import (
-    UserDetailView,
-    SearchUser,
-    CurrentUserDetailView,
-    IdeaCommentListView,
-    CurrentUserFriendRequestDetailView,
-    PictureUpload,
-    ActivityCommentListView,
-    AttachmentUpload,
-    AttachmentDetailView,
-    AttachmentRemove,
-)
+from .views_group import GroupViewSet, GroupCreatorViewSet, VoteIdeaInGroupViewSet
+from .views_idea import IdeaViewSet, IdeaCommentViewSet, IdeaCommentListView
+from .views_user import UserDetailView, SearchUser, CurrentUserDetailView, PictureUpload
+from .views_friendrequest import FriendRequestViewSet, CurrentUserFriendRequestDetailView, UnfriendViewSet
+from .views_activity import ActivityViewSet, ActivityCreatorViewSet, ActivityCommentViewSet, ActivityCommentListView
+from .views_attachment import AttachmentUpload, AttachmentDetailView, AttachmentRemove
 
-from .views import (
-    GroupViewSet,
-    GroupCreatorViewSet,
-    IdeaViewSet,
-    IdeaCommentViewSet,
-    VoteIdeaInGroupViewSet,
-    FriendRequestViewSet,
-    UnfriendViewSet,
-    ActivityViewSet,
-    ActivityCreatorViewSet,
-    ActivityCommentViewSet
-)
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
