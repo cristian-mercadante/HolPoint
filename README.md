@@ -134,7 +134,7 @@ Configure Apache:
 ```bash
 sudo nano /etc/apache2/sites-available/000-default.conf
 ```
-Copy-paste this (we will also setup for HTTPS):
+Copy-paste this (we will also setup for HTTPS and XSendFile):
 ```apache
 WSGIDaemonProcess holpoint python-path=/home/pi/HolPoint/backend:/home/pi/HolPoint/backend/venv/lib/python3.7/site-packages
 WSGIProcessGroup holpoint
@@ -143,6 +143,9 @@ WSGIApplicationGroup holpoint
 <VirtualHost *:80>
 	WSGIScriptAlias / /home/pi/HolPoint/backend/backend/wsgi.py
 	WSGIPassAuthorization On
+
+	XSendFile On
+	XSendFilePath /home/pi/HolPoint/backend/private
 	
 	<Directory /home/pi/HolPoint/backend/backend>
 	<Files wsgi.py>
@@ -160,32 +163,16 @@ WSGIApplicationGroup holpoint
 		Require all granted
 	</Directory>
 
-	# The ServerName directive sets the request scheme, hostname and port that
-	# the server uses to identify itself. This is used when creating
-	# redirection URLs. In the context of virtual hosts, the ServerName
-	# specifies what hostname must appear in the request's Host: header to
-	# match this virtual host. For the default virtual host (this file) this
-	# value is not decisive as it is used as a last resort host regardless.
-	# However, you must set it for any further virtual host explicitly.
 	ServerName holpoint.ns0.it
 
 	ServerAdmin webmaster@localhost
 	DocumentRoot /var/www/html
 
-	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
-	# error, crit, alert, emerg.
-	# It is also possible to configure the loglevel for particular
-	# modules, e.g.
 	#LogLevel info ssl:warn
 
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-	# For most configuration files from conf-available/, which are
-	# enabled or disabled at a global level, it is possible to
-	# include a line for only one particular virtual host. For example the
-	# following line enables the CGI configuration for this host only
-	# after it has been globally disabled with "a2disconf".
 	#Include conf-available/serve-cgi-bin.conf
 RewriteEngine on
 RewriteCond %{SERVER_NAME} =holpoint.ns0.it
@@ -195,6 +182,9 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 <VirtualHost *:443>
 	WSGIScriptAlias / /home/pi/HolPoint/backend/backend/wsgi.py
 	WSGIPassAuthorization On
+
+	XSendFile On
+	XSendFilePath /home/pi/HolPoint/backend/private
 	
 	<Directory /home/pi/HolPoint/backend/backend>
 	<Files wsgi.py>
@@ -212,32 +202,16 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 		Require all granted
 	</Directory>
 
-	# The ServerName directive sets the request scheme, hostname and port that
-	# the server uses to identify itself. This is used when creating
-	# redirection URLs. In the context of virtual hosts, the ServerName
-	# specifies what hostname must appear in the request's Host: header to
-	# match this virtual host. For the default virtual host (this file) this
-	# value is not decisive as it is used as a last resort host regardless.
-	# However, you must set it for any further virtual host explicitly.
 	ServerName holpoint.ns0.it
 
 	ServerAdmin webmaster@localhost
 	DocumentRoot /var/www/html
 
-	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
-	# error, crit, alert, emerg.
-	# It is also possible to configure the loglevel for particular
-	# modules, e.g.
 	#LogLevel info ssl:warn
 
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-	# For most configuration files from conf-available/, which are
-	# enabled or disabled at a global level, it is possible to
-	# include a line for only one particular virtual host. For example the
-	# following line enables the CGI configuration for this host only
-	# after it has been globally disabled with "a2disconf".
 	#Include conf-available/serve-cgi-bin.conf
 SSLCertificateFile /etc/letsencrypt/live/holpoint.ns0.it/fullchain.pem
 SSLCertificateKeyFile /etc/letsencrypt/live/holpoint.ns0.it/privkey.pem
@@ -270,6 +244,23 @@ sudo cerbot --apache
 In `frontend/src/server.js` set `https` instead of `http`:
 ```javascript
 export const server = "https://holpoint.ns0.it";
+```
+
+## XSendFile
+According to (`django-private-storage`)[https://github.com/edoburu/django-private-storage#optimizing-large-file-transfers] developer, sending large file can be inefficient. So it will be required to add `mod_xsendfile` to Apache.
+- In `backend/settings.py` add:
+```python
+PRIVATE_STORAGE_SERVER = 'apache'
+```
+- In Apache configuration add (this is already in configuration file above):
+```apache
+XSendFile On
+XSendFilePath /home/pi/HolPoint/backend/private
+```
+- Install XSendFile:
+```bash
+sudo apt-get install libapache2-mod-xsendfile
+sudo a2enmod xsendfile
 ```
 
 # Troubleshooting
