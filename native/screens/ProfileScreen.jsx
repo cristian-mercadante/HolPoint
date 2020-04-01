@@ -1,14 +1,9 @@
 import React, { Component } from "react";
-import { View, Text, Button, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-
-//temp
-import DetailsScreen from "./DetailsScreen";
-import ProfileInfoTab from "./ProfileTabs/ProfileInfoTab";
-import ProfileFriendsTab from "./ProfileTabs/ProfileFriendsTab";
-
-const Tab = createMaterialTopTabNavigator();
+import { View, Text, Button } from "react-native";
+import { connect } from "react-redux";
+import * as authActions from "../actions/auth";
+import ProfileScrollView from "../components/profile/ProfileScrollView";
+import * as colors from "../colors";
 
 class ProfileScreen extends Component {
   logout = () => {
@@ -18,16 +13,24 @@ class ProfileScreen extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <NavigationContainer independent={true}>
-          <Tab.Navigator>
-            <Tab.Screen name="Info" component={ProfileInfoTab} />
-            <Tab.Screen name="Amici" component={ProfileFriendsTab} />
-          </Tab.Navigator>
-        </NavigationContainer>
-      </View>
+      <>
+        <ProfileScrollView profile={this.props.currentUser} navigation={this.props.navigation} />
+        <Button title="Logout" onPress={this.logout} color={colors.RED} />
+      </>
     );
   }
 }
 
-export default ProfileScreen;
+const mapStateToProps = state => {
+  return {
+    currentUser: state.currentUser
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(authActions.authLogout())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

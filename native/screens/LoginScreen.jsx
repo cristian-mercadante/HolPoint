@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { View, TextInput, StyleSheet, Button, StatusBar, ActivityIndicator } from "react-native";
+import { View, TextInput, StyleSheet, Button, StatusBar } from "react-native";
 import Title from "../components/misc/Title";
 import SubTitle from "../components/misc/SubTitle";
 import { connect } from "react-redux";
 import * as colors from "../colors";
 import * as authActions from "../actions/auth";
+import Spinner from "../components/misc/Spinner";
 
 class LoginScreen extends Component {
   state = {
@@ -32,7 +33,7 @@ class LoginScreen extends Component {
         </View>
         <View style={{ flex: 2, width: "80%", justifyContent: "center" }}>
           {this.props.isLoading ? (
-            <ActivityIndicator size="large" color={colors.BLUE} />
+            <Spinner color={colors.BLUE} />
           ) : (
             <>
               <TextInput

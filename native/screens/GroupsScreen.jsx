@@ -1,18 +1,60 @@
-import React from "react";
-import { View, StatusBar, Text, Button } from "react-native";
-import H1 from "../components/misc/H1";
+import React, { Component } from "react";
+import { View, StatusBar, Button } from "react-native";
 import * as colors from "../colors";
+import { connect } from "react-redux";
+import GroupCardManager from "../components/group/GroupCardManager";
+import axios from "axios";
+import { groupAPI } from "../server";
+import { RED } from "../colors";
+import Spinner from "../components/misc/Spinner";
 
-function GroupsScreen({ navigation }) {
-  return (
-    <View>
-      <StatusBar barStyle="dark-content" />
+class GroupsScreen extends Component {
+  state = {
+    loading: true,
+    groups: []
+  };
 
-      <View>
+  addGroup = group => {
+    this.setState({ groups: [...this.state.groups, group] });
+  };
+
+  getGroups = () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${this.props.token}`
+      }
+    };
+    return axios
+      .get(`${groupAPI}`, headers)
+      .then(res => {
+        this.setState({ loading: false, groups: res.data });
+      })
+      .catch(error => {
+        this.props.error(error);
+      });
+  };
+
+  componentDidMount() {
+    this.getGroups();
+  }
+
+  render() {
+    return (
+      <>
+        <StatusBar barStyle="dark-content" />
         <Button title="Crea gruppo" color={colors.RED} />
-      </View>
-    </View>
-  );
+        {this.state.loading ? <Spinner color={RED} /> : <GroupCardManager groups={this.state.groups} />}
+      </>
+    );
+  }
 }
 
-export default GroupsScreen;
+const mapStateToProps = state => {
+  return {
+    token: state.auth.token,
+    currentUser: state.currentUser
+  };
+};
+
+export default connect(mapStateToProps)(GroupsScreen);

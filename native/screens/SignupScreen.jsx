@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { View, StyleSheet, TextInput, Button, ActivityIndicator } from "react-native";
+import { View, StyleSheet, TextInput, Button } from "react-native";
 import Title from "../components/misc/Title";
 import { connect } from "react-redux";
 import * as colors from "../colors";
 import * as authActions from "../actions/auth";
 import SubTitle from "../components/misc/SubTitle";
+import Spinner from "../components/misc/Spinner";
 
 class SignupScreen extends Component {
   state = {
@@ -35,7 +36,7 @@ class SignupScreen extends Component {
         </View>
         <View style={{ flex: 2, width: "80%", justifyContent: "center" }}>
           {this.props.isLoading ? (
-            <ActivityIndicator size="large" color={colors.BLUE} />
+            <Spinner color={colors.BLUE} />
           ) : (
             <>
               <TextInput
