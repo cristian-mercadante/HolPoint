@@ -78,7 +78,7 @@ class GroupDetail extends Component {
       name,
       description,
       profiles,
-      ideas: ideas.length === 0 ? this.state.group.ideas.map(idea => idea.id) : ideas, // fixed deleting ideas
+      ideas, //: ideas.length === 0 ? this.state.group.ideas.map(idea => idea.id) : ideas, // fixed deleting ideas
       date_start: dateStart,
       date_finish: dateFinish
     };
@@ -144,7 +144,11 @@ class GroupDetail extends Component {
     let group = this.getCleanDataForPutGroup();
     group.ideas = group.ideas.filter(idea => idea !== ideaId);
     const { name, description, profiles, ideas } = group;
-    return this.putGroup(name, description, profiles, ideas);
+    return this.putGroup(name, description, profiles, ideas).then(() => {
+      if (this.state.group.prefered_idea && this.state.group.prefered_idea.id === ideaId) {
+        this.putFavIdea(null);
+      }
+    });
   };
 
   updateIdeaInState = idea => {

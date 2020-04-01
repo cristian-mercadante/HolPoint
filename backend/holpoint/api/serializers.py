@@ -121,6 +121,8 @@ class FriendRequestSerializer(serializers.ModelSerializer):
         # - the status is Pen
         sender = validated_data.get("sender")
         receiver = validated_data.get("receiver")
+        if sender.id == receiver.id:
+            raise serializers.ValidationError('You cannot send friend request to yourself')
         friend = sender.friends.filter(pk=receiver.id)
         if friend:
             raise serializers.ValidationError('You are already friends')
@@ -237,7 +239,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class GroupCreatorSerializer(serializers.ModelSerializer):
-    prefered_idea = IdeaRelatedField()
+    prefered_idea = IdeaRelatedField(allow_null=True)
 
     class Meta:
         model = Group

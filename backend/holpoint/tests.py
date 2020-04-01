@@ -355,6 +355,7 @@ class FriendRequestAPITest(APITestCase):
     # - accept friend request
     # - refuse friend request
     # - assure deletion of request after accept/refuse
+    # - NOT send friend request to yourself
     def setUp(self):
         self.user_1 = User.objects.create(username="username_1")
         self.user_2 = User.objects.create(username="username_2")
@@ -403,3 +404,11 @@ class FriendRequestAPITest(APITestCase):
         response = self.client.put(url, data, format="json")
         self.assertTrue(status.is_success(response.status_code))
         self.assertTrue(self.user_1.profile.sent_requests, [])
+
+    def test_not_send_friend_request_to_yourself(self):
+        # send
+        url = reverse('friendrequest-list')
+        self.api_authentication(self.token_1)
+        data = {"receiver": self.user_1.id, "sender": self.user_1.id}
+        response = self.client.post(url, data, format="json")
+        self.assertFalse(status.is_success(response.status_code))

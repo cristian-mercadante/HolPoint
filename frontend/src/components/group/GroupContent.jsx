@@ -75,7 +75,8 @@ class GroupContent extends Component {
     if (!validateDates(dateStart, dateFinish, this.props.addAlert)) return;
     dateStart = dateToString_or_Null(dateStart);
     dateFinish = dateToString_or_Null(dateFinish);
-    this.props.putGroup(name, description, profiles, [], dateStart, dateFinish).then(err => {
+    const ideaIds = this.props.ideas.map(idea => idea.id);
+    this.props.putGroup(name, description, profiles, ideaIds, dateStart, dateFinish).then(err => {
       if (!err) {
         this.setState({ editing: false });
       }
