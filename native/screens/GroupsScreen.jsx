@@ -31,7 +31,7 @@ class GroupsScreen extends Component {
         this.setState({ loading: false, groups: res.data });
       })
       .catch(error => {
-        this.props.error(error);
+        //this.props.error(error);
       });
   };
 

@@ -1,8 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { YELLOW } from "../colors";
+import { YELLOW, BLUE } from "../colors";
 import FriendListScreen from "../screens/FriendListScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import IdeaDetailScreen from "../screens/IdeaDetailScreen";
+import IdeaAddScreen from "../screens/IdeaAddScreen";
 import { connect } from "react-redux";
 import FriendProfileScreen from "../screens/FriendProfileScreen";
 
@@ -19,6 +21,27 @@ function ProfileStackScreen(props) {
       <ProfileStack.Screen name="Profilo" component={ProfileScreen} options={{ title: props.username }} />
       <ProfileStack.Screen name="Amici" component={FriendListScreen} />
       <ProfileStack.Screen name="FriendProfile" component={FriendProfileScreen} />
+      <ProfileStack.Screen
+        name="IdeaDetail"
+        component={IdeaDetailScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: BLUE
+          },
+          headerTintColor: "#fff"
+        }}
+      />
+      <ProfileStack.Screen
+        name="IdeaAdd"
+        component={IdeaAddScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: BLUE
+          },
+          headerTintColor: "#fff",
+          title: "Crea Idea"
+        }}
+      />
     </ProfileStack.Navigator>
   );
 }

@@ -159,4 +159,11 @@ export const removeIdeaFromStore = ideaId => {
   };
 };
 
+export const updateIdeaInStore = idea => {
+  return {
+    type: actionTypes.UPDATE_IDEA_IN_STORE,
+    idea: idea
+  };
+};
+
 //export const clearCurrentUser = () => {};

@@ -4,25 +4,40 @@ import IdeaCard from "./IdeaCard";
 import H1 from "../misc/H1";
 import { FlatList } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import IdeaAddModal from "./IdeaAddModal";
 import { BLUE } from "../../colors";
 
 class IdeaCardManager extends Component {
-  state = {
-    modalVisible: false
-  };
+  state = { ideas: [] };
 
-  setModalVisible = () => this.setState({ modalVisible: !this.state.modalVisible });
+  componentDidMount() {
+    this.setState({ ideas: this.props.ideas });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.routeParams !== this.props.routeParams) {
+      const idea = this.props.routeParams.idea;
+      const ideas = [...this.state.ideas];
+      const index = ideas.findIndex(i => i.id === idea.id);
+      if (index > -1) {
+        // update idea
+        ideas[index] = idea;
+      } else {
+        // add idea
+        ideas.push(idea);
+      }
+      this.setState({ ideas });
+    }
+  }
 
   render() {
-    const { ideas, currentUserId } = this.props;
-    const { modalVisible } = this.state;
+    const currentUserId = this.props.currentUserId;
+    const ideas = this.state.ideas;
+
     return (
       <>
-        <IdeaAddModal modalVisible={modalVisible} setModalVisible={this.setModalVisible} />
         <H1 text="Idee" />
-        {ideas.length !== 0 && currentUserId === ideas[0].creator.id && (
-          <Button title="Crea idea" onPress={this.setModalVisible} color={BLUE} />
+        {currentUserId === this.props.userId && (
+          <Button title="Crea idea" onPress={() => this.props.navigation.navigate("IdeaAdd")} color={BLUE} />
         )}
         <FlatList
           data={ideas}

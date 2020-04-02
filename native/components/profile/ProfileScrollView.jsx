@@ -24,7 +24,12 @@ export default class ProfileScrollView extends Component {
             color={BLUE}
           />
         </View>
-        <IdeaCardManager ideas={this.props.profile.profile.ideas} navigation={this.props.navigation} />
+        <IdeaCardManager
+          userId={this.props.profile.id}
+          ideas={this.props.profile.profile.ideas}
+          navigation={this.props.navigation}
+          routeParams={this.props.routeParams}
+        />
       </ScrollView>
     );
   }

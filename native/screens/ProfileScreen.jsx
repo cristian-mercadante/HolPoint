@@ -14,7 +14,11 @@ class ProfileScreen extends Component {
   render() {
     return (
       <>
-        <ProfileScrollView profile={this.props.currentUser} navigation={this.props.navigation} />
+        <ProfileScrollView
+          profile={this.props.currentUser}
+          navigation={this.props.navigation}
+          routeParams={this.props.route.params}
+        />
         <Button title="Logout" onPress={this.logout} color={colors.RED} />
       </>
     );
