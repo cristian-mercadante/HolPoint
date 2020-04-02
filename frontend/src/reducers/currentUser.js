@@ -102,6 +102,24 @@ const removeIdeaFromStore = (state, action) => {
   };
 };
 
+const updateIdeaInStore = (state, action) => {
+  let ideas = state.profile.ideas;
+  const idea = action.idea;
+  const index = ideas.findIndex(idea_ => idea_.id === idea.id);
+  if (index > -1) {
+    ideas[index] = idea;
+    return {
+      ...state,
+      profile: {
+        ...state.profile,
+        ideas: ideas
+      }
+    };
+  } else {
+    return state;
+  }
+};
+
 const getCurrentUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_CURRENT_USER_START:
@@ -128,6 +146,8 @@ const getCurrentUserReducer = (state = initialState, action) => {
       return addIdeaToStore(state, action);
     case actionTypes.REMOVE_IDEA_FROM_STORE:
       return removeIdeaFromStore(state, action);
+    case actionTypes.UPDATE_IDEA_IN_STORE:
+      return updateIdeaInStore(state, action);
     default:
       return state;
   }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Button } from "react-native";
+import { Button } from "react-native";
 import { connect } from "react-redux";
 import * as authActions from "../actions/auth";
 import ProfileScrollView from "../components/profile/ProfileScrollView";

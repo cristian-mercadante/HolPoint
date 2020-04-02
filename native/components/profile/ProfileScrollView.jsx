@@ -3,6 +3,7 @@ import { Text, View, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import IdeaCardManager from "../../components/idea/IdeaCardManager";
 import ProfilePicture from "../../components/profile/ProfilePicture";
+import { BLUE } from "../../colors";
 
 export default class ProfileScrollView extends Component {
   render() {
@@ -20,9 +21,10 @@ export default class ProfileScrollView extends Component {
           <Button
             title="Amici"
             onPress={() => this.props.navigation.navigate("Amici", { friends: this.props.profile.profile.friends })}
+            color={BLUE}
           />
         </View>
-        <IdeaCardManager ideas={this.props.profile.profile.ideas} />
+        <IdeaCardManager ideas={this.props.profile.profile.ideas} navigation={this.props.navigation} />
       </ScrollView>
     );
   }

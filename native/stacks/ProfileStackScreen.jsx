@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import * as colors from "../colors";
+import { YELLOW } from "../colors";
 import FriendListScreen from "../screens/FriendListScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { connect } from "react-redux";
@@ -12,7 +12,7 @@ function ProfileStackScreen(props) {
   return (
     <ProfileStack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: colors.YELLOW },
+        headerStyle: { backgroundColor: YELLOW },
         headerTintColor: "#000"
       }}
     >

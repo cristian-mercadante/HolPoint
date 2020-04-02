@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import * as colors from "../colors";
+import { YELLOW } from "../colors";
 import DetailsScreen from "../screens/DetailsScreen";
 import RequestsScreen from "../screens/RequestsScreen";
 
@@ -10,7 +10,7 @@ function RequestsStackScreen() {
   return (
     <RequestsStack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: colors.YELLOW },
+        headerStyle: { backgroundColor: YELLOW },
         headerTintColor: "#000"
       }}
     >

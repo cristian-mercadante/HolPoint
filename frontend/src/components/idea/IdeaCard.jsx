@@ -11,6 +11,7 @@ import { IdeaContent } from ".";
 
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
+import * as currentUserActions from "../../actions/currentUser";
 
 import axios from "axios";
 import { ideaAPI } from "../../server";
@@ -61,6 +62,7 @@ class IdeaCard extends Component {
       )
       .then(res => {
         this.props.updateIdeaInState(res.data).then(() => {
+          this.props.updateIdeaInStore(res.data);
           this.setState({ editing: false });
         });
       })
@@ -138,6 +140,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateIdeaInStore: idea => dispatch(currentUserActions.updateIdeaInStore(idea)),
     error: error => dispatch(alertActions.error(error))
   };
 };

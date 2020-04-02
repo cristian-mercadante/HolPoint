@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
-import { TouchableNativeFeedback, TouchableOpacity } from "react-native-gesture-handler";
 
 export default class Card extends Component {
   styles = StyleSheet.create({
@@ -42,17 +41,15 @@ export default class Card extends Component {
   render() {
     return (
       <View style={this.styles.card}>
-        <TouchableOpacity onPress={() => alert("TODO: handle display idea")}>
-          <View style={this.styles.header}>
-            <Text style={this.styles.headerText}>{this.props.header}</Text>
-          </View>
-          <View style={this.styles.body}>
-            <Text style={this.styles.bodyText}>{this.props.body}</Text>
-          </View>
-          <View style={this.styles.footer}>
-            <Text style={this.styles.footerText}>{this.props.footer}</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={this.styles.header}>
+          <Text style={this.styles.headerText}>{this.props.header}</Text>
+        </View>
+        <View style={this.styles.body}>
+          <Text style={this.styles.bodyText}>{this.props.body}</Text>
+        </View>
+        <View style={this.styles.footer}>
+          <Text style={this.styles.footerText}>{this.props.footer}</Text>
+        </View>
       </View>
     );
   }

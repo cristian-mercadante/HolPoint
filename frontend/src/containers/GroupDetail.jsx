@@ -156,9 +156,11 @@ class GroupDetail extends Component {
       let group = this.state.group;
       let ideas = [...this.state.group.ideas];
       let index = ideas.findIndex(idea_ => idea_.id === idea.id);
-      ideas[index] = idea;
-      group.ideas = ideas;
-      this.setState({ group: group });
+      if (index > -1) {
+        ideas[index] = idea;
+        group.ideas = ideas;
+        this.setState({ group: group });
+      }
       resolve();
     });
   };

@@ -35,9 +35,11 @@ class Profile extends Component {
         // eslint-disable-next-line
         return idea_.id == idea.id;
       });
-      ideas[index] = idea;
-      profile.profile.ideas = ideas;
-      this.setState({ profile: profile });
+      if (index > -1) {
+        ideas[index] = idea;
+        profile.profile.ideas = ideas;
+        this.setState({ profile: profile });
+      }
       resolve();
     });
   };

@@ -24,6 +24,7 @@ body::-webkit-scrollbar-thumb {
 
 .text-with-newline {
   white-space: pre-line;
+  word-wrap: break-word;
 }
 
 .profile-pic-small {

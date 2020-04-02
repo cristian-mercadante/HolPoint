@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StatusBar, Button } from "react-native";
+import { Button } from "react-native";
 import * as colors from "../colors";
 import { connect } from "react-redux";
 import GroupCardManager from "../components/group/GroupCardManager";
@@ -42,7 +42,6 @@ class GroupsScreen extends Component {
   render() {
     return (
       <>
-        <StatusBar barStyle="dark-content" />
         <Button title="Crea gruppo" color={colors.RED} />
         {this.state.loading ? <Spinner color={RED} /> : <GroupCardManager groups={this.state.groups} />}
       </>

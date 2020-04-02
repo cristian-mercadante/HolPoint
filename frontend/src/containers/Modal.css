@@ -27,15 +27,15 @@
 
 /* modal body overflow */
 .group-modal .card-body {
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .idea-modal .card-body {
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .activity-modal .card-body {
-  overflow: auto;
+  overflow-y: auto;
 }
 
 /* modal size */
