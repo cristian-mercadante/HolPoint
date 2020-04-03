@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { View, Button, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
+import { View, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-import * as authActions from "../actions/auth";
 import * as currentUserActions from "../actions/currentUser";
 import ProfileView from "../components/profile/ProfileView";
 import * as colors from "../colors";
@@ -28,10 +27,6 @@ class ProfileScreen extends Component {
     this.props.getCurrentUser().then(() => this.setState({ refreshing: false }));
   };
 
-  logout = () => {
-    this.props.logout();
-  };
-
   render() {
     return (
       <>
@@ -48,7 +43,6 @@ class ProfileScreen extends Component {
             <Spinner color={colors.YELLOW} />
           </View>
         )}
-        <Button title="Logout" onPress={this.logout} color={colors.RED} />
       </>
     );
   }
@@ -62,7 +56,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch(authActions.authLogout()),
     getCurrentUser: () => dispatch(currentUserActions.getCurrentUser())
   };
 };

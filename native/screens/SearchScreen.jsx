@@ -1,13 +1,122 @@
-import React from "react";
-import { View, Text, Button } from "react-native";
+import React, { Component } from "react";
+import { View, TextInput, Text, KeyboardAvoidingView, StyleSheet, FlatList } from "react-native";
+import { DARK_YELLOW, YELLOW } from "../colors";
+import { connect } from "react-redux";
+import * as alertActions from "../actions/alerts";
+import axios from "axios";
+import { searchAPI } from "../server";
+import FriendProfileListItem from "../components/profile/FriendProfileListItem";
+import Spinner from "../components/misc/Spinner";
 
-function SearchScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Search screen</Text>
-      <Button title="Go to Details" onPress={() => navigation.navigate("Details")} />
-    </View>
-  );
+class SearchScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      results: [],
+      loading: false,
+      searchField: ""
+    };
+    this.timeout = 0;
+  }
+
+  setSearchField = text => this.setState({ searchField: text });
+
+  doSearch = text => {
+    this.setState({ searchField: text, loading: true });
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.getUsers();
+    }, 300);
+  };
+
+  isEmptyOrSpaces = str => {
+    return str === null || str.match(/^ *$/) !== null;
+  };
+
+  getUsers = () => {
+    const username = this.state.searchField;
+    if (this.isEmptyOrSpaces(username)) {
+      this.setState({ loading: false });
+      return;
+    }
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${this.props.token}`
+      }
+    };
+    return axios
+      .get(`${searchAPI}${username}`, headers)
+      .then(res => {
+        // remove currentUser from results
+        let results = res.data.filter(r => r.id !== this.props.currentUserId);
+        this.setState({ results, loading: false });
+      })
+      .catch(error => {
+        this.props.error(error);
+      });
+  };
+
+  render() {
+    return (
+      <>
+        {this.state.loading ? (
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <Spinner color={YELLOW} />
+          </View>
+        ) : (
+          <View>
+            <FlatList
+              data={this.state.results}
+              renderItem={({ item }) => <FriendProfileListItem navigation={this.props.navigation} friend={item} />}
+              keyExtractor={item => item.id}
+            />
+          </View>
+        )}
+        <View style={styles.container} behavior="position">
+          <KeyboardAvoidingView behavior="padding">
+            <TextInput
+              style={styles.searchField}
+              onChangeText={text => this.doSearch(text)}
+              value={this.state.searchField}
+              placeholder="Cerca username..."
+              placeholderTextColor="#777"
+            />
+          </KeyboardAvoidingView>
+        </View>
+      </>
+    );
+  }
 }
 
-export default SearchScreen;
+const styles = StyleSheet.create({
+  searchField: {
+    margin: 10,
+    fontSize: 17,
+    padding: 10,
+    borderColor: DARK_YELLOW,
+    borderRadius: 10,
+    borderWidth: 2,
+    backgroundColor: "#fff"
+  },
+  container: {
+    width: "100%",
+    position: "absolute",
+    bottom: 0
+  }
+});
+
+const mapStateToProps = state => {
+  return {
+    token: state.auth.token,
+    currentUserId: state.currentUser.id
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    error: error => dispatch(alertActions.error(error))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen);

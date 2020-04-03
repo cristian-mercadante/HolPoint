@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { TextInput, Button, StyleSheet } from "react-native";
 import { BLUE, GREEN } from "../../colors";
+import TextInputLabel from "../misc/TextInputLabel";
 
 export default class IdeaForm extends Component {
   styles = StyleSheet.create({
@@ -17,14 +18,14 @@ export default class IdeaForm extends Component {
     return (
       <>
         <Button title="Invia" color={GREEN} onPress={this.props.handleSubmit} />
-        <TextInput
+        <TextInputLabel
           style={this.styles.formField}
           placeholder="Titolo"
           onChangeText={text => this.props.onChangeTitle(text)}
           value={this.props.title}
           placeholderTextColor="#777"
         />
-        <TextInput
+        <TextInputLabel
           style={this.styles.formField}
           placeholder="Descrizione"
           multiline={true}

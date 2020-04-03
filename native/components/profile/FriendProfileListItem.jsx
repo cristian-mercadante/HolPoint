@@ -16,7 +16,7 @@ const FriendProfileListItem = ({ navigation, friend }) => {
       }}
       onPress={() => navigation.navigate("FriendProfile", { friend })}
     >
-      <ProfilePicture size={60} source={friend.picture} />
+      <ProfilePicture size={60} source={friend.picture || friend.profile?.picture} />
       <UsernameLabel size={20} username={friend.username} />
     </TouchableOpacity>
   );

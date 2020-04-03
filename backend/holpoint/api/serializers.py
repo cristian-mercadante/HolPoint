@@ -263,9 +263,19 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 
 
 class BasicUserSerializer(serializers.ModelSerializer):
+
+    class ProfilePictureSerializer(serializers.ModelSerializer):
+        picture = serializers.ImageField(read_only=True)
+
+        class Meta:
+            model = Profile
+            fields = ('picture',)
+
+    profile = ProfilePictureSerializer(read_only=True)
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'profile')
 
 
 class PictureSerializer(serializers.ModelSerializer):
