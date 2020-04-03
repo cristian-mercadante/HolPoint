@@ -22,7 +22,7 @@ export default class IdeaForm extends Component {
           placeholder="Titolo"
           onChangeText={text => this.props.onChangeTitle(text)}
           value={this.props.title}
-          placeholderTextColor="#000"
+          placeholderTextColor="#777"
         />
         <TextInput
           style={this.styles.formField}
@@ -30,7 +30,7 @@ export default class IdeaForm extends Component {
           multiline={true}
           onChangeText={text => this.props.onChangeDescription(text)}
           value={this.props.description}
-          placeholderTextColor="#000"
+          placeholderTextColor="#777"
         />
       </>
     );

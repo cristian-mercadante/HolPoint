@@ -29,6 +29,15 @@ class IdeaCardManager extends Component {
     }
   }
 
+  renderIdeas = () => {
+    let buffer = [];
+    const ideas = this.state.ideas;
+    if (ideas) {
+      ideas.forEach(idea => buffer.push(<IdeaCard key={idea.id} idea={idea} />));
+    }
+    return buffer;
+  };
+
   render() {
     const currentUserId = this.props.currentUserId;
     const ideas = this.state.ideas;
@@ -39,11 +48,7 @@ class IdeaCardManager extends Component {
         {currentUserId === this.props.userId && (
           <Button title="Crea idea" onPress={() => this.props.navigation.navigate("IdeaAdd")} color={BLUE} />
         )}
-        <FlatList
-          data={ideas}
-          renderItem={({ item }) => <IdeaCard idea={item} />}
-          keyExtractor={item => `${item.id}`}
-        />
+        {this.renderIdeas()}
       </>
     );
   }

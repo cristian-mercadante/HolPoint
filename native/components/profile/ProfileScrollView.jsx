@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Button } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Text, View, Button, ScrollView } from "react-native";
 import IdeaCardManager from "../../components/idea/IdeaCardManager";
 import ProfilePicture from "../../components/profile/ProfilePicture";
 import { BLUE } from "../../colors";

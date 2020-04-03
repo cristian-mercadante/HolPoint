@@ -6,25 +6,29 @@ import IdeaForm from "../components/idea/IdeaForm";
 import { connect } from "react-redux";
 import axios from "axios";
 import * as currentUserActions from "../actions/currentUser";
+import CommentSection from "../components/comment/CommentSection";
 
 class IdeaDetailScreen extends Component {
   state = {
     idea: {},
+    titleField: "",
+    descriptionField: "",
     idEditing: false
   };
 
   componentDidMount() {
     const idea = this.props.route.params.idea;
     this.props.navigation.setOptions({ title: idea.title });
-    this.setState({ idea });
+    this.setState({ idea, titleField: idea.title, descriptionField: idea.description });
   }
 
-  onChangeTitle = text => this.setState({ idea: { ...this.state.idea, title: text } });
-  onChangeDescription = text => this.setState({ idea: { ...this.state.idea, description: text } });
+  onChangeTitle = text => this.setState({ titleField: text });
+  onChangeDescription = text => this.setState({ descriptionField: text });
   editing = () => this.setState({ isEditing: !this.state.isEditing });
 
   putIdea = () => {
-    const { title, description, id } = this.state.idea;
+    const { id } = this.state.idea;
+    const { titleField: title, descriptionField: description } = this.state;
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +40,12 @@ class IdeaDetailScreen extends Component {
       .put(`${ideaAPI}${id}/`, { title, description }, headers)
       .then(res => {
         this.props.updateIdeaInStore(res.data);
-        this.setState({ isEditing: false, idea: res.data });
+        this.setState({
+          isEditing: false,
+          idea: res.data,
+          titleField: res.data.title,
+          descriptionField: res.data.description
+        });
         this.props.navigation.setOptions({ title: res.data.title });
         this.props.navigation.navigate("Profilo", { idea: res.data });
       })
@@ -62,13 +71,16 @@ class IdeaDetailScreen extends Component {
             <IdeaForm
               onChangeTitle={this.onChangeTitle}
               onChangeDescription={this.onChangeDescription}
-              title={idea.title}
-              description={idea.description}
+              title={this.state.titleField}
+              description={this.state.descriptionField}
               handleSubmit={this.putIdea}
             />
           ) : (
-            <Text style={{ paddingHorizontal: 15, fontSize: 18 }}>{idea.description}</Text>
+            <>
+              <Text style={{ padding: 15, fontSize: 18 }}>{idea.description}</Text>
+            </>
           )}
+          <CommentSection id={idea.id} kind="idea" kind="idea" />
         </KeyboardAvoidingView>
       </ScrollView>
     );

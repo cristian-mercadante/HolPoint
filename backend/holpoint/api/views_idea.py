@@ -3,6 +3,7 @@ from holpoint.models import Idea, IdeaComment
 from .serializers import IdeaSerializer, IdeaCommentSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
+from rest_framework.exceptions import NotAcceptable
 
 
 class IdeaViewSet(viewsets.ModelViewSet):
@@ -28,4 +29,8 @@ class IdeaCommentListView(ListAPIView):
 
     def get_queryset(self):
         idea_id = self.kwargs['idea_id']
+        try:
+            idea_id = int(idea_id)
+        except:
+            raise NotAcceptable(detail="Idea id must be an integer", code=406)
         return IdeaComment.objects.filter(to__id=idea_id)

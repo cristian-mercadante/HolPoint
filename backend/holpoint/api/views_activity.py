@@ -1,6 +1,6 @@
 from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, NotAcceptable
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
 from holpoint.models import Activity, ActivityComment
@@ -71,4 +71,8 @@ class ActivityCommentListView(ListAPIView):
 
     def get_queryset(self):
         activity_id = self.kwargs['activity_id']
+        try:
+            activity_id = int(activity_id)
+        except:
+            raise NotAcceptable(detail="Activity id must be an integer", code=406)
         return ActivityComment.objects.filter(to__id=activity_id)
