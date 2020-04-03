@@ -7,6 +7,7 @@ import IdeaDetailScreen from "../screens/IdeaDetailScreen";
 import IdeaAddScreen from "../screens/IdeaAddScreen";
 import { connect } from "react-redux";
 import FriendProfileScreen from "../screens/FriendProfileScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 
 const ProfileStack = createStackNavigator();
 
@@ -18,7 +19,7 @@ function ProfileStackScreen(props) {
         headerTintColor: "#000"
       }}
     >
-      <ProfileStack.Screen name="Profilo" component={ProfileScreen} options={{ title: props.username }} />
+      <ProfileStack.Screen name="Profilo" component={ProfileScreen} options={{ headerTitle: props.username }} />
       <ProfileStack.Screen name="Amici" component={FriendListScreen} />
       <ProfileStack.Screen name="FriendProfile" component={FriendProfileScreen} />
       <ProfileStack.Screen
@@ -42,6 +43,7 @@ function ProfileStackScreen(props) {
           title: "Crea Idea"
         }}
       />
+      <ProfileStack.Screen name="Impostazioni" component={SettingsScreen} />
     </ProfileStack.Navigator>
   );
 }

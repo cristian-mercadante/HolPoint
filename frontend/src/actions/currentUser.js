@@ -104,7 +104,7 @@ export const putCurrentUser = (username, email, first_name, last_name, picture) 
           form_data.append("picture", picture, picture.name);
           headers = {
             headers: {
-              "Content-Type": "multiplart/form-data",
+              "Content-Type": "multipart/form-data",
               Authorization: `Token ${token}`
             }
           };

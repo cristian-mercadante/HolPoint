@@ -13,6 +13,14 @@
       "django": true
     },
     {
+      "name": "Python: Django 192.168.1.2",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/manage.py",
+      "args": ["runserver", "192.168.1.2:8000", "--noreload"],
+      "django": true
+    },
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome against localhost",

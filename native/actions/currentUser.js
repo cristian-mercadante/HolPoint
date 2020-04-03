@@ -1,8 +1,8 @@
 import * as actionTypes from "./types";
 import axios from "axios";
 import { currentUserAPI, pictureUploadAPI } from "../server";
-import { AsyncStorage } from "react-native";
-//import * as alertActions from "./alerts";
+import { AsyncStorage, Platform } from "react-native";
+import * as alertActions from "./alerts";
 
 export const getCurrentUserStart = () => {
   return {
@@ -35,6 +35,7 @@ export const getCurrentUserLogout = () => {
 
 export const getCurrentUser = () => {
   return async dispatch => {
+    dispatch(loading());
     AsyncStorage.getItem("token").then(token => {
       const headers = {
         headers: {
@@ -48,10 +49,12 @@ export const getCurrentUser = () => {
         .then(res => {
           const { id, username, first_name, last_name, email, profile } = res.data;
           dispatch(getCurrentUserSuccess(id, username, first_name, last_name, email, profile));
+          dispatch(done());
         })
         .catch(error => {
           dispatch(getCurrentUserFail(error));
-          // dispatch(alertActions.error(error));
+          dispatch(done());
+          dispatch(alertActions.error(error));
           return error;
         });
     });
@@ -77,57 +80,79 @@ export const pictureUpdate = data => {
   };
 };
 
-export const putCurrentUser = (username, email, first_name, last_name, picture) => {
-  //const token = localStorage.getItem("token");
-  let headers = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${token}`
-    }
-  };
-  return dispatch => {
+export const putCurrentUser = (username, email, first_name, last_name) => {
+  return async dispatch => {
     dispatch(loading());
-    return axios
-      .put(
-        currentUserAPI,
-        {
-          username,
-          email,
-          first_name,
-          last_name
-        },
-        headers
-      )
-      .then(res => {
-        dispatch({ type: actionTypes.PUT_CURRENT_USER, username, email, first_name, last_name });
-        if (picture) {
-          let form_data = new FormData();
-          form_data.append("picture", picture, picture.name);
-          headers = {
-            headers: {
-              "Content-Type": "multiplart/form-data",
-              Authorization: `Token ${token}`
-            }
-          };
-          return axios
-            .put(`${pictureUploadAPI}`, form_data, headers)
-            .then(res => {
-              dispatch(pictureUpdate(res.data));
-              dispatch(done());
-              // dispatch(alertActions.addAlert("Informazioni aggiornate con successo!", "success"));
-            })
-            .catch(error => {
-              dispatch(done());
-              // dispatch(alertActions.error(error));
-            });
-        } else {
-          dispatch(done());
+    AsyncStorage.getItem("token").then(token => {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`
         }
-      })
-      .catch(error => {
-        dispatch(done());
-        // dispatch(alertActions.error(error));
+      };
+      return axios
+        .put(currentUserAPI, { username, email, first_name, last_name }, headers)
+        .then(res => {
+          dispatch({ type: actionTypes.PUT_CURRENT_USER, username, email, first_name, last_name });
+
+          dispatch(done());
+        })
+        .catch(error => {
+          dispatch(done());
+          dispatch(alertActions.error(error));
+        });
+    });
+  };
+};
+
+export const putCurrentUserPicture = picture => {
+  return async dispatch => {
+    dispatch(loading());
+    AsyncStorage.getItem("token").then(token => {
+      // let form_data = new FormData();
+      // //form_data.append("picture", picture, picture.name);
+      // const filename = picture.uri.split("/").pop();
+      // const match = /\.(\w+)$/.exec(filename);
+      // const type = match ? `image/${match[1]}` : `image`;
+      // const data = { name: filename, type: type, uri: picture.uri };
+      // console.log(picture);
+      // console.log(data);
+      // form_data.append("picture", data);
+
+      const uri = picture.uri;
+      const uriParts = uri.split(".");
+      const fileType = uriParts[uriParts.length - 1];
+      const payloadKey = "profile"; // Define PayloadKey here Ex. 'file'
+      const form_data = new FormData();
+      form_data.append(payloadKey, {
+        uri,
+        name: "profile_pic",
+        type: `image/${fileType}`
       });
+      const headers = {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Token ${token}`
+        }
+      };
+      console.log(form_data);
+      for (var pair of form_data.entries()) {
+        console.log(pair[0]);
+        console.log(pair[1]);
+      }
+      return axios
+        .put(`${pictureUploadAPI}`, form_data, headers)
+        .then(res => {
+          dispatch(pictureUpdate(res.data));
+          dispatch(done());
+        })
+        .catch(error => {
+          dispatch(done());
+          alert(error.message);
+          dispatch(alertActions.error(error));
+        });
+    });
   };
 };
 

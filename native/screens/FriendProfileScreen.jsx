@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import ProfileScrollView from "../components/profile/ProfileScrollView";
+import ProfileView from "../components/profile/ProfileView";
 import axios from "axios";
 import { profileAPI } from "../server";
 import { connect } from "react-redux";
 import Spinner from "../components/misc/Spinner";
 import * as colors from "../colors";
+import { View, ScrollView, RefreshControl } from "react-native";
 
 class FriendProfileScreen extends Component {
   state = {
     loading: true,
-    profile: {}
+    profile: {},
+    refreshing: false
   };
 
   getProfile = () => {
@@ -34,13 +36,22 @@ class FriendProfileScreen extends Component {
     this.getProfile();
   }
 
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.getProfile().then(() => this.setState({ refreshing: false }));
+  };
+
   render() {
     return (
       <>
         {!this.state.loading ? (
-          <ProfileScrollView profile={this.state.profile} navigation={this.props.navigation} />
+          <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}>
+            <ProfileView profile={this.state.profile} navigation={this.props.navigation} />
+          </ScrollView>
         ) : (
-          <Spinner color={colors.BLUE} />
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <Spinner color={colors.YELLOW} />
+          </View>
         )}
       </>
     );

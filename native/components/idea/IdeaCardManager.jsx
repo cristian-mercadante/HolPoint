@@ -14,7 +14,15 @@ class IdeaCardManager extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.routeParams !== this.props.routeParams) {
+    if (prevProps.routeParams?.deletedIdeaId !== this.props.routeParams?.deletedIdeaId) {
+      const ideaId = this.props.routeParams.deletedIdeaId;
+      const ideas = [...this.state.ideas];
+      const index = ideas.findIndex(i => i.id === ideaId);
+      if (index > -1) {
+        ideas.splice(index, 1);
+      }
+      this.setState({ ideas });
+    } else if (prevProps.routeParams?.idea !== this.props.routeParams?.idea) {
       const idea = this.props.routeParams.idea;
       const ideas = [...this.state.ideas];
       const index = ideas.findIndex(i => i.id === idea.id);

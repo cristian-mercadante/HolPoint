@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button } from "react-native";
 import * as colors from "../colors";
 import { connect } from "react-redux";
+import * as alertActions from "../actions/alerts";
 import GroupCardManager from "../components/group/GroupCardManager";
 import axios from "axios";
 import { groupAPI } from "../server";
@@ -31,7 +32,7 @@ class GroupsScreen extends Component {
         this.setState({ loading: false, groups: res.data });
       })
       .catch(error => {
-        //this.props.error(error);
+        this.props.error(error);
       });
   };
 
@@ -56,4 +57,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(GroupsScreen);
+const mapDispatchToProps = dispatch => {
+  return {
+    error: error => dispatch(alertActions.error(error))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupsScreen);

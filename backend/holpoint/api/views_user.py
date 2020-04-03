@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from .serializers import CurrentUserSerializer, UserSerializer, BasicUserSerializer, PictureSerializer
 import uuid
 import os
+import json
 
 
 class CurrentUserDetailView(RetrieveUpdateAPIView):
@@ -57,6 +58,34 @@ class PictureUpload(mixins.UpdateModelMixin, viewsets.GenericViewSet):
         request.FILES['picture'].name = "{}{}".format(str(uuid.uuid4()), file_extension)
         # response
         serializer = self.serializer_class(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("error", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PictureUploadMobile(mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    permission_classes = [IsAuthenticated, ]
+    parser_classes = (parsers.MultiPartParser, parsers.FormParser)
+    serializer_class = PictureSerializer
+
+    def upload(self, request):
+        currentUser = request.user
+        if not currentUser:
+            raise NotFound(detail="Current user not found", code=404)
+        profile = currentUser.profile
+        # remove old pic
+        image_path = "{}/{}".format(settings.MEDIA_ROOT, currentUser.profile.picture.name)
+        if os.path.isfile(image_path):
+            os.remove(image_path)
+        data = request.data['picture']
+        data = json.loads(data)
+        old_name = data.name
+        filename, file_extension = os.path.splitext(old_name)
+        new_name = "{}{}".format(str(uuid.uuid4()), file_extension)
+        serializer = self.serializer_class(profile, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

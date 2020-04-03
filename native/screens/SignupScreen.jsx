@@ -22,9 +22,7 @@ class SignupScreen extends Component {
 
   handleSubmit = () => {
     const { username, email, password1, password2 } = this.state;
-    this.props.onAuth(username, email, password1, password2).then(err => {
-      alert(err);
-    });
+    this.props.onAuth(username, email, password1, password2);
   };
 
   render() {

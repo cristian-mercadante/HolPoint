@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import { Text, View, Button, ScrollView } from "react-native";
-import IdeaCardManager from "../../components/idea/IdeaCardManager";
-import ProfilePicture from "../../components/profile/ProfilePicture";
+import { Text, View, Button } from "react-native";
+import IdeaCardManager from "../idea/IdeaCardManager";
+import ProfilePicture from "./ProfilePicture";
 import { BLUE } from "../../colors";
 
-export default class ProfileScrollView extends Component {
+export default class ProfileView extends Component {
+  state = {
+    refreshing: false
+  };
+
   render() {
     return (
-      <ScrollView>
+      <>
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
           <ProfilePicture size={100} source={this.props.profile.profile.picture} />
           <Text style={{ flex: 1, fontSize: 30, flexWrap: "wrap", alignSelf: "center" }}>
@@ -19,7 +23,11 @@ export default class ProfileScrollView extends Component {
         <View style={{ alignItems: "center" }}>
           <Button
             title="Amici"
-            onPress={() => this.props.navigation.navigate("Amici", { friends: this.props.profile.profile.friends })}
+            onPress={() =>
+              this.props.navigation.navigate("Amici", {
+                friends: this.props.profile.profile.friends
+              })
+            }
             color={BLUE}
           />
         </View>
@@ -29,7 +37,7 @@ export default class ProfileScrollView extends Component {
           navigation={this.props.navigation}
           routeParams={this.props.routeParams}
         />
-      </ScrollView>
+      </>
     );
   }
 }

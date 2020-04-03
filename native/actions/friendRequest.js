@@ -2,7 +2,7 @@ import { GET_FRIEND_REQUESTS, POST_FRIEND_REQUEST, PUT_FRIEND_REQUEST, CLEAR_FRI
 import axios from "axios";
 import { friendRequestListAPI, friendRequestAPI } from "../server";
 import { AsyncStorage } from "react-native";
-// import * as alertActions from "../actions/alerts";
+import * as alertActions from "../actions/alerts";
 
 export const getFriendRequests = data => {
   return {
@@ -45,7 +45,7 @@ export const loadRequests = () => {
           dispatch(getFriendRequests(res.data));
         })
         .catch(error => {
-          // dispatch(alertActions.error(error));
+          dispatch(alertActions.error(error));
         });
     });
   };
@@ -74,7 +74,7 @@ export const sendRequest = (senderId, receiverId) => {
         dispatch(postFriendRequest(res.data));
       })
       .catch(error => {
-        // dispatch(alertActions.error(error));
+        dispatch(alertActions.error(error));
       });
   };
 };
@@ -102,7 +102,7 @@ export const respondRequest = (requestId, senderId, receiverId, status) => {
         dispatch(putFriendRequest(requestId));
       })
       .catch(error => {
-        // dispatch(alertActions.error(error));
+        dispatch(alertActions.error(error));
       });
   };
 };

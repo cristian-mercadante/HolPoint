@@ -45,7 +45,6 @@ class Comment extends Component {
         </View>
         <View style={{ flex: 1, flexDirection: "row" }}>
           <Text style={{ flex: 1, fontSize: 17 }}>{this.props.text}</Text>
-          {/* <FontAwesome name={iconName} size={size} color={color} /> */}
           {this.props.currentUserId === this.props.creator.id && (
             <TouchableOpacity onPress={() => this.props.deleteComment(this.props.id)}>
               <FontAwesome name="trash" size={30} color={RED} />

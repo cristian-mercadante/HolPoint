@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, KeyboardAvoidingView } from "react-native";
+import { Text, View, ScrollView, KeyboardAvoidingView, StatusBar } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
 import { ideaAPI } from "../server";
 import * as currentUserActions from "../actions/currentUser";
+import * as alertActions from "../actions/alerts";
 import IdeaForm from "../components/idea/IdeaForm";
+import { DARK_BLUE } from "../colors";
 
 class IdeaAddScreen extends Component {
   initialState = {
@@ -33,24 +35,26 @@ class IdeaAddScreen extends Component {
         this.props.navigation.navigate("Profilo", { idea: res.data });
       })
       .catch(error => {
-        //this.props.error(error);
-        alert(error.message);
+        this.props.error(error);
       });
   };
 
   render() {
     return (
-      <ScrollView>
-        <KeyboardAvoidingView behavior="padding">
-          <IdeaForm
-            onChangeTitle={this.onChangeTitle}
-            onChangeDescription={this.onChangeDescription}
-            title={this.state.title}
-            description={this.state.description}
-            handleSubmit={this.postIdea}
-          />
-        </KeyboardAvoidingView>
-      </ScrollView>
+      <>
+        <StatusBar barStyle="light-content" backgroundColor={DARK_BLUE} />
+        <ScrollView>
+          <KeyboardAvoidingView behavior="padding">
+            <IdeaForm
+              onChangeTitle={this.onChangeTitle}
+              onChangeDescription={this.onChangeDescription}
+              title={this.state.title}
+              description={this.state.description}
+              handleSubmit={this.postIdea}
+            />
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </>
     );
   }
 }
@@ -63,7 +67,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addIdeaToStore: idea => dispatch(currentUserActions.addIdeaToStore(idea))
+    addIdeaToStore: idea => dispatch(currentUserActions.addIdeaToStore(idea)),
+    error: error => dispatch(alertActions.error(error))
   };
 };
 

@@ -1,7 +1,7 @@
 from django.urls import path
 from .views_group import GroupViewSet, GroupCreatorViewSet, VoteIdeaInGroupViewSet
 from .views_idea import IdeaViewSet, IdeaCommentViewSet, IdeaCommentListView
-from .views_user import UserDetailView, SearchUser, CurrentUserDetailView, PictureUpload
+from .views_user import UserDetailView, SearchUser, CurrentUserDetailView, PictureUpload, PictureUploadMobile
 from .views_friendrequest import FriendRequestViewSet, CurrentUserFriendRequestDetailView, UnfriendViewSet
 from .views_activity import ActivityViewSet, ActivityCreatorViewSet, ActivityCommentViewSet, ActivityCommentListView
 from .views_attachment import AttachmentUpload, AttachmentDetailView, AttachmentRemove
@@ -26,6 +26,7 @@ urlpatterns = [
     path('friendrequests', CurrentUserFriendRequestDetailView.as_view(), name="current_user_friendrequests"),
     path('unfriend/<int:friend_id>', UnfriendViewSet.as_view({'delete': 'unfriend'}), name="unfriend"),
     path('pictureupload', PictureUpload.as_view({'put': 'upload'}), name="pictureupload"),
+    path('pictureuploadmobile', PictureUploadMobile.as_view({'put': 'upload'}, name="pictureuploadmobile")),
     path('group_activity/<int:group_id>/<int:activity_id>', ActivityViewSet.as_view({'get': 'list', 'put': 'edit'}), name="activity"),
     path('comment/activity/<activity_id>', ActivityCommentListView.as_view(), name="comment_activity"),
     path('attachmentupload/<int:group_id>', AttachmentUpload.as_view({'post': 'upload'}), name="attachmentupload"),

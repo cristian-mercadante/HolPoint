@@ -2,7 +2,7 @@ import * as actionTypes from "./types";
 import axios from "axios";
 import { loginURL, signupURL } from "../server";
 import * as getCurrentUserActions from "./currentUser";
-//import * as alertActions from "./alerts";
+import * as alertActions from "./alerts";
 import * as friendRequestActions from "./friendRequest";
 import { AsyncStorage } from "react-native";
 
@@ -71,7 +71,7 @@ export const authLogin = (username, password) => {
       })
       .catch(error => {
         dispatch(authFail(error));
-        //dispatch(alertActions.error(error));
+        dispatch(alertActions.error(error));
         return error;
       });
   };
@@ -104,7 +104,7 @@ export const authSignup = (username, email, password1, password2) => {
       })
       .catch(error => {
         dispatch(authFail(error));
-        //dispatch(alertActions.error(error));
+        dispatch(alertActions.error(error));
         return error;
       });
   };

@@ -18,9 +18,7 @@ class LoginScreen extends Component {
 
   handleSubmit = () => {
     const { username, password } = this.state;
-    this.props.onAuth(username, password).then(err => {
-      alert(err);
-    });
+    this.props.onAuth(username, password);
   };
 
   render() {

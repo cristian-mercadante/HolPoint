@@ -9,7 +9,7 @@ export const signupURL = rest_auth + "registration/";
 const api = server + "/api/";
 export const profileAPI = api + "profile/";
 export const currentUserAPI = api + "current_user";
-export const pictureUploadAPI = api + "pictureupload";
+export const pictureUploadAPI = api + "pictureuploadmobile";
 
 export const groupAPI = api + "group/";
 export const groupCreatorAPI = api + "group_creator/";

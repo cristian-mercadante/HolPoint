@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { connect } from "react-redux";
+import * as alertActions from "../../actions/alerts";
 import axios from "axios";
 import { commentIdeaAPI, commentActivityAPI } from "../../server";
 import H2 from "../misc/H2";
@@ -38,8 +39,7 @@ class CommentSection extends Component {
         this.setState({ loading: false, comments: res.data });
       })
       .catch(error => {
-        //this.props.error(error);
-        alert(error.message);
+        this.props.error(error);
       });
   };
 
@@ -71,8 +71,7 @@ class CommentSection extends Component {
         this.setState({ comments: [...this.state.comments, res.data] });
       })
       .catch(error => {
-        //this.props.error(error);
-        alert(error.message);
+        this.props.error(error);
       });
   };
 
@@ -94,8 +93,7 @@ class CommentSection extends Component {
         });
       })
       .catch(error => {
-        //this.props.error(error);
-        alert(error.message);
+        this.props.error(error);
       });
   };
 
@@ -126,4 +124,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(CommentSection);
+const mapDispatchToProps = dispatch => {
+  return {
+    error: error => dispatch(alertActions.error(error))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentSection);

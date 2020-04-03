@@ -22,7 +22,7 @@ class AttachmentManager extends Component {
       const token = localStorage.getItem("token");
       const headers = {
         headers: {
-          "Content-Type": "multiplart/form-data",
+          "Content-Type": "multipart/form-data",
           Authorization: `Token ${token}`
         }
       };
