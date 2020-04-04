@@ -15,17 +15,48 @@ import SignupScreen from "./screens/SignupScreen";
 
 import { connect } from "react-redux";
 import * as authActions from "./actions/auth";
+import { View, Text } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
+const IconWithBadge = ({ name, color, size, badgeCount }) => {
+  const size_ = 15;
+  return (
+    <View style={{ width: 24, height: 24, margin: 5 }}>
+      <FontAwesome name={name} size={size} color={color} />
+      {badgeCount > 0 && (
+        <View
+          style={{
+            position: "absolute",
+            right: -6,
+            top: -3,
+            backgroundColor: colors.RED,
+            borderRadius: size_ / 2,
+            width: size_,
+            height: size_,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 10, fontWeight: "bold" }}>{badgeCount}</Text>
+        </View>
+      )}
+    </View>
+  );
+};
+
 class AppNavigationContainer extends Component {
   state = {
-    isLoading: true
+    isLoading: true,
   };
 
   componentDidMount() {
     this.props.onTryAutoSignup().then(() => this.setState({ isLoading: false }));
   }
+
+  RequestIconWithBadge = (props) => {
+    return <IconWithBadge {...props} badgeCount={this.props.receivedRequests.length} />;
+  };
 
   render() {
     if (this.state.isLoading) {
@@ -51,14 +82,18 @@ class AppNavigationContainer extends Component {
               } else if (route.name === "SignUp") {
                 iconName = "plus";
               }
-              return <FontAwesome name={iconName} size={size} color={color} />;
-            }
+              if (route.name === "Richieste") {
+                return <this.RequestIconWithBadge name={iconName} size={size} color={color} />;
+              } else {
+                return <FontAwesome name={iconName} size={size} color={color} />;
+              }
+            },
           })}
           tabBarOptions={{
             activeBackgroundColor: colors.YELLOW,
             inactiveBackgroundColor: colors.YELLOW,
             activeTintColor: colors.BLUE,
-            inactiveTintColor: "gray"
+            inactiveTintColor: "gray",
           }}
         >
           {this.props.isAuthenticated ? (
@@ -80,15 +115,16 @@ class AppNavigationContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.token !== null,
+    receivedRequests: state.friendRequest.receivedRequests,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onTryAutoSignup: () => dispatch(authActions.authCheckState())
+    onTryAutoSignup: () => dispatch(authActions.authCheckState()),
   };
 };
 

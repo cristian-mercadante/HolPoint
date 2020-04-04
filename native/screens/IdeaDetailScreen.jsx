@@ -14,26 +14,26 @@ class IdeaDetailScreen extends Component {
     idea: {},
     titleField: "",
     descriptionField: "",
-    idEditing: false
+    idEditing: false,
   };
 
   componentDidMount() {
     const idea = this.props.route.params.idea;
     this.props.navigation.setOptions({
-      title: idea.title
+      title: idea.title,
     });
     this.setState({
       idea,
       titleField: idea.title,
-      descriptionField: idea.description
+      descriptionField: idea.description,
     });
   }
 
-  onChangeTitle = text => this.setState({ titleField: text });
-  onChangeDescription = text => this.setState({ descriptionField: text });
+  onChangeTitle = (text) => this.setState({ titleField: text });
+  onChangeDescription = (text) => this.setState({ descriptionField: text });
   editing = () =>
     this.setState({
-      isEditing: !this.state.isEditing
+      isEditing: !this.state.isEditing,
     });
 
   putIdea = () => {
@@ -42,26 +42,26 @@ class IdeaDetailScreen extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`
-      }
+        Authorization: `Token ${this.props.token}`,
+      },
     };
 
     return axios
       .put(`${ideaAPI}${id}/`, { title, description }, headers)
-      .then(res => {
+      .then((res) => {
         this.props.updateIdeaInStore(res.data);
         this.setState({
           isEditing: false,
           idea: res.data,
           titleField: res.data.title,
-          descriptionField: res.data.description
+          descriptionField: res.data.description,
         });
         this.props.navigation.setOptions({
-          title: res.data.title
+          title: res.data.title,
         });
         this.props.navigation.navigate("Profilo", { idea: res.data });
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.error(error);
       });
   };
@@ -72,20 +72,20 @@ class IdeaDetailScreen extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`
-      }
+        Authorization: `Token ${this.props.token}`,
+      },
     };
 
     return axios
       .delete(`${ideaAPI}${id}/`, headers)
-      .then(res => {
+      .then((res) => {
         this.props.removeIdeaFromStore(id);
         this.setState({
-          isEditing: false
+          isEditing: false,
         });
         this.props.navigation.navigate("Profilo", { deletedIdeaId: id });
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.error(error);
       });
   };
@@ -105,10 +105,12 @@ class IdeaDetailScreen extends Component {
                   title="Elimina"
                   color={RED}
                   onPress={() =>
-                    Alert.alert(`Sicuro di voler eliminare ${idea.title}?`, "Non potrai più ripristinarla", [
-                      { text: "No" },
-                      { text: "Sì", onPress: () => this.deleteIdea() }
-                    ])
+                    Alert.alert(
+                      `Sicuro di voler eliminare ${idea.title}?`,
+                      "Non potrai più ripristinarla",
+                      [{ text: "No" }, { text: "Sì", onPress: () => this.deleteIdea() }],
+                      { cancelable: true }
+                    )
                   }
                 />
               </>
@@ -126,7 +128,7 @@ class IdeaDetailScreen extends Component {
                 <Text
                   style={{
                     padding: 15,
-                    fontSize: 18
+                    fontSize: 18,
                   }}
                 >
                   {idea.description}
@@ -141,18 +143,18 @@ class IdeaDetailScreen extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     token: state.auth.token,
-    currentUserId: state.currentUser.id
+    currentUserId: state.currentUser.id,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    updateIdeaInStore: idea => dispatch(currentUserActions.updateIdeaInStore(idea)),
-    removeIdeaFromStore: ideaId => dispatch(currentUserActions.removeIdeaFromStore(ideaId)),
-    error: error => dispatch(alertActions.error(error))
+    updateIdeaInStore: (idea) => dispatch(currentUserActions.updateIdeaInStore(idea)),
+    removeIdeaFromStore: (ideaId) => dispatch(currentUserActions.removeIdeaFromStore(ideaId)),
+    error: (error) => dispatch(alertActions.error(error)),
   };
 };
 

@@ -5,8 +5,9 @@ import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
 import axios from "axios";
 import { searchAPI } from "../server";
-import FriendProfileListItem from "../components/profile/FriendProfileListItem";
+
 import Spinner from "../components/misc/Spinner";
+import RequestListItem from "../components/friend_request/RequestListItem";
 
 class SearchScreen extends Component {
   constructor(props) {
@@ -14,14 +15,14 @@ class SearchScreen extends Component {
     this.state = {
       results: [],
       loading: false,
-      searchField: ""
+      searchField: "",
     };
     this.timeout = 0;
   }
 
-  setSearchField = text => this.setState({ searchField: text });
+  setSearchField = (text) => this.setState({ searchField: text });
 
-  doSearch = text => {
+  doSearch = (text) => {
     this.setState({ searchField: text, loading: true });
     if (this.timeout) clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
@@ -29,7 +30,7 @@ class SearchScreen extends Component {
     }, 300);
   };
 
-  isEmptyOrSpaces = str => {
+  isEmptyOrSpaces = (str) => {
     return str === null || str.match(/^ *$/) !== null;
   };
 
@@ -42,17 +43,17 @@ class SearchScreen extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`
-      }
+        Authorization: `Token ${this.props.token}`,
+      },
     };
     return axios
       .get(`${searchAPI}${username}`, headers)
-      .then(res => {
+      .then((res) => {
         // remove currentUser from results
-        let results = res.data.filter(r => r.id !== this.props.currentUserId);
+        let results = res.data.filter((r) => r.id !== this.props.currentUserId);
         this.setState({ results, loading: false });
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.error(error);
       });
   };
@@ -68,8 +69,8 @@ class SearchScreen extends Component {
           <View>
             <FlatList
               data={this.state.results}
-              renderItem={({ item }) => <FriendProfileListItem navigation={this.props.navigation} friend={item} />}
-              keyExtractor={item => item.id}
+              renderItem={({ item }) => <RequestListItem friend={item} />}
+              keyExtractor={(item) => item.id}
             />
           </View>
         )}
@@ -77,7 +78,7 @@ class SearchScreen extends Component {
           <KeyboardAvoidingView behavior="padding">
             <TextInput
               style={styles.searchField}
-              onChangeText={text => this.doSearch(text)}
+              onChangeText={(text) => this.doSearch(text)}
               value={this.state.searchField}
               placeholder="Cerca username..."
               placeholderTextColor="#777"
@@ -97,25 +98,25 @@ const styles = StyleSheet.create({
     borderColor: DARK_YELLOW,
     borderRadius: 10,
     borderWidth: 2,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   container: {
     width: "100%",
     position: "absolute",
-    bottom: 0
-  }
+    bottom: 0,
+  },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     token: state.auth.token,
-    currentUserId: state.currentUser.id
+    currentUserId: state.currentUser.id,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    error: error => dispatch(alertActions.error(error))
+    error: (error) => dispatch(alertActions.error(error)),
   };
 };
 

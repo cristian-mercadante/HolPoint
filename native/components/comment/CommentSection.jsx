@@ -7,11 +7,13 @@ import { commentIdeaAPI, commentActivityAPI } from "../../server";
 import H2 from "../misc/H2";
 import Comment from "./Comment";
 import AddComment from "./AddComment";
+import Spinner from "../misc/Spinner";
+import { BLUE } from "../../colors";
 
 class CommentSection extends Component {
   state = {
     comments: [],
-    loading: true
+    loading: true,
   };
 
   getCommentUrl = () => {
@@ -29,16 +31,16 @@ class CommentSection extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`
-      }
+        Authorization: `Token ${this.props.token}`,
+      },
     };
     const url = this.getCommentUrl();
     return axios
       .get(`${url}${this.props.id}`, headers)
-      .then(res => {
+      .then((res) => {
         this.setState({ loading: false, comments: res.data });
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.error(error);
       });
   };
@@ -49,13 +51,13 @@ class CommentSection extends Component {
     }
   }
 
-  addComment = commentText => {
+  addComment = (commentText) => {
     if (commentText === "") return;
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`
-      }
+        Authorization: `Token ${this.props.token}`,
+      },
     };
     const url = this.getCommentUrl();
     return axios
@@ -63,36 +65,36 @@ class CommentSection extends Component {
         url,
         {
           text: commentText,
-          to: this.props.id
+          to: this.props.id,
         },
         headers
       )
-      .then(res => {
+      .then((res) => {
         this.setState({ comments: [...this.state.comments, res.data] });
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.error(error);
       });
   };
 
-  deleteComment = commentId => {
+  deleteComment = (commentId) => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`
-      }
+        Authorization: `Token ${this.props.token}`,
+      },
     };
     const url = this.getCommentUrl();
     return axios
       .delete(`${url}${commentId}/`, headers)
-      .then(res => {
+      .then((res) => {
         this.setState({
-          comments: this.state.comments.filter(comment => {
+          comments: this.state.comments.filter((comment) => {
             return comment.id !== commentId;
-          })
+          }),
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.error(error);
       });
   };
@@ -100,7 +102,7 @@ class CommentSection extends Component {
   renderComments = () => {
     let buffer = [];
     if (this.state.comments) {
-      this.state.comments.forEach(comment =>
+      this.state.comments.forEach((comment) =>
         buffer.push(<Comment {...comment} key={comment.id} deleteComment={this.deleteComment} kind={this.props.kind} />)
       );
     }
@@ -112,21 +114,25 @@ class CommentSection extends Component {
       <>
         <H2 text="Commenti" />
         <AddComment addComment={this.addComment} kind={this.props.kind} />
-        <View style={{ paddingHorizontal: 20 }}>{!this.state.loading && this.renderComments()}</View>
+        {this.state.loading ? (
+          <Spinner color={BLUE} />
+        ) : (
+          <View style={{ paddingHorizontal: 20 }}>{!this.state.loading && this.renderComments()}</View>
+        )}
       </>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    token: state.auth.token
+    token: state.auth.token,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    error: error => dispatch(alertActions.error(error))
+    error: (error) => dispatch(alertActions.error(error)),
   };
 };
 

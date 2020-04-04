@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { View, Button } from "react-native";
 import IdeaCard from "./IdeaCard";
 import H1 from "../misc/H1";
-import { FlatList } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { BLUE } from "../../colors";
+import RoundedButton from "../misc/RoundedButton";
 
 class IdeaCardManager extends Component {
   state = { ideas: [] };
@@ -17,7 +16,7 @@ class IdeaCardManager extends Component {
     if (prevProps.routeParams?.deletedIdeaId !== this.props.routeParams?.deletedIdeaId) {
       const ideaId = this.props.routeParams.deletedIdeaId;
       const ideas = [...this.state.ideas];
-      const index = ideas.findIndex(i => i.id === ideaId);
+      const index = ideas.findIndex((i) => i.id === ideaId);
       if (index > -1) {
         ideas.splice(index, 1);
       }
@@ -25,7 +24,7 @@ class IdeaCardManager extends Component {
     } else if (prevProps.routeParams?.idea !== this.props.routeParams?.idea) {
       const idea = this.props.routeParams.idea;
       const ideas = [...this.state.ideas];
-      const index = ideas.findIndex(i => i.id === idea.id);
+      const index = ideas.findIndex((i) => i.id === idea.id);
       if (index > -1) {
         // update idea
         ideas[index] = idea;
@@ -41,7 +40,7 @@ class IdeaCardManager extends Component {
     let buffer = [];
     const ideas = this.state.ideas;
     if (ideas) {
-      ideas.forEach(idea => buffer.push(<IdeaCard key={idea.id} idea={idea} />));
+      ideas.forEach((idea) => buffer.push(<IdeaCard key={idea.id} idea={idea} />));
     }
     return buffer;
   };
@@ -54,7 +53,12 @@ class IdeaCardManager extends Component {
       <>
         <H1 text="Idee" />
         {currentUserId === this.props.userId && (
-          <Button title="Crea idea" onPress={() => this.props.navigation.navigate("IdeaAdd")} color={BLUE} />
+          <RoundedButton
+            title="CREA IDEA"
+            onPress={() => this.props.navigation.navigate("IdeaAdd")}
+            backgroundColor={BLUE}
+            color="#fff"
+          />
         )}
         {this.renderIdeas()}
       </>
@@ -62,9 +66,9 @@ class IdeaCardManager extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    currentUserId: state.currentUser.id
+    currentUserId: state.currentUser.id,
   };
 };
 

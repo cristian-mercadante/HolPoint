@@ -2,6 +2,7 @@ export const YELLOW = "#FFCB31";
 export const DARK_YELLOW = "#d1a626";
 export const BLUE = "#0099CC";
 export const DARK_BLUE = "#007ca6";
+export const LIGHT_BLUE = "#4bb0d1";
 export const RED = "#FF6B4F";
 export const DARK_RED = "#db5c44";
 export const GREEN = "#00CE83";

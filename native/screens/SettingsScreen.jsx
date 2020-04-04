@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Button } from "react-native";
+import { Text, View, Button, Alert } from "react-native";
 import { connect } from "react-redux";
 import * as currentUserActions from "../actions/currentUser";
 import * as authActions from "../actions/auth";
@@ -21,25 +21,33 @@ class SettingsScreen extends Component {
           )}
         </View>
         <View style={{ position: "absolute", bottom: 0, width: "100%" }}>
-          <Button title="Logout" onPress={this.props.logout} color={RED} />
+          <Button
+            title="Logout"
+            onPress={() =>
+              Alert.alert("Vuoi uscire?", "", [{ text: "No" }, { text: "Sì", onPress: this.props.logout }], {
+                cancelable: true,
+              })
+            }
+            color={RED}
+          />
         </View>
       </>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     putCurrentUser: (username, email, first_name, last_name) =>
       dispatch(currentUserActions.putCurrentUser(username, email, first_name, last_name)),
-    putCurrentUserPicture: picture => dispatch(currentUserActions.putCurrentUserPicture(picture)),
-    logout: () => dispatch(authActions.logout())
+    putCurrentUserPicture: (picture) => dispatch(currentUserActions.putCurrentUserPicture(picture)),
+    logout: () => dispatch(authActions.logout()),
   };
 };
 
