@@ -6,15 +6,16 @@ import { connect } from "react-redux";
 import * as colors from "../colors";
 import * as authActions from "../actions/auth";
 import Spinner from "../components/misc/Spinner";
+import RoundedButton from "../components/misc/RoundedButton";
 
 class LoginScreen extends Component {
   state = {
     username: "",
-    password: ""
+    password: "",
   };
 
-  onChangeUsername = text => this.setState({ username: text });
-  onChangePassword = text => this.setState({ password: text });
+  onChangeUsername = (text) => this.setState({ username: text });
+  onChangePassword = (text) => this.setState({ password: text });
 
   handleSubmit = () => {
     const { username, password } = this.state;
@@ -37,7 +38,7 @@ class LoginScreen extends Component {
               <TextInput
                 style={styles.formField}
                 value={this.state.username}
-                onChangeText={text => this.onChangeUsername(text)}
+                onChangeText={(text) => this.onChangeUsername(text)}
                 placeholder="Username"
               />
               <TextInput
@@ -45,14 +46,14 @@ class LoginScreen extends Component {
                 value={this.state.password}
                 secureTextEntry={true}
                 password={true}
-                onChangeText={text => this.onChangePassword(text)}
+                onChangeText={(text) => this.onChangePassword(text)}
                 placeholder="Password"
               />
             </>
           )}
         </View>
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <Button title="Log In" onPress={this.handleSubmit} color={colors.BLUE} />
+        <View style={{ flex: 1, justifyContent: "center", width: "100%" }}>
+          <RoundedButton title="Log In" backgroundColor={colors.YELLOW} color="#000" onPress={this.handleSubmit} />
         </View>
       </View>
     );
@@ -65,19 +66,19 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: colors.BLUE,
     borderBottomWidth: 1,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    isLoading: state.auth.loading
+    isLoading: state.auth.loading,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (username, password) => dispatch(authActions.authLogin(username, password))
+    onAuth: (username, password) => dispatch(authActions.authLogin(username, password)),
   };
 };
 

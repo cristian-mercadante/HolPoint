@@ -4,7 +4,7 @@ import { darkColor, color } from "./Comment";
 
 export default class AddComment extends Component {
   state = {
-    commentText: ""
+    commentText: "",
   };
 
   render() {
@@ -18,14 +18,14 @@ export default class AddComment extends Component {
           borderWidth: 2,
           marginHorizontal: 20,
           marginBottom: 10,
-          borderRadius: 10
+          borderRadius: 10,
         }}
       >
         <TextInput
           style={{ fontSize: 17, flex: 1 }}
           placeholder="Lascia un commento..."
           multiline={true}
-          onChangeText={text => this.setState({ commentText: text })}
+          onChangeText={(text) => this.setState({ commentText: text })}
           value={this.state.commentText}
           placeholderTextColor="#777"
         />

@@ -29,7 +29,7 @@ export default class SettingsForm extends Component {
       return;
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({ allowsEditing: true });
     if (!pickerResult.cancelled) {
       this.setState({ picture: pickerResult });
     }
@@ -55,7 +55,6 @@ export default class SettingsForm extends Component {
     const { username, email, first_name, last_name } = this.state;
     return (
       <ScrollView>
-        <Button title="Modifica" onPress={this.handleSubmit} />
         <TextInputLabel
           placeholder="Username"
           onChangeText={(text) => this.onChangeUsername(text)}
@@ -82,7 +81,7 @@ export default class SettingsForm extends Component {
         />
         <RoundedButton
           onPress={this.openImagePickerAsync}
-          title="Selezione nuova immagine"
+          title="Seleziona nuova immagine"
           backgroundColor={BLUE}
           color="#fff"
         />
@@ -91,6 +90,7 @@ export default class SettingsForm extends Component {
             <ProfilePicture source={this.state.picture.uri} size={150} />
           </View>
         )}
+        <RoundedButton title="Modifica" onPress={this.handleSubmit} backgroundColor={BLUE} color="#fff" />
       </ScrollView>
     );
   }

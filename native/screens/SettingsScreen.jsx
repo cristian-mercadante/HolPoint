@@ -5,12 +5,14 @@ import * as currentUserActions from "../actions/currentUser";
 import * as authActions from "../actions/auth";
 import SettingsForm from "../components/settings/SettingsForm";
 import { RED } from "../colors";
+import RoundedButton from "../components/misc/RoundedButton";
+import { ScrollView } from "react-native-gesture-handler";
 
 class SettingsScreen extends Component {
   render() {
     return (
-      <>
-        <View>
+      <ScrollView>
+        <>
           {!this.props.currentUser.loading && (
             <SettingsForm
               profile={this.props.currentUser}
@@ -19,19 +21,18 @@ class SettingsScreen extends Component {
               navigation={this.props.navigation}
             />
           )}
-        </View>
-        <View style={{ position: "absolute", bottom: 0, width: "100%" }}>
-          <Button
-            title="Logout"
-            onPress={() =>
-              Alert.alert("Vuoi uscire?", "", [{ text: "No" }, { text: "Sì", onPress: this.props.logout }], {
-                cancelable: true,
-              })
-            }
-            color={RED}
-          />
-        </View>
-      </>
+        </>
+        <RoundedButton
+          title="Logout"
+          onPress={() =>
+            Alert.alert("Vuoi uscire?", "", [{ text: "No" }, { text: "Sì", onPress: this.props.logout }], {
+              cancelable: true,
+            })
+          }
+          backgroundColor={RED}
+          color="#fff"
+        />
+      </ScrollView>
     );
   }
 }

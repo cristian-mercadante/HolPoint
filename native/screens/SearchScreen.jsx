@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, KeyboardAvoidingView, StyleSheet, FlatList } from "react-native";
+import { View, TextInput, KeyboardAvoidingView, StyleSheet, FlatList, Text } from "react-native";
 import { DARK_YELLOW, YELLOW } from "../colors";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
@@ -66,13 +66,21 @@ class SearchScreen extends Component {
             <Spinner color={YELLOW} />
           </View>
         ) : (
-          <View>
-            <FlatList
-              data={this.state.results}
-              renderItem={({ item }) => <FriendProfileListItem friend={item} />}
-              keyExtractor={(item) => item.id}
-            />
-          </View>
+          <>
+            {this.state.results.length === 0 ? (
+              <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <Text style={{ fontSize: 17, color: "#777" }}>Nessun risultato</Text>
+              </View>
+            ) : (
+              <View>
+                <FlatList
+                  data={this.state.results}
+                  renderItem={({ item }) => <FriendProfileListItem friend={item} />}
+                  keyExtractor={(item) => item.id}
+                />
+              </View>
+            )}
+          </>
         )}
         <View style={styles.container} behavior="position">
           <KeyboardAvoidingView behavior="padding">

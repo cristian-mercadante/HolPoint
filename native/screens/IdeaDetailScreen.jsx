@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ScrollView, Text, KeyboardAvoidingView, Alert, StatusBar } from "react-native";
+import { Button, ScrollView, Text, KeyboardAvoidingView, Alert, StatusBar, View } from "react-native";
 import { ideaAPI } from "../server";
 import { YELLOW, RED, DARK_BLUE } from "../colors";
 import IdeaForm from "../components/idea/IdeaForm";
@@ -8,6 +8,7 @@ import axios from "axios";
 import * as currentUserActions from "../actions/currentUser";
 import * as alertActions from "../actions/alerts";
 import CommentSection from "../components/comment/CommentSection";
+import RoundedButton from "../components/misc/RoundedButton";
 
 class IdeaDetailScreen extends Component {
   state = {
@@ -99,11 +100,17 @@ class IdeaDetailScreen extends Component {
         <ScrollView>
           <KeyboardAvoidingView behavior="padding">
             {idea.creator && this.props.currentUserId === idea.creator.id && (
-              <>
-                <Button title={this.state.isEditing ? "Annulla" : "Modifica"} color={YELLOW} onPress={this.editing} />
-                <Button
+              <View style={{ marginTop: 10 }}>
+                <RoundedButton
+                  title={this.state.isEditing ? "Annulla" : "Modifica"}
+                  backgroundColor={YELLOW}
+                  color="#000"
+                  onPress={this.editing}
+                />
+                <RoundedButton
                   title="Elimina"
-                  color={RED}
+                  backgroundColor={RED}
+                  color="#fff"
                   onPress={() =>
                     Alert.alert(
                       `Sicuro di voler eliminare ${idea.title}?`,
@@ -113,7 +120,7 @@ class IdeaDetailScreen extends Component {
                     )
                   }
                 />
-              </>
+              </View>
             )}
             {this.state.isEditing ? (
               <IdeaForm

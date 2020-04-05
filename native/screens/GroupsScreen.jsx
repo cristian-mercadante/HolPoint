@@ -12,10 +12,10 @@ import Spinner from "../components/misc/Spinner";
 class GroupsScreen extends Component {
   state = {
     loading: true,
-    groups: []
+    groups: [],
   };
 
-  addGroup = group => {
+  addGroup = (group) => {
     this.setState({ groups: [...this.state.groups, group] });
   };
 
@@ -23,15 +23,15 @@ class GroupsScreen extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`
-      }
+        Authorization: `Token ${this.props.token}`,
+      },
     };
     return axios
       .get(`${groupAPI}`, headers)
-      .then(res => {
+      .then((res) => {
         this.setState({ loading: false, groups: res.data });
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.error(error);
       });
   };
@@ -41,25 +41,20 @@ class GroupsScreen extends Component {
   }
 
   render() {
-    return (
-      <>
-        <Button title="Crea gruppo" color={colors.RED} />
-        {this.state.loading ? <Spinner color={RED} /> : <GroupCardManager groups={this.state.groups} />}
-      </>
-    );
+    return <>{this.state.loading ? <Spinner color={RED} /> : <GroupCardManager groups={this.state.groups} />}</>;
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     token: state.auth.token,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    error: error => dispatch(alertActions.error(error))
+    error: (error) => dispatch(alertActions.error(error)),
   };
 };
 

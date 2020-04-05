@@ -6,19 +6,20 @@ import * as colors from "../colors";
 import * as authActions from "../actions/auth";
 import SubTitle from "../components/misc/SubTitle";
 import Spinner from "../components/misc/Spinner";
+import RoundedButton from "../components/misc/RoundedButton";
 
 class SignupScreen extends Component {
   state = {
     username: "",
     email: "",
     password1: "",
-    password2: ""
+    password2: "",
   };
 
-  onChangeUsername = text => this.setState({ username: text });
-  onChangeEmail = text => this.setState({ email: text });
-  onChangePassword1 = text => this.setState({ password1: text });
-  onChangePassword2 = text => this.setState({ password2: text });
+  onChangeUsername = (text) => this.setState({ username: text });
+  onChangeEmail = (text) => this.setState({ email: text });
+  onChangePassword1 = (text) => this.setState({ password1: text });
+  onChangePassword2 = (text) => this.setState({ password2: text });
 
   handleSubmit = () => {
     const { username, email, password1, password2 } = this.state;
@@ -40,13 +41,13 @@ class SignupScreen extends Component {
               <TextInput
                 style={styles.formField}
                 value={this.state.username}
-                onChangeText={text => this.onChangeUsername(text)}
+                onChangeText={(text) => this.onChangeUsername(text)}
                 placeholder="Username"
               />
               <TextInput
                 style={styles.formField}
                 value={this.state.email}
-                onChangeText={text => this.onChangeEmail(text)}
+                onChangeText={(text) => this.onChangeEmail(text)}
                 placeholder="Email"
               />
               <TextInput
@@ -54,7 +55,7 @@ class SignupScreen extends Component {
                 value={this.state.password1}
                 secureTextEntry={true}
                 password={true}
-                onChangeText={text => this.onChangePassword1(text)}
+                onChangeText={(text) => this.onChangePassword1(text)}
                 placeholder="Password"
               />
               <TextInput
@@ -62,14 +63,14 @@ class SignupScreen extends Component {
                 value={this.state.password2}
                 secureTextEntry={true}
                 password={true}
-                onChangeText={text => this.onChangePassword2(text)}
+                onChangeText={(text) => this.onChangePassword2(text)}
                 placeholder="Conferma password"
               />
             </>
           )}
         </View>
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <Button title="Sign Up" onPress={this.handleSubmit} color={colors.BLUE} />
+        <View style={{ flex: 1, justifyContent: "center", width: "100%" }}>
+          <RoundedButton title="Sign Up" backgroundColor={colors.YELLOW} color="#000" onPress={this.handleSubmit} />
         </View>
       </View>
     );
@@ -82,20 +83,20 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: colors.BLUE,
     borderBottomWidth: 1,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    isLoading: state.auth.loading
+    isLoading: state.auth.loading,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (username, email, password1, password2) =>
-      dispatch(authActions.authSignup(username, email, password1, password2))
+      dispatch(authActions.authSignup(username, email, password1, password2)),
   };
 };
 

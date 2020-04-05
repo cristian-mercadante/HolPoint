@@ -4,6 +4,8 @@ import H1 from "../misc/H1";
 import { connect } from "react-redux";
 import { BLUE } from "../../colors";
 import RoundedButton from "../misc/RoundedButton";
+import { View } from "react-native";
+import H1WithButton from "../misc/H1WithButton";
 
 class IdeaCardManager extends Component {
   state = { ideas: [] };
@@ -51,15 +53,19 @@ class IdeaCardManager extends Component {
 
     return (
       <>
-        <H1 text="Idee" />
-        {currentUserId === this.props.userId && (
-          <RoundedButton
-            title="CREA IDEA"
-            onPress={() => this.props.navigation.navigate("IdeaAdd")}
-            backgroundColor={BLUE}
-            color="#fff"
-          />
-        )}
+        <H1WithButton
+          text="Idee"
+          button={
+            currentUserId === this.props.userId && (
+              <RoundedButton
+                title="Crea"
+                onPress={() => this.props.navigation.navigate("IdeaAdd")}
+                backgroundColor={BLUE}
+                color="#fff"
+              />
+            )
+          }
+        />
         {this.renderIdeas()}
       </>
     );
