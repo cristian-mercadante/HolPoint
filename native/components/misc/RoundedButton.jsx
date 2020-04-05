@@ -19,7 +19,10 @@ const RoundedButton = (props) => {
       style={{ ...styles.button, backgroundColor: props.backgroundColor }}
       disabled={props.disabled || false}
     >
-      <Text style={{ textAlign: "center", color: props.color }}>{props.title}</Text>
+      <Text style={{ textAlign: "center", color: props.color }}>
+        {props.icon}
+        {props.title && ` ${String(props.title).toUpperCase()}`}
+      </Text>
     </TouchableOpacity>
   );
 };

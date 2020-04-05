@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
-import { TextInput, TouchableOpacity, ScrollView } from "react-native-gesture-handler";
+import { View, Button } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { BLUE } from "../../colors";
 import TextInputLabel from "../misc/TextInputLabel";
 import * as ImagePicker from "expo-image-picker";
 import ProfilePicture from "../profile/ProfilePicture";
+import RoundedButton from "../misc/RoundedButton";
 
 export default class SettingsForm extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class SettingsForm extends Component {
       email: profile.email,
       first_name: profile.first_name,
       last_name: profile.last_name,
-      picture: null
+      picture: null,
     };
   }
 
@@ -29,13 +30,15 @@ export default class SettingsForm extends Component {
     }
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    this.setState({ picture: pickerResult });
+    if (!pickerResult.cancelled) {
+      this.setState({ picture: pickerResult });
+    }
   };
 
-  onChangeUsername = text => this.setState({ username: text });
-  onChangeEmail = text => this.setState({ email: text });
-  onChangeFirstName = text => this.setState({ first_name: text });
-  onChangeLastName = text => this.setState({ last_name: text });
+  onChangeUsername = (text) => this.setState({ username: text });
+  onChangeEmail = (text) => this.setState({ email: text });
+  onChangeFirstName = (text) => this.setState({ first_name: text });
+  onChangeLastName = (text) => this.setState({ last_name: text });
 
   handleSubmit = () => {
     const { username, email, first_name, last_name, picture } = this.state;
@@ -55,29 +58,34 @@ export default class SettingsForm extends Component {
         <Button title="Modifica" onPress={this.handleSubmit} />
         <TextInputLabel
           placeholder="Username"
-          onChangeText={text => this.onChangeUsername(text)}
+          onChangeText={(text) => this.onChangeUsername(text)}
           value={username}
           placeholderTextColor="#777"
         />
         <TextInputLabel
           placeholder="Email"
-          onChangeText={text => this.onChangeEmail(text)}
+          onChangeText={(text) => this.onChangeEmail(text)}
           value={email}
           placeholderTextColor="#777"
         />
         <TextInputLabel
           placeholder="Nome"
-          onChangeText={text => this.onChangeFirstName(text)}
+          onChangeText={(text) => this.onChangeFirstName(text)}
           value={first_name}
           placeholderTextColor="#777"
         />
         <TextInputLabel
           placeholder="Cognome"
-          onChangeText={text => this.onChangeLastName(text)}
+          onChangeText={(text) => this.onChangeLastName(text)}
           value={last_name}
           placeholderTextColor="#777"
         />
-        <Button onPress={this.openImagePickerAsync} title="Selezione nuova immagine del profilo" />
+        <RoundedButton
+          onPress={this.openImagePickerAsync}
+          title="Selezione nuova immagine"
+          backgroundColor={BLUE}
+          color="#fff"
+        />
         {this.state.picture && (
           <View style={{ alignSelf: "center" }}>
             <ProfilePicture source={this.state.picture.uri} size={150} />

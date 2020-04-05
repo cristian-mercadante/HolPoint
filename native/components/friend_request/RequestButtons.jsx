@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Alert } from "react-native";
 import { LIGHT_BLUE, BLUE, RED, GREEN, YELLOW } from "../../colors";
 import { FontAwesome } from "@expo/vector-icons";
 import RoundedButton from "../misc/RoundedButton";
@@ -8,11 +7,8 @@ import RoundedButton from "../misc/RoundedButton";
 export const AddButton = ({ onPress }) => {
   return (
     <RoundedButton
-      title={
-        <>
-          <FontAwesome name="user-plus" color="#fff" size={15} /> AGGIUNGI
-        </>
-      }
+      icon={<FontAwesome name="user-plus" color="#fff" size={15} />}
+      title="Aggiungi"
       backgroundColor={BLUE}
       color="#fff"
       onPress={onPress}
@@ -23,11 +19,8 @@ export const AddButton = ({ onPress }) => {
 export const RemoveButton = ({ onPress }) => {
   return (
     <RoundedButton
-      title={
-        <>
-          <FontAwesome name="user-times" color="#fff" size={15} /> RIMUOVI
-        </>
-      }
+      icon={<FontAwesome name="user-times" color="#fff" size={15} />}
+      title="Rimuovi"
       backgroundColor={RED}
       color="#fff"
       onPress={() =>
@@ -42,11 +35,8 @@ export const RemoveButton = ({ onPress }) => {
 export const WaitButton = ({ onPress }) => {
   return (
     <RoundedButton
-      title={
-        <>
-          <FontAwesome name="user-plus" color="#fff" size={15} /> ATTESA
-        </>
-      }
+      icon={<FontAwesome name="user-plus" color="#fff" size={15} />}
+      title="Attesa"
       backgroundColor={LIGHT_BLUE}
       color="#fff"
       onPress={onPress}
@@ -60,12 +50,8 @@ export const AcceptRefuseButtons = ({ onPress, compact }) => {
     <View style={{ flex: 1, flexDirection: "row" }}>
       <View style={{ flex: 1 }}>
         <RoundedButton
-          title={
-            <>
-              <FontAwesome name="user-plus" color="#fff" size={15} />
-              {!compact && " ACCETTA"}
-            </>
-          }
+          icon={<FontAwesome name="user-plus" color="#fff" size={15} />}
+          title={!compact ? "Accetta" : ""}
           backgroundColor={GREEN}
           color="#fff"
           onPress={() => onPress("Acc")}
@@ -73,12 +59,8 @@ export const AcceptRefuseButtons = ({ onPress, compact }) => {
       </View>
       <View style={{ flex: 1 }}>
         <RoundedButton
-          title={
-            <>
-              <FontAwesome name="user-times" color="#000" size={15} />
-              {!compact && " RIFIUTA"}
-            </>
-          }
+          icon={<FontAwesome name="user-times" color="#000" size={15} />}
+          title={!compact ? "Rifiuta" : ""}
           backgroundColor={YELLOW}
           color="#000"
           onPress={() => onPress("Ref")}

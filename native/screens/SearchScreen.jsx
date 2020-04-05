@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, Text, KeyboardAvoidingView, StyleSheet, FlatList } from "react-native";
+import { View, TextInput, KeyboardAvoidingView, StyleSheet, FlatList } from "react-native";
 import { DARK_YELLOW, YELLOW } from "../colors";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
@@ -7,7 +7,7 @@ import axios from "axios";
 import { searchAPI } from "../server";
 
 import Spinner from "../components/misc/Spinner";
-import RequestListItem from "../components/friend_request/RequestListItem";
+import FriendProfileListItem from "../components/profile/FriendProfileListItem";
 
 class SearchScreen extends Component {
   constructor(props) {
@@ -69,7 +69,7 @@ class SearchScreen extends Component {
           <View>
             <FlatList
               data={this.state.results}
-              renderItem={({ item }) => <RequestListItem friend={item} />}
+              renderItem={({ item }) => <FriendProfileListItem friend={item} />}
               keyExtractor={(item) => item.id}
             />
           </View>

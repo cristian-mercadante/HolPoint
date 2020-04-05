@@ -170,6 +170,12 @@ ALLOWED_FILE_TYPES = [
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",  # pptx
 ]
 
+ALLOWED_PIC_TYPES = [
+    "image/jpeg",  # jpg jpeg
+    "image/png",  # png
+]
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
