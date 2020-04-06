@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, Text, Button, FlatList, RefreshControl } from "react-native";
+import { Text, FlatList, RefreshControl } from "react-native";
 import { connect } from "react-redux";
 import * as friendRequestActions from "../actions/friendRequest";
+import * as alertActions from "../actions/alerts";
 import RequestListItem from "../components/friend_request/RequestListItem";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -30,7 +31,13 @@ class RequestsScreen extends Component {
 
   updateList = () => {
     this.setState({ loading: true });
-    this.props.loadRequests().then(this.setState({ loading: false }));
+    this.props
+      .loadRequests()
+      .then(this.setState({ loading: false }))
+      .catch(error => {
+        this.props.error(error);
+        this.setState({ loading: false });
+      });
   };
 
   render() {
@@ -46,7 +53,7 @@ class RequestsScreen extends Component {
           <FlatList
             data={this.state.receivedRequests}
             renderItem={({ item }) => <RequestListItem friend={item.sender} request={item} />}
-            keyExtractor={(item) => String(item.id)}
+            keyExtractor={item => String(item.id)}
             refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.updateList} />}
           />
         )}
@@ -55,15 +62,16 @@ class RequestsScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     friendRequests: state.friendRequest,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     loadRequests: () => dispatch(friendRequestActions.loadRequests()),
+    error: error => dispatch(alertActions.error(error)),
   };
 };
 

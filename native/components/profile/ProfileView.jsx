@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Button } from "react-native";
+import { Text, View } from "react-native";
 import IdeaCardManager from "../idea/IdeaCardManager";
 import ProfilePicture from "./ProfilePicture";
 import { BLUE } from "../../colors";

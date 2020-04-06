@@ -1,6 +1,6 @@
 import React from "react";
 import { Image } from "react-native";
-import * as colors from "../../colors";
+import { YELLOW } from "../../colors";
 
 const ProfilePicture = ({ size, source }) => {
   return (
@@ -9,9 +9,9 @@ const ProfilePicture = ({ size, source }) => {
         height: size,
         width: size,
         borderRadius: size / 2,
-        borderColor: colors.YELLOW,
+        borderColor: YELLOW,
         borderWidth: 2,
-        margin: 20
+        margin: 15,
       }}
       source={source ? { uri: source } : require("../../assets/default.png")}
     />

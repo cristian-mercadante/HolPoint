@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, KeyboardAvoidingView, StatusBar } from "react-native";
+import { ScrollView, KeyboardAvoidingView, StatusBar } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
 import { ideaAPI } from "../server";
@@ -11,7 +11,7 @@ import { DARK_BLUE } from "../colors";
 class IdeaAddScreen extends Component {
   initialState = {
     title: "",
-    description: ""
+    description: "",
   };
 
   state = { ...this.initialState };
@@ -24,8 +24,8 @@ class IdeaAddScreen extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`
-      }
+        Authorization: `Token ${this.props.token}`,
+      },
     };
     return axios
       .post(ideaAPI, { title, description }, headers)
@@ -61,14 +61,14 @@ class IdeaAddScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    token: state.auth.token
+    token: state.auth.token,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     addIdeaToStore: idea => dispatch(currentUserActions.addIdeaToStore(idea)),
-    error: error => dispatch(alertActions.error(error))
+    error: error => dispatch(alertActions.error(error)),
   };
 };
 

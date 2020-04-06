@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, Button } from "react-native";
+import { View, TextInput, Button } from "react-native";
 import { darkColor, color } from "./Comment";
 
 export default class AddComment extends Component {
@@ -25,7 +25,7 @@ export default class AddComment extends Component {
           style={{ fontSize: 17, flex: 1 }}
           placeholder="Lascia un commento..."
           multiline={true}
-          onChangeText={(text) => this.setState({ commentText: text })}
+          onChangeText={text => this.setState({ commentText: text })}
           value={this.state.commentText}
           placeholderTextColor="#777"
         />

@@ -1,6 +1,5 @@
 import React from "react";
 import Card from "../misc/Card";
-
 import { BLUE, DARK_BLUE } from "../../colors";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";

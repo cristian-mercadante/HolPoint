@@ -1,46 +1,29 @@
-import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import React from "react";
 import { BLUE, GREEN } from "../../colors";
 import TextInputLabel from "../misc/TextInputLabel";
 import RoundedButton from "../misc/RoundedButton";
 
-export default class IdeaForm extends Component {
-  styles = StyleSheet.create({
-    formField: {
-      margin: 10,
-      borderColor: BLUE,
-      borderBottomWidth: 1,
-      fontSize: 20,
-      color: "#000",
-    },
-  });
+const IdeaForm = props => {
+  return (
+    <>
+      <TextInputLabel
+        borderColor={BLUE}
+        placeholder="Titolo"
+        onChangeText={text => props.onChangeTitle(text)}
+        value={props.title}
+        placeholderTextColor="#777"
+      />
+      <TextInputLabel
+        borderColor={BLUE}
+        placeholder="Descrizione"
+        multiline={true}
+        onChangeText={text => props.onChangeDescription(text)}
+        value={props.description}
+        placeholderTextColor="#777"
+      />
+      <RoundedButton title="Invia" onPress={props.handleSubmit} backgroundColor={GREEN} color="#fff" />
+    </>
+  );
+};
 
-  render() {
-    return (
-      <>
-        <TextInputLabel
-          style={this.styles.formField}
-          placeholder="Titolo"
-          onChangeText={(text) => this.props.onChangeTitle(text)}
-          value={this.props.title}
-          placeholderTextColor="#777"
-        />
-        <TextInputLabel
-          style={this.styles.formField}
-          placeholder="Descrizione"
-          multiline={true}
-          onChangeText={(text) => this.props.onChangeDescription(text)}
-          value={this.props.description}
-          placeholderTextColor="#777"
-        />
-        <RoundedButton
-          title="Invia"
-          color={GREEN}
-          onPress={this.props.handleSubmit}
-          backgroundColor={GREEN}
-          color="#fff"
-        />
-      </>
-    );
-  }
-}
+export default IdeaForm;

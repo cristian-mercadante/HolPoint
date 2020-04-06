@@ -1,0 +1,137 @@
+import React, { useState, useEffect } from "react";
+import { Text } from "react-native";
+import { GREEN, RED, YELLOW, DARK_RED } from "../../colors";
+import TextInputLabel from "../misc/TextInputLabel";
+import RoundedButton from "../misc/RoundedButton";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { dateToString_or_Null } from "../../dateUtils";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { connect } from "react-redux";
+import { FlatList } from "react-native-gesture-handler";
+import FriendTag from "../profile/FriendTag";
+
+const GroupForm = props => {
+  const navigation = useNavigation();
+
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [profiles, setProfiles] = useState([]);
+  const [date_start, setDateStart] = useState(new Date());
+  const [show_start, setShowStart] = useState(false);
+  const [date_finish, setDateFinish] = useState(new Date(date_start));
+  const [show_finish, setShowFinish] = useState(false);
+
+  useEffect(() => {
+    if (props.routeParams?.selectedFriends) {
+      setProfiles(props.routeParams.selectedFriends);
+    }
+  }, [props.routeParams?.selectedFriends]);
+
+  return (
+    <>
+      <TextInputLabel
+        borderColor={RED}
+        placeholder="Nome"
+        onChangeText={text => setName(text)}
+        value={name}
+        placeholderTextColor="#777"
+      />
+      <RoundedButton
+        title={`Partenza ${dateToString_or_Null(date_start) || "non definita"}`}
+        onPress={() => setShowStart(true)}
+        color="#fff"
+        backgroundColor={RED}
+        icon={<FontAwesome5 name="calendar-alt" color="#fff" size={15} />}
+      />
+      <RoundedButton
+        title={`Ritorno ${dateToString_or_Null(date_finish) || "non definito"}`}
+        onPress={() => setShowFinish(true)}
+        color="#fff"
+        backgroundColor={RED}
+        icon={<FontAwesome5 name="calendar-alt" color="#fff" size={15} />}
+      />
+      <TextInputLabel
+        multiline={true}
+        borderColor={RED}
+        placeholder="Descrizione"
+        onChangeText={text => setDescription(text)}
+        value={description}
+        placeholderTextColor="#777"
+      />
+      <RoundedButton
+        title="Aggiungi amici"
+        onPress={() => navigation.navigate("GroupAddFriend", { friends: props.friends, selectedFriends: profiles })}
+        backgroundColor={YELLOW}
+        color="#000"
+      />
+      <FlatList
+        data={props.friends.filter(f => profiles.includes(f.id))}
+        renderItem={({ item }) => <FriendTag username={item.username} />}
+        keyExtractor={item => String(item.id)}
+      />
+      <RoundedButton
+        title="Invia"
+        onPress={() =>
+          props
+            .handleSubmit(
+              name,
+              description,
+              profiles,
+              dateToString_or_Null(date_start),
+              dateToString_or_Null(date_finish)
+            )
+            .then(ok => {
+              if (ok === "ok") {
+                setName("");
+                setDescription("");
+                setProfiles([]);
+                setDateStart(new Date());
+                setDateFinish(new Date());
+              }
+            })
+        }
+        backgroundColor={GREEN}
+        color="#fff"
+      />
+      {show_start && (
+        <DateTimePicker
+          testID="groupAdd_DatePickerStart"
+          timeZoneOffsetInMinutes={0}
+          value={date_start}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={(event, selectedDate) => {
+            const currentDate = selectedDate || date_start;
+            setShowStart(Platform.OS === "ios");
+            setDateStart(currentDate);
+          }}
+        />
+      )}
+      {show_finish && (
+        <DateTimePicker
+          testID="groupAdd_DatePickerFinish"
+          timeZoneOffsetInMinutes={0}
+          value={date_finish}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={(event, selectedDate) => {
+            const currentDate = selectedDate || date_finish;
+            setShowFinish(Platform.OS === "ios");
+            setDateFinish(currentDate);
+          }}
+        />
+      )}
+    </>
+  );
+};
+
+const mapStateToProps = state => {
+  return {
+    friends: state.currentUser.profile.friends,
+  };
+};
+
+export default connect(mapStateToProps)(GroupForm);

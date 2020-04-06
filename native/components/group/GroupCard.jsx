@@ -1,12 +1,12 @@
 import React from "react";
-import * as colors from "../../colors";
 import Card from "../misc/Card";
+import { RED, DARK_RED } from "../../colors";
 
 const GroupCard = ({ group }) => {
   return (
     <Card
-      color={colors.RED}
-      darkColor={colors.DARK_RED}
+      color={RED}
+      darkColor={DARK_RED}
       textColor={"#fff"}
       header={group.name}
       body={group.description}

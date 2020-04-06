@@ -6,10 +6,11 @@ import ProfileView from "../components/profile/ProfileView";
 import * as colors from "../colors";
 import Spinner from "../components/misc/Spinner";
 import { FontAwesome } from "@expo/vector-icons";
+import * as alertActions from "../actions/alerts";
 
 class ProfileScreen extends Component {
   state = {
-    refreshing: false
+    refreshing: false,
   };
 
   componentDidMount() {
@@ -18,13 +19,19 @@ class ProfileScreen extends Component {
         <TouchableOpacity onPress={() => this.props.navigation.navigate("Impostazioni")} style={{ marginRight: 20 }}>
           <FontAwesome name="gear" size={25} />
         </TouchableOpacity>
-      )
+      ),
     });
   }
 
   onRefresh = () => {
     this.setState({ refreshing: true });
-    this.props.getCurrentUser().then(() => this.setState({ refreshing: false }));
+    this.props
+      .getCurrentUser()
+      .then(() => this.setState({ refreshing: false }))
+      .catch(error => {
+        this.props.error(error);
+        this.setState({ refreshing: false });
+      });
   };
 
   render() {
@@ -50,13 +57,14 @@ class ProfileScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getCurrentUser: () => dispatch(currentUserActions.getCurrentUser())
+    getCurrentUser: () => dispatch(currentUserActions.getCurrentUser()),
+    error: error => dispatch(alertActions.error(error)),
   };
 };
 

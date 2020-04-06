@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { BLUE } from "../../colors";
+import { BLUE, DARK_YELLOW } from "../../colors";
 import TextInputLabel from "../misc/TextInputLabel";
 import * as ImagePicker from "expo-image-picker";
 import ProfilePicture from "../profile/ProfilePicture";
@@ -35,10 +35,10 @@ export default class SettingsForm extends Component {
     }
   };
 
-  onChangeUsername = (text) => this.setState({ username: text });
-  onChangeEmail = (text) => this.setState({ email: text });
-  onChangeFirstName = (text) => this.setState({ first_name: text });
-  onChangeLastName = (text) => this.setState({ last_name: text });
+  onChangeUsername = text => this.setState({ username: text });
+  onChangeEmail = text => this.setState({ email: text });
+  onChangeFirstName = text => this.setState({ first_name: text });
+  onChangeLastName = text => this.setState({ last_name: text });
 
   handleSubmit = () => {
     const { username, email, first_name, last_name, picture } = this.state;
@@ -56,26 +56,30 @@ export default class SettingsForm extends Component {
     return (
       <ScrollView>
         <TextInputLabel
+          borderColor={DARK_YELLOW}
           placeholder="Username"
-          onChangeText={(text) => this.onChangeUsername(text)}
+          onChangeText={text => this.onChangeUsername(text)}
           value={username}
           placeholderTextColor="#777"
         />
         <TextInputLabel
+          borderColor={DARK_YELLOW}
           placeholder="Email"
-          onChangeText={(text) => this.onChangeEmail(text)}
+          onChangeText={text => this.onChangeEmail(text)}
           value={email}
           placeholderTextColor="#777"
         />
         <TextInputLabel
+          borderColor={DARK_YELLOW}
           placeholder="Nome"
-          onChangeText={(text) => this.onChangeFirstName(text)}
+          onChangeText={text => this.onChangeFirstName(text)}
           value={first_name}
           placeholderTextColor="#777"
         />
         <TextInputLabel
+          borderColor={DARK_YELLOW}
           placeholder="Cognome"
-          onChangeText={(text) => this.onChangeLastName(text)}
+          onChangeText={text => this.onChangeLastName(text)}
           value={last_name}
           placeholderTextColor="#777"
         />

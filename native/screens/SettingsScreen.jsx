@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Button, Alert } from "react-native";
+import { Alert } from "react-native";
 import { connect } from "react-redux";
 import * as currentUserActions from "../actions/currentUser";
 import * as authActions from "../actions/auth";
@@ -37,17 +37,17 @@ class SettingsScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     currentUser: state.currentUser,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     putCurrentUser: (username, email, first_name, last_name) =>
       dispatch(currentUserActions.putCurrentUser(username, email, first_name, last_name)),
-    putCurrentUserPicture: (picture) => dispatch(currentUserActions.putCurrentUserPicture(picture)),
+    putCurrentUserPicture: picture => dispatch(currentUserActions.putCurrentUserPicture(picture)),
     logout: () => dispatch(authActions.logout()),
   };
 };

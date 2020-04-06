@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, StyleSheet, Button, StatusBar } from "react-native";
+import { View, TextInput, StyleSheet, StatusBar } from "react-native";
 import Title from "../components/misc/Title";
 import SubTitle from "../components/misc/SubTitle";
 import { connect } from "react-redux";
@@ -14,8 +14,8 @@ class LoginScreen extends Component {
     password: "",
   };
 
-  onChangeUsername = (text) => this.setState({ username: text });
-  onChangePassword = (text) => this.setState({ password: text });
+  onChangeUsername = text => this.setState({ username: text });
+  onChangePassword = text => this.setState({ password: text });
 
   handleSubmit = () => {
     const { username, password } = this.state;
@@ -38,7 +38,7 @@ class LoginScreen extends Component {
               <TextInput
                 style={styles.formField}
                 value={this.state.username}
-                onChangeText={(text) => this.onChangeUsername(text)}
+                onChangeText={text => this.onChangeUsername(text)}
                 placeholder="Username"
               />
               <TextInput
@@ -46,7 +46,7 @@ class LoginScreen extends Component {
                 value={this.state.password}
                 secureTextEntry={true}
                 password={true}
-                onChangeText={(text) => this.onChangePassword(text)}
+                onChangeText={text => this.onChangePassword(text)}
                 placeholder="Password"
               />
             </>
@@ -70,13 +70,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     isLoading: state.auth.loading,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     onAuth: (username, password) => dispatch(authActions.authLogin(username, password)),
   };

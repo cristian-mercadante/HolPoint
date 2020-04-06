@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import IdeaCard from "./IdeaCard";
-import H1 from "../misc/H1";
 import { connect } from "react-redux";
 import { BLUE } from "../../colors";
 import RoundedButton from "../misc/RoundedButton";
-import { View } from "react-native";
 import H1WithButton from "../misc/H1WithButton";
 
 class IdeaCardManager extends Component {
@@ -18,7 +16,7 @@ class IdeaCardManager extends Component {
     if (prevProps.routeParams?.deletedIdeaId !== this.props.routeParams?.deletedIdeaId) {
       const ideaId = this.props.routeParams.deletedIdeaId;
       const ideas = [...this.state.ideas];
-      const index = ideas.findIndex((i) => i.id === ideaId);
+      const index = ideas.findIndex(i => i.id === ideaId);
       if (index > -1) {
         ideas.splice(index, 1);
       }
@@ -26,7 +24,7 @@ class IdeaCardManager extends Component {
     } else if (prevProps.routeParams?.idea !== this.props.routeParams?.idea) {
       const idea = this.props.routeParams.idea;
       const ideas = [...this.state.ideas];
-      const index = ideas.findIndex((i) => i.id === idea.id);
+      const index = ideas.findIndex(i => i.id === idea.id);
       if (index > -1) {
         // update idea
         ideas[index] = idea;
@@ -42,7 +40,7 @@ class IdeaCardManager extends Component {
     let buffer = [];
     const ideas = this.state.ideas;
     if (ideas) {
-      ideas.forEach((idea) => buffer.push(<IdeaCard key={idea.id} idea={idea} />));
+      ideas.forEach(idea => buffer.push(<IdeaCard key={idea.id} idea={idea} />));
     }
     return buffer;
   };
@@ -72,7 +70,7 @@ class IdeaCardManager extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     currentUserId: state.currentUser.id,
   };

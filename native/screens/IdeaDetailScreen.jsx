@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ScrollView, Text, KeyboardAvoidingView, Alert, StatusBar, View } from "react-native";
+import { ScrollView, Text, KeyboardAvoidingView, Alert, StatusBar, View } from "react-native";
 import { ideaAPI } from "../server";
 import { YELLOW, RED, DARK_BLUE } from "../colors";
 import IdeaForm from "../components/idea/IdeaForm";
@@ -30,8 +30,8 @@ class IdeaDetailScreen extends Component {
     });
   }
 
-  onChangeTitle = (text) => this.setState({ titleField: text });
-  onChangeDescription = (text) => this.setState({ descriptionField: text });
+  onChangeTitle = text => this.setState({ titleField: text });
+  onChangeDescription = text => this.setState({ descriptionField: text });
   editing = () =>
     this.setState({
       isEditing: !this.state.isEditing,
@@ -49,7 +49,7 @@ class IdeaDetailScreen extends Component {
 
     return axios
       .put(`${ideaAPI}${id}/`, { title, description }, headers)
-      .then((res) => {
+      .then(res => {
         this.props.updateIdeaInStore(res.data);
         this.setState({
           isEditing: false,
@@ -62,7 +62,7 @@ class IdeaDetailScreen extends Component {
         });
         this.props.navigation.navigate("Profilo", { idea: res.data });
       })
-      .catch((error) => {
+      .catch(error => {
         this.props.error(error);
       });
   };
@@ -79,14 +79,14 @@ class IdeaDetailScreen extends Component {
 
     return axios
       .delete(`${ideaAPI}${id}/`, headers)
-      .then((res) => {
+      .then(res => {
         this.props.removeIdeaFromStore(id);
         this.setState({
           isEditing: false,
         });
         this.props.navigation.navigate("Profilo", { deletedIdeaId: id });
       })
-      .catch((error) => {
+      .catch(error => {
         this.props.error(error);
       });
   };
@@ -150,18 +150,18 @@ class IdeaDetailScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     token: state.auth.token,
     currentUserId: state.currentUser.id,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    updateIdeaInStore: (idea) => dispatch(currentUserActions.updateIdeaInStore(idea)),
-    removeIdeaFromStore: (ideaId) => dispatch(currentUserActions.removeIdeaFromStore(ideaId)),
-    error: (error) => dispatch(alertActions.error(error)),
+    updateIdeaInStore: idea => dispatch(currentUserActions.updateIdeaInStore(idea)),
+    removeIdeaFromStore: ideaId => dispatch(currentUserActions.removeIdeaFromStore(ideaId)),
+    error: error => dispatch(alertActions.error(error)),
   };
 };
 

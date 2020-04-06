@@ -2,17 +2,14 @@ import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { BLUE } from "../../colors";
 
-const TextInputLabel = (props) => {
+const TextInputLabel = props => {
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 15, color: "#777" }}>{props.placeholder}</Text>
       <TextInput
+        style={{ ...styles.formField, borderColor: props.borderColor }}
         {...props}
-        style={styles.formField}
         placeholder={String(props.placeholder).toLowerCase()}
-        onChangeText={props.onChangeText}
-        value={props.value}
-        placeholderTextColor="#777"
       />
     </View>
   );

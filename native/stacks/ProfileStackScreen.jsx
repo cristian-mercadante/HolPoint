@@ -16,7 +16,7 @@ function ProfileStackScreen(props) {
     <ProfileStack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: YELLOW },
-        headerTintColor: "#000"
+        headerTintColor: "#000",
       }}
     >
       <ProfileStack.Screen name="Profilo" component={ProfileScreen} options={{ headerTitle: props.username }} />
@@ -27,9 +27,9 @@ function ProfileStackScreen(props) {
         component={IdeaDetailScreen}
         options={{
           headerStyle: {
-            backgroundColor: BLUE
+            backgroundColor: BLUE,
           },
-          headerTintColor: "#fff"
+          headerTintColor: "#fff",
         }}
       />
       <ProfileStack.Screen
@@ -37,10 +37,10 @@ function ProfileStackScreen(props) {
         component={IdeaAddScreen}
         options={{
           headerStyle: {
-            backgroundColor: BLUE
+            backgroundColor: BLUE,
           },
           headerTintColor: "#fff",
-          title: "Crea Idea"
+          title: "Crea Idea",
         }}
       />
       <ProfileStack.Screen name="Impostazioni" component={SettingsScreen} />
@@ -50,7 +50,7 @@ function ProfileStackScreen(props) {
 
 const mapStateToProps = state => {
   return {
-    username: state.currentUser.username
+    username: state.currentUser.username,
   };
 };
 

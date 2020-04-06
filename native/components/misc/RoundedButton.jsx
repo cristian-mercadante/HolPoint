@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RoundedButton = (props) => {
+const RoundedButton = props => {
   return (
     <TouchableOpacity
       onPress={props.onPress}

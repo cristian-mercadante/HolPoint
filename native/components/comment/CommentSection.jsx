@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
 import axios from "axios";
@@ -37,10 +37,10 @@ class CommentSection extends Component {
     const url = this.getCommentUrl();
     return axios
       .get(`${url}${this.props.id}`, headers)
-      .then((res) => {
+      .then(res => {
         this.setState({ loading: false, comments: res.data });
       })
-      .catch((error) => {
+      .catch(error => {
         this.props.error(error);
       });
   };
@@ -51,7 +51,7 @@ class CommentSection extends Component {
     }
   }
 
-  addComment = (commentText) => {
+  addComment = commentText => {
     if (commentText === "") return;
     const headers = {
       headers: {
@@ -69,15 +69,15 @@ class CommentSection extends Component {
         },
         headers
       )
-      .then((res) => {
+      .then(res => {
         this.setState({ comments: [...this.state.comments, res.data] });
       })
-      .catch((error) => {
+      .catch(error => {
         this.props.error(error);
       });
   };
 
-  deleteComment = (commentId) => {
+  deleteComment = commentId => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -87,14 +87,14 @@ class CommentSection extends Component {
     const url = this.getCommentUrl();
     return axios
       .delete(`${url}${commentId}/`, headers)
-      .then((res) => {
+      .then(res => {
         this.setState({
-          comments: this.state.comments.filter((comment) => {
+          comments: this.state.comments.filter(comment => {
             return comment.id !== commentId;
           }),
         });
       })
-      .catch((error) => {
+      .catch(error => {
         this.props.error(error);
       });
   };
@@ -102,7 +102,7 @@ class CommentSection extends Component {
   renderComments = () => {
     let buffer = [];
     if (this.state.comments) {
-      this.state.comments.forEach((comment) =>
+      this.state.comments.forEach(comment =>
         buffer.push(<Comment {...comment} key={comment.id} deleteComment={this.deleteComment} kind={this.props.kind} />)
       );
     }
@@ -124,15 +124,15 @@ class CommentSection extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     token: state.auth.token,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    error: (error) => dispatch(alertActions.error(error)),
+    error: error => dispatch(alertActions.error(error)),
   };
 };
 

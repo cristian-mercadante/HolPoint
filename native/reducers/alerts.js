@@ -1,10 +1,10 @@
 import * as actionTypes from "../actions/types";
-//import Toast from "react-native-simple-toast";
+import Toast from "react-native-simple-toast";
 
 const initialState = [];
 
 const addAlert = (state, action) => {
-  //Toast.show(action.text, Toast.SHORT);
+  Toast.show(action.text, Toast.SHORT);
   return initialState;
 };
 

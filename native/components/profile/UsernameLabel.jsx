@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Text } from "react-native";
 
 const UsernameLabel = ({ size, username }) => {
   return (
@@ -8,7 +8,7 @@ const UsernameLabel = ({ size, username }) => {
         flex: 1,
         fontSize: size,
         flexWrap: "wrap",
-        alignSelf: "center"
+        alignSelf: "center",
       }}
     >
       {username}

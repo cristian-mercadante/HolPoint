@@ -115,6 +115,9 @@ class GroupAPITest(APITestCase):
         data = {"name": "group_post", "description": "aaaaaaaaaaa", "profiles": []}
         response = self.client.post(url, data, format="json")
         self.assertTrue(status.is_success(response.status_code))
+        profile_ids = json.loads(response.content)['profiles']
+        profile_ids = [p['id'] for p in profile_ids]
+        self.assertIn(self.user.profile.id, profile_ids)
 
     def test_put_group_by_creator(self):
         group = models.Group.objects.create(creator=self.user.profile, name="group_created_by_self.user", description="aaa")

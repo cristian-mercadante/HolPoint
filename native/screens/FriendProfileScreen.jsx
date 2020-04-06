@@ -26,8 +26,8 @@ class FriendProfileScreen extends Component {
     };
     return axios
       .get(`${profileAPI}${this.props.route.params.friend.username}`, headers)
-      .then((res) => this.setState({ loading: false, profile: res.data }))
-      .catch((error) => this.props.error(error));
+      .then(res => this.setState({ loading: false, profile: res.data }))
+      .catch(error => this.props.error(error));
   };
 
   componentDidMount() {
@@ -37,7 +37,12 @@ class FriendProfileScreen extends Component {
 
   onRefresh = () => {
     this.setState({ refreshing: true });
-    this.getProfile().then(() => this.setState({ refreshing: false }));
+    this.getProfile()
+      .then(() => this.setState({ refreshing: false }))
+      .catch(error => {
+        this.props.error(error);
+        this.setState({ refreshing: false });
+      });
   };
 
   render() {
@@ -57,15 +62,15 @@ class FriendProfileScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     token: state.auth.token,
   };
 };
 
-const mapDispatchToProps = (error) => {
+const mapDispatchToProps = error => {
   return {
-    error: (error) => dispatch(alertActions.error(error)),
+    error: error => dispatch(alertActions.error(error)),
   };
 };
 

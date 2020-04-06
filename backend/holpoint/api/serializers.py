@@ -217,6 +217,8 @@ class GroupSerializer(serializers.ModelSerializer):
         # maybe because i used "to_internal_value" function in ProfileRelatedField
         # profiles = [Profile.objects.filter(user=p.id).first() for p in validated_data.get("profiles")]
         profiles = validated_data.pop("profiles")
+        if current_user not in profiles:
+            profiles.append(current_user)
         group = Group.objects.create(**validated_data, creator=creator)
         group.profiles.set(profiles)
         return group

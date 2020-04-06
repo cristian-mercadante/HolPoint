@@ -1,61 +1,31 @@
 import React, { Component } from "react";
-import { Button } from "react-native";
-import * as colors from "../colors";
+
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
 import GroupCardManager from "../components/group/GroupCardManager";
-import axios from "axios";
-import { groupAPI } from "../server";
-import { RED } from "../colors";
+import { RED, DARK_YELLOW } from "../colors";
 import Spinner from "../components/misc/Spinner";
+import { StatusBar } from "react-native";
 
 class GroupsScreen extends Component {
-  state = {
-    loading: true,
-    groups: [],
-  };
-
-  addGroup = (group) => {
-    this.setState({ groups: [...this.state.groups, group] });
-  };
-
-  getGroups = () => {
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`,
-      },
-    };
-    return axios
-      .get(`${groupAPI}`, headers)
-      .then((res) => {
-        this.setState({ loading: false, groups: res.data });
-      })
-      .catch((error) => {
-        this.props.error(error);
-      });
-  };
-
-  componentDidMount() {
-    this.getGroups();
-  }
-
   render() {
-    return <>{this.state.loading ? <Spinner color={RED} /> : <GroupCardManager groups={this.state.groups} />}</>;
+    return (
+      <>
+        <StatusBar barStyle="dark-content" backgroundColor={DARK_YELLOW} />
+        {this.props.currentUser.loading ? (
+          <Spinner color={RED} />
+        ) : (
+          <GroupCardManager navigation={this.props.navigation} routeParams={this.props.route.params} />
+        )}
+      </>
+    );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    token: state.auth.token,
     currentUser: state.currentUser,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    error: (error) => dispatch(alertActions.error(error)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(GroupsScreen);
+export default connect(mapStateToProps)(GroupsScreen);
