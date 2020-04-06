@@ -76,7 +76,7 @@ class SearchScreen extends Component {
                 <FlatList
                   data={this.state.results}
                   renderItem={({ item }) => <FriendProfileListItem friend={item} />}
-                  keyExtractor={(item) => item.id}
+                  keyExtractor={(item) => String(item.id)}
                 />
               </View>
             )}

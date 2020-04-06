@@ -69,7 +69,7 @@ class AppNavigationContainer extends Component {
           screenOptions={({ route }) => ({
             tabBarIcon: ({ color, size }) => {
               let iconName;
-              if (route.name === "Gruppi") {
+              if (route.name === "Home") {
                 iconName = "home";
               } else if (route.name === "Cerca") {
                 iconName = "search";
@@ -98,7 +98,7 @@ class AppNavigationContainer extends Component {
         >
           {this.props.isAuthenticated ? (
             <>
-              <Tab.Screen name="Gruppi" component={GroupsStackScreen} />
+              <Tab.Screen name="Home" component={GroupsStackScreen} />
               <Tab.Screen name="Cerca" component={SearchStackScreen} />
               <Tab.Screen name="Richieste" component={RequestsStackScreen} />
               <Tab.Screen name="Profilo" component={ProfileStackScreen} />

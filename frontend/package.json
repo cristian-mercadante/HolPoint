@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp build/favicon.ico build/static/favicon.ico && cp build/manifest.json build/static/manifest.json && cp build/logo192.png build/static/logo192.png",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

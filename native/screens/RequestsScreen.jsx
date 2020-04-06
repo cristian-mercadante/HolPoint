@@ -46,7 +46,7 @@ class RequestsScreen extends Component {
           <FlatList
             data={this.state.receivedRequests}
             renderItem={({ item }) => <RequestListItem friend={item.sender} request={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => String(item.id)}
             refreshControl={<RefreshControl refreshing={this.state.loading} onRefresh={this.updateList} />}
           />
         )}

@@ -3,6 +3,7 @@ import ProfileView from "../components/profile/ProfileView";
 import axios from "axios";
 import { profileAPI } from "../server";
 import { connect } from "react-redux";
+import * as alertActions from "../actions/alerts";
 import Spinner from "../components/misc/Spinner";
 import * as colors from "../colors";
 import { View, ScrollView, RefreshControl } from "react-native";
@@ -11,7 +12,7 @@ class FriendProfileScreen extends Component {
   state = {
     loading: true,
     profile: {},
-    refreshing: false
+    refreshing: false,
   };
 
   getProfile = () => {
@@ -20,15 +21,13 @@ class FriendProfileScreen extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     };
     return axios
       .get(`${profileAPI}${this.props.route.params.friend.username}`, headers)
-      .then(res => {
-        this.setState({ loading: false, profile: res.data });
-      })
-      .catch(error => error && alert(error));
+      .then((res) => this.setState({ loading: false, profile: res.data }))
+      .catch((error) => this.props.error(error));
   };
 
   componentDidMount() {
@@ -58,9 +57,15 @@ class FriendProfileScreen extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    token: state.auth.token
+    token: state.auth.token,
+  };
+};
+
+const mapDispatchToProps = (error) => {
+  return {
+    error: (error) => dispatch(alertActions.error(error)),
   };
 };
 

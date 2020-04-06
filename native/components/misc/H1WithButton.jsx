@@ -10,14 +10,13 @@ const H1WithButton = (props) => {
         flexDirection: "row",
       }}
     >
-      <View style={{ flex: 2 }}>
+      <View style={{ flex: 2, justifyContent: "center" }}>
         <H1 text={props.text} />
       </View>
       <View
         style={{
           flex: 1,
           justifyContent: "center",
-          marginTop: 15,
         }}
       >
         {props.button}

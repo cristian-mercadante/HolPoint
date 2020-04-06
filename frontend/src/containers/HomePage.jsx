@@ -12,10 +12,10 @@ class HomePage extends Component {
 
   state = {
     loading: true,
-    groups: []
+    groups: [],
   };
 
-  addGroup = group => {
+  addGroup = (group) => {
     this.setState({ groups: [...this.state.groups, group] });
   };
 
@@ -24,15 +24,15 @@ class HomePage extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     };
     return axios
       .get(`${groupAPI}`, headers)
-      .then(res => {
+      .then((res) => {
         if (this._isMounted) this.setState({ loading: false, groups: res.data });
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.error(error);
       });
   };
@@ -53,7 +53,7 @@ class HomePage extends Component {
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
           <Panel
-            title="Gruppi"
+            title="Home"
             component={<GroupCardsManager {...this.state} />}
             badge={<GroupCreateButton addGroup={this.addGroup} />}
           />
@@ -63,15 +63,15 @@ class HomePage extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    error: error => dispatch(alertActions.error(error))
+    error: (error) => dispatch(alertActions.error(error)),
   };
 };
 
