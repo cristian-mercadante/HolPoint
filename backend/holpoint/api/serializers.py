@@ -210,6 +210,14 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = ('id', 'name', 'description', 'date_creation', 'date_start', 'date_finish', 'prefered_idea', 'is_active', 'creator', 'profiles', 'ideas', 'group_to_idea', 'attachments')
 
+    def validate_dates(self, validated_data):
+        date_start = validated_data.get("date_start")
+        date_finish = validated_data.get("date_finish")
+        if date_start and date_finish:
+            return date_start <= date_finish
+        else:
+            return True
+
     def create(self, validated_data):
         current_user = self.context['request'].user.id
         creator = Profile.objects.filter(user=current_user).first()
@@ -219,6 +227,8 @@ class GroupSerializer(serializers.ModelSerializer):
         profiles = validated_data.pop("profiles")
         if current_user not in profiles:
             profiles.append(current_user)
+        if not self.validate_dates(validated_data):
+            raise serializers.ValidationError('date_start should be before date_finish')
         group = Group.objects.create(**validated_data, creator=creator)
         group.profiles.set(profiles)
         return group
@@ -229,6 +239,8 @@ class GroupSerializer(serializers.ModelSerializer):
         profiles = validated_data.pop("profiles")
         if creator not in profiles:
             profiles.append(creator)
+        if not self.validate_dates(validated_data):
+            raise serializers.ValidationError('date_start should be before date_finish')
         instance.profiles.set(profiles)
         ideas = validated_data.pop("ideas")
         instance.ideas.set(ideas)

@@ -101,6 +101,8 @@ class GroupAPITest(APITestCase):
     # - creator cannot be deleted/exit from group
     # - add idea to group
     # - remove idea from group
+    # - check date_start < date_finish in post
+    # - check date_start < date_finish in put
     def setUp(self):
         self.user = User.objects.create(username="username_group")
         self.random_user = User.objects.create(username="group_random_user")
@@ -234,6 +236,53 @@ class GroupAPITest(APITestCase):
         idea_ids = json.loads(response.content)['ideas']
         idea_ids = [i['id'] for i in idea_ids]
         self.assertNotIn(idea.id, idea_ids)
+
+    def text_post_datestart_less_than_datefinish(self):
+        url = reverse("group-list")
+        data = {"name": "group_post", "description": "aaaaaaaaaaa", "profiles": [], "date_start": "06/04/2020", "date_finish": "07/04/2020"}
+        response = self.client.post(url, data, format="json")
+        self.assertTrue(status.is_success(response.status_code))
+        data = {"name": "group_post", "description": "aaaaaaaaaaa", "profiles": [], "date_start": "06/04/2020", "date_finish": "06/04/2020"}
+        response = self.client.post(url, data, format="json")
+        self.assertTrue(status.is_success(response.status_code))
+        data = {"name": "group_post", "description": "aaaaaaaaaaa", "profiles": [], "date_start": "06/04/2020", "date_finish": "05/04/2020"}
+        response = self.client.post(url, data, format="json")
+        self.assertFalse(status.is_success(response.status_code))
+
+    def test_put_datestart_less_than_datefinish(self):
+        group = models.Group.objects.create(creator=self.user.profile, name="group_created_by_self.user", description="aaa")
+        group.profiles.set([self.user.profile])
+        url = reverse("group-detail", kwargs={"pk": group.id})
+        data = {
+            "name": "EDITED GROUP",
+            "description": "asdasd",
+            "profiles": [self.user.id, self.random_user.id],
+            "ideas": [],
+            "date_start": "06/04/2020",
+            "date_finish": "07/04/2020"
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertTrue(status.is_success(response.status_code))
+        data = {
+            "name": "EDITED GROUP",
+            "description": "asdasd",
+            "profiles": [self.user.id, self.random_user.id],
+            "ideas": [],
+            "date_start": "06/04/2020",
+            "date_finish": "06/04/2020"
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertTrue(status.is_success(response.status_code))
+        data = {
+            "name": "EDITED GROUP",
+            "description": "asdasd",
+            "profiles": [self.user.id, self.random_user.id],
+            "ideas": [],
+            "date_start": "06/04/2020",
+            "date_finish": "05/04/2020"
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertFalse(status.is_success(response.status_code))
 
 
 class VoteIdeaAPITest(APITestCase):
