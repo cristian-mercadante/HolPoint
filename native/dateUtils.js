@@ -1,14 +1,15 @@
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import { it } from "date-fns/locale";
 
-export const dateToString_or_Null = (date) => {
-  if (date === null) return null;
+export const dateToString_or_Null = date => {
+  if (date === null || date === undefined) return null;
   return format(date, "dd/MM/yyyy", { locale: it });
 };
 
-export const stringToDate_or_Null = (string) => {
-  if (string === null) return null;
-  return parse(string, "dd/MM/yyyy", { locale: it });
+export const stringToDate_or_Null = string => {
+  if (string === null || string === undefined) return null;
+  const parts = string.split("/");
+  return new Date(parts[2], parts[1] - 1, parts[0]);
 };
 
 export const validateDates = (first, second, addAlert) => {
@@ -36,12 +37,14 @@ export const incrementDate = (dateInput, increment) => {
   return increasedDate;
 };
 
-export const timeToString_or_Null = (time) => {
-  if (time === null) return null;
+export const timeToString_or_Null = time => {
+  if (time === null || time === undefined) return null;
   return format(time, "HH:mm", { locale: it });
 };
 
-export const stringToTime_or_Null = (string) => {
-  if (string === null) return null;
-  return parse(time, "HH:mm", { locale: it });
+export const stringToTime_or_Null = string => {
+  if (string === null || string === undefined) return null;
+  const parts = string.split(":");
+  const currentDate = new Date();
+  return new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), parts[0], parts[1]);
 };

@@ -27,7 +27,7 @@ const FriendProfileListItem = ({ friend, buttons, selected: selected_, selectabl
         selectable
           ? () => {
               setSelected(!selected);
-              selectFriend(friend.id);
+              selectFriend(friend);
             }
           : () => navigation.navigate("FriendProfile", { friend })
       }

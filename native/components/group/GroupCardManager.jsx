@@ -18,10 +18,6 @@ class GroupCardManager extends Component {
     refreshing: false,
   };
 
-  addGroup = group => {
-    this.setState({ groups: [...this.state.groups, group] });
-  };
-
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.routeParams?.deletedGroupId !== this.props.routeParams?.deletedGroupId) {
       const groupId = this.props.routeParams.deletedGroupId;
@@ -45,6 +41,20 @@ class GroupCardManager extends Component {
       this.setState({ groups });
     }
   }
+
+  updateGroupInState = group => {
+    const groups = this.state.groups;
+    const index = groups.findIndex(g => g.id === group.id);
+    if (index > -1) {
+      groups[index] = group;
+      this.setState(groups);
+    }
+  };
+
+  deleteGroupFromState = groupId => {
+    const groups = this.state.groups.filter(g => g.id !== groupId);
+    this.setState({ groups });
+  };
 
   getGroups = () => {
     const headers = {
@@ -99,7 +109,13 @@ class GroupCardManager extends Component {
               />
             }
             data={this.state.groups}
-            renderItem={({ item }) => <GroupCard group={item} />}
+            renderItem={({ item }) => (
+              <GroupCard
+                group={item}
+                updateGroupInState={this.updateGroupInState}
+                deleteGroupFromState={this.deleteGroupFromState}
+              />
+            )}
             keyExtractor={item => String(item.id)}
           />
         )}

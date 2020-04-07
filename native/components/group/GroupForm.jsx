@@ -4,29 +4,47 @@ import { GREEN, RED, YELLOW, DARK_RED } from "../../colors";
 import TextInputLabel from "../misc/TextInputLabel";
 import RoundedButton from "../misc/RoundedButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { dateToString_or_Null } from "../../dateUtils";
+import { dateToString_or_Null, stringToDate_or_Null } from "../../dateUtils";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 import { FlatList } from "react-native-gesture-handler";
 import FriendTag from "../profile/FriendTag";
 
+const getProfileList = (profiles, friends, creatorId = null) => {
+  let list = [];
+  if (friends) {
+    let friendIds = friends.map(f => f.id);
+    let notFriends = profiles.filter(p => !friendIds.includes(p.id));
+    list = friends.concat(notFriends);
+  } else {
+    list = friends;
+  }
+  list = list.filter(profile => profile.id !== creatorId);
+  return list;
+};
+
 const GroupForm = props => {
   const navigation = useNavigation();
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [profiles, setProfiles] = useState([]);
-  const [date_start, setDateStart] = useState(new Date());
+  const [name, setName] = useState(props.group?.name || "");
+  const [description, setDescription] = useState(props.group?.description || "");
+  const [profiles, setProfiles] = useState(props.group?.profiles || []);
+  const [date_start, setDateStart] = useState(stringToDate_or_Null(props.group?.date_start) || new Date());
   const [show_start, setShowStart] = useState(false);
-  const [date_finish, setDateFinish] = useState(new Date(date_start));
+  const [date_finish, setDateFinish] = useState(stringToDate_or_Null(props.group?.date_finish) || new Date(date_start));
   const [show_finish, setShowFinish] = useState(false);
 
   useEffect(() => {
     if (props.routeParams?.selectedFriends) {
       setProfiles(props.routeParams.selectedFriends);
     }
-  }, [props.routeParams?.selectedFriends]);
+  });
+
+  let list = [];
+  if (props.friends) {
+    list = getProfileList(profiles, props.friends, props.group?.creator.id);
+  }
 
   return (
     <>
@@ -61,12 +79,19 @@ const GroupForm = props => {
       />
       <RoundedButton
         title="Aggiungi amici"
-        onPress={() => navigation.navigate("GroupAddFriend", { friends: props.friends, selectedFriends: profiles })}
+        onPress={() =>
+          navigation.navigate("GroupAddFriend", {
+            //friends: props.friends,
+            friends: list,
+            selectedFriends: profiles,
+            fromScreen: props.fromScreen,
+          })
+        }
         backgroundColor={YELLOW}
         color="#000"
       />
       <FlatList
-        data={props.friends.filter(f => profiles.includes(f.id))}
+        data={profiles}
         renderItem={({ item }) => <FriendTag username={item.username} />}
         keyExtractor={item => String(item.id)}
       />
@@ -77,7 +102,7 @@ const GroupForm = props => {
             .handleSubmit(
               name,
               description,
-              profiles,
+              profiles.map(p => p.id),
               dateToString_or_Null(date_start),
               dateToString_or_Null(date_finish)
             )

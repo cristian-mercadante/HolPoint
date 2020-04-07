@@ -4,7 +4,6 @@ import FriendProfileListItem from "../components/profile/FriendProfileListItem";
 import SearchBox from "../components/misc/SearchBox";
 import RoundedButton from "../components/misc/RoundedButton";
 import { GREEN } from "../colors";
-import { Text } from "react-native";
 
 class GroupAddFriendScreen extends Component {
   state = {
@@ -25,21 +24,23 @@ class GroupAddFriendScreen extends Component {
     }
   }
 
-  deselectFriend = id => {
+  deselectFriend = friend => {
+    console.log("deselect");
     let selectedFriends = this.state.selectedFriends;
-    const index = selectedFriends.indexOf(id);
+    const index = selectedFriends.indexOf(friend);
     if (index !== -1) {
       selectedFriends.splice(index, 1);
       this.setState({ selectedFriends });
     }
   };
 
-  selectFriend = id => {
+  selectFriend = friend => {
+    console.log("select");
     let selectedFriends = this.state.selectedFriends;
-    if (selectedFriends.includes(id)) {
-      this.deselectFriend(id);
+    if (selectedFriends.includes(friend)) {
+      this.deselectFriend(friend);
     } else {
-      selectedFriends.push(id);
+      selectedFriends.push(friend);
       this.setState({ selectedFriends });
     }
   };
@@ -65,7 +66,9 @@ class GroupAddFriendScreen extends Component {
               color="#fff"
               backgroundColor={GREEN}
               onPress={() =>
-                this.props.navigation.navigate("GroupAdd", { selectedFriends: this.state.selectedFriends })
+                this.props.navigation.navigate(this.props.route.params.fromScreen, {
+                  selectedFriends: this.state.selectedFriends,
+                })
               }
             />
           }
@@ -74,7 +77,7 @@ class GroupAddFriendScreen extends Component {
             <FriendProfileListItem
               friend={item}
               selectable={true}
-              selected={this.state.selectedFriends.includes(item.id)}
+              selected={this.state.selectedFriends.includes(item)}
               selectFriend={this.selectFriend}
             />
           )}

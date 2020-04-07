@@ -31,7 +31,7 @@ class GroupAddScreen extends Component {
         <StatusBar barStyle="light-content" backgroundColor={DARK_RED} />
         <ScrollView>
           <KeyboardAvoidingView behavior="padding">
-            <GroupForm handleSubmit={this.postGroup} routeParams={this.props.route.params} />
+            <GroupForm handleSubmit={this.postGroup} routeParams={this.props.route.params} fromScreen="GroupAdd" />
           </KeyboardAvoidingView>
         </ScrollView>
       </>

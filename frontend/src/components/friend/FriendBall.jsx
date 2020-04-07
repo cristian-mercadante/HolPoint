@@ -7,18 +7,19 @@ import "./style.css";
 
 class FriendBall extends Component {
   state = {
-    selected: false
+    selected: false,
   };
 
   divStyle = {
     margin: "10px",
     width: `${this.imgSize}px`,
-    wordWrap: "break-word"
+    wordWrap: "break-word",
+    textAlign: "center",
   };
 
   legendStyle = {
     textAlign: "center",
-    fontSize: "15px"
+    fontSize: "15px",
   };
 
   componentDidMount() {

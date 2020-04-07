@@ -4,6 +4,7 @@ import { YELLOW, RED } from "../colors";
 import GroupsScreen from "../screens/GroupsScreen";
 import GroupAddScreen from "../screens/GroupAddScreen";
 import GroupAddFriendScreen from "../screens/GroupAddFriendScreen";
+import GroupDetailScreen from "../screens/GroupDetailScreen";
 
 const HomeStack = createStackNavigator();
 
@@ -36,6 +37,17 @@ function GroupsStackScreen() {
           },
           headerTintColor: "#fff",
           title: "Aggiungi amici",
+        }}
+      />
+      {/**GroupDetail */}
+      <HomeStack.Screen
+        name="GroupDetail"
+        component={GroupDetailScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: RED,
+          },
+          headerTintColor: "#fff",
         }}
       />
     </HomeStack.Navigator>

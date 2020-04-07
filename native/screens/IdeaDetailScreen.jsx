@@ -32,10 +32,7 @@ class IdeaDetailScreen extends Component {
 
   onChangeTitle = text => this.setState({ titleField: text });
   onChangeDescription = text => this.setState({ descriptionField: text });
-  editing = () =>
-    this.setState({
-      isEditing: !this.state.isEditing,
-    });
+  editing = () => this.setState({ isEditing: !this.state.isEditing });
 
   putIdea = () => {
     const { id } = this.state.idea;
