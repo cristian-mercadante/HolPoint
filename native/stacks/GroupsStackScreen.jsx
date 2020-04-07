@@ -36,7 +36,7 @@ function GroupsStackScreen() {
             backgroundColor: RED,
           },
           headerTintColor: "#fff",
-          title: "Aggiungi amici",
+          title: "Partecipanti",
         }}
       />
       {/**GroupDetail */}

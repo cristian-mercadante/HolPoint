@@ -25,9 +25,8 @@ class GroupAddFriendScreen extends Component {
   }
 
   deselectFriend = friend => {
-    console.log("deselect");
     let selectedFriends = this.state.selectedFriends;
-    const index = selectedFriends.indexOf(friend);
+    const index = selectedFriends.map(sf => sf.id).indexOf(friend.id);
     if (index !== -1) {
       selectedFriends.splice(index, 1);
       this.setState({ selectedFriends });
@@ -35,9 +34,8 @@ class GroupAddFriendScreen extends Component {
   };
 
   selectFriend = friend => {
-    console.log("select");
     let selectedFriends = this.state.selectedFriends;
-    if (selectedFriends.includes(friend)) {
+    if (selectedFriends.map(sf => sf.id).includes(friend.id)) {
       this.deselectFriend(friend);
     } else {
       selectedFriends.push(friend);
@@ -77,7 +75,7 @@ class GroupAddFriendScreen extends Component {
             <FriendProfileListItem
               friend={item}
               selectable={true}
-              selected={this.state.selectedFriends.includes(item)}
+              selected={this.state.selectedFriends.map(sf => sf.id).includes(item.id)}
               selectFriend={this.selectFriend}
             />
           )}

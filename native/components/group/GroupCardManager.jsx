@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RefreshControl } from "react-native";
+import { RefreshControl, View } from "react-native";
 import GroupCard from "./GroupCard";
 import H1WithButton from "../misc/H1WithButton";
 import RoundedButton from "../misc/RoundedButton";
@@ -10,6 +10,9 @@ import { groupAPI } from "../../server";
 import { connect } from "react-redux";
 import Spinner from "../misc/Spinner";
 import * as alertActions from "../../actions/alerts";
+import { YellowBox } from "react-native";
+
+YellowBox.ignoreWarnings(["Non-serializable values were found in the navigation state"]);
 
 class GroupCardManager extends Component {
   state = {
@@ -91,7 +94,9 @@ class GroupCardManager extends Component {
     return (
       <>
         {this.state.loading ? (
-          <Spinner color={RED} />
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <Spinner color={RED} />
+          </View>
         ) : (
           <FlatList
             refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}

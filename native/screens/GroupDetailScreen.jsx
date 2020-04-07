@@ -55,6 +55,7 @@ class GroupDetailScreen extends Component {
         // checking if a user deleted himself from the group
         if (!this.isCurrentUserAPartecipant(res.data)) {
           this.props.addAlert(`Non fai più parte del gruppo ${this.props.name}`);
+          this.props.route.params.deleteGroupFromState(this.state.group.id);
           this.props.navigation.navigate("Home");
         }
       })

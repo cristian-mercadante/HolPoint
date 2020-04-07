@@ -25,7 +25,7 @@ const GroupInfo = ({ group }) => {
           </Text>
           <Text style={styles.textBold}>Partecipanti:</Text>
           {group.profiles.map(p => (
-            <FriendTag username={p.username} />
+            <FriendTag username={p.username} key={p.id} />
           ))}
         </>
       )}

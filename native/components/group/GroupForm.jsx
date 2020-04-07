@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text } from "react-native";
-import { GREEN, RED, YELLOW, DARK_RED } from "../../colors";
+import { GREEN, RED, YELLOW } from "../../colors";
 import TextInputLabel from "../misc/TextInputLabel";
 import RoundedButton from "../misc/RoundedButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -8,7 +7,6 @@ import { dateToString_or_Null, stringToDate_or_Null } from "../../dateUtils";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
-import { FlatList } from "react-native-gesture-handler";
 import FriendTag from "../profile/FriendTag";
 
 const getProfileList = (profiles, friends, creatorId = null) => {
@@ -20,7 +18,7 @@ const getProfileList = (profiles, friends, creatorId = null) => {
   } else {
     list = friends;
   }
-  list = list.filter(profile => profile.id !== creatorId);
+  list = list.filter(p => p.id !== creatorId);
   return list;
 };
 
@@ -78,10 +76,9 @@ const GroupForm = props => {
         placeholderTextColor="#777"
       />
       <RoundedButton
-        title="Aggiungi amici"
+        title="Partecipanti"
         onPress={() =>
           navigation.navigate("GroupAddFriend", {
-            //friends: props.friends,
             friends: list,
             selectedFriends: profiles,
             fromScreen: props.fromScreen,
@@ -90,11 +87,11 @@ const GroupForm = props => {
         backgroundColor={YELLOW}
         color="#000"
       />
-      <FlatList
-        data={profiles}
-        renderItem={({ item }) => <FriendTag username={item.username} />}
-        keyExtractor={item => String(item.id)}
-      />
+      {profiles
+        .filter(p => p.id !== props.group?.creator.id)
+        .map(p => (
+          <FriendTag username={p.username} key={p.id} />
+        ))}
       <RoundedButton
         title="Invia"
         onPress={() =>

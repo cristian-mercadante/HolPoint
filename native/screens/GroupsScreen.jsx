@@ -5,7 +5,7 @@ import * as alertActions from "../actions/alerts";
 import GroupCardManager from "../components/group/GroupCardManager";
 import { RED, DARK_YELLOW } from "../colors";
 import Spinner from "../components/misc/Spinner";
-import { StatusBar } from "react-native";
+import { StatusBar, View } from "react-native";
 
 class GroupsScreen extends Component {
   render() {
@@ -13,7 +13,9 @@ class GroupsScreen extends Component {
       <>
         <StatusBar barStyle="dark-content" backgroundColor={DARK_YELLOW} />
         {this.props.currentUser.loading ? (
-          <Spinner color={RED} />
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <Spinner color={RED} />
+          </View>
         ) : (
           <GroupCardManager navigation={this.props.navigation} routeParams={this.props.route.params} />
         )}
