@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { BLUE } from "../../colors";
 import RoundedButton from "../misc/RoundedButton";
 import H1WithButton from "../misc/H1WithButton";
+import { FlatList } from "react-native-gesture-handler";
 
 class IdeaCardManager extends Component {
   state = { ideas: [] };
@@ -36,36 +37,41 @@ class IdeaCardManager extends Component {
     }
   }
 
-  renderIdeas = () => {
-    let buffer = [];
-    const ideas = this.state.ideas;
-    if (ideas) {
-      ideas.forEach(idea => buffer.push(<IdeaCard key={idea.id} idea={idea} />));
-    }
-    return buffer;
-  };
-
   render() {
     const currentUserId = this.props.currentUserId;
     const ideas = this.state.ideas;
 
     return (
-      <>
-        <H1WithButton
-          text="Idee"
-          button={
-            currentUserId === this.props.userId && (
-              <RoundedButton
-                title="Crea"
-                onPress={() => this.props.navigation.navigate("IdeaAdd")}
-                backgroundColor={BLUE}
-                color="#fff"
-              />
-            )
-          }
-        />
-        {this.renderIdeas()}
-      </>
+      <FlatList
+        ListHeaderComponent={
+          <H1WithButton
+            text="Idee"
+            button={
+              currentUserId === this.props.userId && (
+                <>
+                  <RoundedButton
+                    title="Crea"
+                    onPress={() => this.props.navigation.navigate("IdeaAdd", { fromScreen: this.props.fromScreen })}
+                    backgroundColor={BLUE}
+                    color="#fff"
+                  />
+                  {this.props.fromScreen === "GroupIdeaList" && (
+                    <RoundedButton
+                      title="Seleziona"
+                      onPress={() => this.props.navigation.navigate("GroupIdeaSelect", { ideasInGroup: ideas })}
+                      backgroundColor={BLUE}
+                      color="#fff"
+                    />
+                  )}
+                </>
+              )
+            }
+          />
+        }
+        data={ideas}
+        renderItem={({ item }) => <IdeaCard idea={item} fromScreen={this.props.fromScreen} />}
+        keyExtractor={item => String(item.id)}
+      />
     );
   }
 }

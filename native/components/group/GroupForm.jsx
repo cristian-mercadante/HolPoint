@@ -101,7 +101,8 @@ const GroupForm = props => {
               description,
               profiles.map(p => p.id),
               dateToString_or_Null(date_start),
-              dateToString_or_Null(date_finish)
+              dateToString_or_Null(date_finish),
+              props.group.ideas.map(i => i.id)
             )
             .then(ok => {
               if (ok === "ok") {

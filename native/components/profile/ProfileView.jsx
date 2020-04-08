@@ -38,6 +38,7 @@ export default class ProfileView extends Component {
           ideas={this.props.profile.profile.ideas}
           navigation={this.props.navigation}
           routeParams={this.props.routeParams}
+          fromScreen="Profilo"
         />
       </>
     );

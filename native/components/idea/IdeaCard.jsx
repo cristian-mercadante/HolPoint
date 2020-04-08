@@ -4,12 +4,19 @@ import { BLUE, DARK_BLUE } from "../../colors";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-export default function IdeaCard({ idea }) {
+export default function IdeaCard({ idea, fromScreen }) {
   const navigation = useNavigation();
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={() => navigation.navigate("IdeaDetail", { idea })}>
+      <TouchableWithoutFeedback
+        onPress={() =>
+          navigation.navigate("IdeaDetail", {
+            idea,
+            fromScreen: fromScreen,
+          })
+        }
+      >
         <Card
           color={BLUE}
           darkColor={DARK_BLUE}

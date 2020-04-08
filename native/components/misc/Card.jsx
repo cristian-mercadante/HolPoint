@@ -1,31 +1,34 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
+import { RED } from "../../colors";
 
 export default class Card extends Component {
   styles = StyleSheet.create({
     card: {
-      margin: 10
+      margin: 10,
+      borderColor: RED,
+      borderRadius: 13,
     },
     header: {
       padding: 5,
       backgroundColor: this.props.darkColor,
       borderTopStartRadius: 10,
-      borderTopEndRadius: 10
+      borderTopEndRadius: 10,
     },
     headerText: {
       color: this.props.textColor,
       fontSize: 20,
-      textAlign: "center"
+      textAlign: "center",
     },
     body: {
       backgroundColor: this.props.color,
       padding: 10,
       maxHeight: 150,
-      overflow: "hidden"
+      overflow: "hidden",
     },
     bodyText: {
       color: this.props.textColor,
-      fontSize: 15
+      fontSize: 15,
     },
     footer: {
       height: 30,
@@ -33,14 +36,20 @@ export default class Card extends Component {
       borderBottomStartRadius: 10,
       borderBottomEndRadius: 10,
       justifyContent: "center",
-      paddingHorizontal: 10
+      paddingHorizontal: 10,
     },
-    footerText: { color: this.props.textColor, textAlign: "right" }
+    footerText: { color: this.props.textColor, textAlign: "right" },
   });
 
   render() {
     return (
-      <View style={this.styles.card}>
+      <View
+        style={{
+          ...this.styles.card,
+          borderWidth: this.props.selected ? 3 : 0,
+          margin: this.props.selected ? 7 : 10,
+        }}
+      >
         <View style={this.styles.header}>
           <Text style={this.styles.headerText}>{this.props.header}</Text>
         </View>

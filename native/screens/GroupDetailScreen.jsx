@@ -5,7 +5,7 @@ import GroupInfo from "../components/group/GroupInfo";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
 import RoundedButton from "../components/misc/RoundedButton";
-import { RED, YELLOW, DARK_RED } from "../colors";
+import { RED, YELLOW, DARK_RED, BLUE } from "../colors";
 import GroupForm from "../components/group/GroupForm";
 import axios from "axios";
 import { groupAPI, groupCreatorAPI } from "../server";
@@ -60,6 +60,7 @@ class GroupDetailScreen extends Component {
         }
       })
       .catch(error => {
+        console.log(error);
         this.props.error(error);
         return error;
       });
@@ -83,8 +84,58 @@ class GroupDetailScreen extends Component {
       });
   };
 
+  addIdeaToGroupInState = idea => {
+    let group = this.state.group;
+    group.ideas = [...this.state.group.ideas, idea];
+    console.log(group.ideas);
+    this.props.route.params.updateGroupInState(group);
+    // put
+    const { name, description, profiles, date_start, date_finish, ideas } = group;
+    this.putGroup(
+      name,
+      description,
+      profiles.map(p => p.id),
+      date_start,
+      date_finish,
+      ideas.map(i => i.id)
+    ).then(() => this.editing());
+  };
+
+  addSelectedIdeasToGroupInState = selectedIdeas => {
+    let group = this.state.group;
+    group.ideas = [...group.ideas, ...selectedIdeas];
+    console.log(group.ideas);
+    this.props.route.params.updateGroupInState(group);
+    const { name, description, profiles, date_start, date_finish, ideas } = group;
+    this.putGroup(
+      name,
+      description,
+      profiles.map(p => p.id),
+      date_start,
+      date_finish,
+      ideas.map(i => i.id)
+    ).then(() => this.editing());
+  };
+
+  updateIdeaInGroupInState = idea => {
+    let group = this.state.group;
+    const index = group.ideas.findIndex(i => i.id == idea.id);
+    if (index > -1) {
+      group.ideas[index] = idea;
+      // put
+      const { name, description, profiles, date_start, date_finish, ideas } = group;
+      this.putGroup(
+        name,
+        description,
+        profiles.map(p => p.id),
+        date_start,
+        date_finish,
+        ideas.map(i => i.id)
+      ).then(() => this.editing());
+    }
+  };
+
   render() {
-    const group = this.state.group;
     return (
       <>
         <StatusBar backgroundColor={DARK_RED} barStyle="light-content" />
@@ -96,14 +147,14 @@ class GroupDetailScreen extends Component {
               color="#000"
               onPress={this.editing}
             />
-            {group.creator && this.props.currentUserId === group.creator.id && (
+            {this.state.group.creator && this.props.currentUserId === this.state.group.creator.id && (
               <RoundedButton
                 title="Elimina"
                 backgroundColor={RED}
                 color="#fff"
                 onPress={() =>
                   Alert.alert(
-                    `Sicuro di voler eliminare ${group.name}?`,
+                    `Sicuro di voler eliminare ${this.state.group.name}?`,
                     "Non potrai più ripristinarlo",
                     [{ text: "No" }, { text: "Sì", onPress: () => this.deleteGroup() }],
                     { cancelable: true }
@@ -112,15 +163,30 @@ class GroupDetailScreen extends Component {
               />
             )}
           </View>
-          {!this.state.isEditing ? (
-            <GroupInfo group={this.state.group} />
-          ) : (
+          {this.state.isEditing ? (
             <GroupForm
               handleSubmit={this.putGroup}
               routeParams={this.props.route.params}
-              group={group}
+              group={this.state.group}
               fromScreen="GroupDetail"
             />
+          ) : (
+            <>
+              <GroupInfo group={this.state.group} />
+              <RoundedButton
+                title="Idee"
+                onPress={() =>
+                  this.props.navigation.navigate("GroupIdeaList", {
+                    ideas: this.state.group.ideas,
+                    addIdeaToGroupInState: this.addIdeaToGroupInState,
+                    updateIdeaInGroupInState: this.updateIdeaInGroupInState,
+                    addSelectedIdeasToGroupInState: this.addSelectedIdeasToGroupInState,
+                  })
+                }
+                backgroundColor={BLUE}
+                color="#fff"
+              />
+            </>
           )}
         </ScrollView>
       </>

@@ -57,7 +57,7 @@ class IdeaDetailScreen extends Component {
         this.props.navigation.setOptions({
           title: res.data.title,
         });
-        this.props.navigation.navigate("Profilo", { idea: res.data });
+        this.props.navigation.navigate(this.props.route.params.fromScreen, { idea: res.data });
       })
       .catch(error => {
         this.props.error(error);
