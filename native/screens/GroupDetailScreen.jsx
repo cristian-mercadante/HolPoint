@@ -24,6 +24,13 @@ class GroupDetailScreen extends Component {
     this.setState({ group });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.route.params?.selectedIdeas !== this.props.route.params?.selectedIdeas) {
+      const selectedIdeas = this.props.route.params.selectedIdeas;
+      this.addSelectedIdeasToGroupInState(selectedIdeas);
+    }
+  }
+
   isCurrentUserAPartecipant = group => {
     if (group.profiles) {
       return Boolean(group.profiles.find(profile => profile.id === this.props.currentUserId));
@@ -60,7 +67,6 @@ class GroupDetailScreen extends Component {
         }
       })
       .catch(error => {
-        console.log(error);
         this.props.error(error);
         return error;
       });
@@ -87,7 +93,6 @@ class GroupDetailScreen extends Component {
   addIdeaToGroupInState = idea => {
     let group = this.state.group;
     group.ideas = [...this.state.group.ideas, idea];
-    console.log(group.ideas);
     this.props.route.params.updateGroupInState(group);
     // put
     const { name, description, profiles, date_start, date_finish, ideas } = group;
@@ -104,7 +109,6 @@ class GroupDetailScreen extends Component {
   addSelectedIdeasToGroupInState = selectedIdeas => {
     let group = this.state.group;
     group.ideas = [...group.ideas, ...selectedIdeas];
-    console.log(group.ideas);
     this.props.route.params.updateGroupInState(group);
     const { name, description, profiles, date_start, date_finish, ideas } = group;
     this.putGroup(
@@ -177,7 +181,7 @@ class GroupDetailScreen extends Component {
                 title="Idee"
                 onPress={() =>
                   this.props.navigation.navigate("GroupIdeaList", {
-                    ideas: this.state.group.ideas,
+                    ideas: this.state.group?.ideas,
                     addIdeaToGroupInState: this.addIdeaToGroupInState,
                     updateIdeaInGroupInState: this.updateIdeaInGroupInState,
                     addSelectedIdeasToGroupInState: this.addSelectedIdeasToGroupInState,

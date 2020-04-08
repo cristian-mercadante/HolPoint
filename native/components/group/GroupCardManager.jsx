@@ -48,7 +48,6 @@ class GroupCardManager extends Component {
   updateGroupInState = group => {
     let groups = this.state.groups;
     const index = groups.findIndex(g => g.id === group.id);
-    console.log(index);
     if (index > -1) {
       groups[index] = group;
       this.setState({ groups });

@@ -16,10 +16,6 @@ class GroupIdeaListScreen extends Component {
         this.props.route.params.addIdeaToGroupInState(idea);
       }
     }
-    if (prevProps.route.params?.selectedIdeas !== this.props.route.params?.selectedIdeas) {
-      const selectedIdeas = this.props.route.params.selectedIdeas;
-      this.props.route.params.addSelectedIdeasToGroupInState(selectedIdeas);
-    }
   }
 
   render() {

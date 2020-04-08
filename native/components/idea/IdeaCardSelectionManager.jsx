@@ -37,7 +37,7 @@ class IdeaCardSelectionManager extends Component {
               <RoundedButton
                 title="Invia"
                 onPress={() =>
-                  this.props.navigation.navigate("GroupIdeaList", { selectedIdeas: this.state.selectedIdeas })
+                  this.props.navigation.navigate("GroupDetail", { selectedIdeas: this.state.selectedIdeas })
                 }
                 backgroundColor={GREEN}
                 color="#fff"
