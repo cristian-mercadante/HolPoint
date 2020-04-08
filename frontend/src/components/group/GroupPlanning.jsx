@@ -7,26 +7,23 @@ export default class GroupPlanning extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.dateStart && this.props.dateFinish ? (
-          <div>
-            <Panel
-              title="Allegati"
-              component={
-                <AttachmentManager
-                  group={this.props.group}
-                  addAttToState={this.props.addAttToState}
-                  removeAttFromState={this.props.removeAttFromState}
-                />
-              }
+        <Panel
+          title="Allegati"
+          component={
+            <AttachmentManager
+              group={this.props.group}
+              addAttToState={this.props.addAttToState}
+              removeAttFromState={this.props.removeAttFromState}
             />
-            <div>
-              <ActivityManagerDND
-                group={this.props.group}
-                dateStart={this.props.dateStart}
-                dateFinish={this.props.dateFinish}
-              />
-            </div>
-          </div>
+          }
+        />
+
+        {this.props.dateStart && this.props.dateFinish ? (
+          <ActivityManagerDND
+            group={this.props.group}
+            dateStart={this.props.dateStart}
+            dateFinish={this.props.dateFinish}
+          />
         ) : (
           <div style={{ textAlign: "center", color: "#777", fontSize: "20px" }}>
             È necessario definire la data di partenza e la data di arrivo per pianificare le attività

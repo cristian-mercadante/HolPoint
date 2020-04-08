@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-import { BLUE, GREEN } from "../../colors";
+import { BLUE, GREEN, RED } from "../../colors";
 import IdeaCard from "./IdeaCard";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
@@ -72,8 +72,17 @@ class IdeaCardVote extends Component {
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 20, color: "#000" }}>{`Voti: ${this.state.gti.votes?.length}`}</Text>
           </View>
+          <View style={{ flex: 1 }}>
+            {this.props.currentUser.id === this.props.idea.creator.id && (
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate("GroupDetail", { deletedIdeaId: this.props.idea.id })}
+              >
+                <FontAwesome name="times" size={20} color={RED} />
+              </TouchableWithoutFeedback>
+            )}
+          </View>
           <TouchableWithoutFeedback onPress={() => this.vote(this.state.gti.group, this.state.gti.idea)}>
-            <FontAwesome name="thumbs-up" size={20} color={this.state.voted ? GREEN : "#fff"} />
+            <FontAwesome name="thumbs-up" size={20} color={this.state.voted ? GREEN : "#aaa"} />
           </TouchableWithoutFeedback>
         </View>
         <IdeaCard {...this.props} />

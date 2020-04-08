@@ -10,7 +10,7 @@ class GroupIdeaListScreen extends Component {
         ideas={this.props.route.params?.ideas}
         userId={this.props.currentUserId}
         navigation={this.props.navigation}
-        routeParams={this.props.route.params}
+        routeParams={this.props.route.params?.routeParams}
         fromScreen="GroupDetail"
         group_to_idea={this.props.route.params?.group.group_to_idea}
         updateVotes={this.props.route.params?.updateVotes}

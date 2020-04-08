@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { StatusBar, KeyboardAvoidingView } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
-import { DARK_RED } from "../colors";
 import GroupForm from "../components/group/GroupForm";
 import axios from "axios";
 import { groupAPI } from "../server";
@@ -28,7 +27,6 @@ class GroupAddScreen extends Component {
   render() {
     return (
       <>
-        <StatusBar barStyle="light-content" backgroundColor={DARK_RED} />
         <ScrollView>
           <KeyboardAvoidingView behavior="padding">
             <GroupForm handleSubmit={this.postGroup} routeParams={this.props.route.params} fromScreen="GroupAdd" />

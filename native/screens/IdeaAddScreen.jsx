@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { ScrollView, KeyboardAvoidingView, StatusBar } from "react-native";
+import { ScrollView, KeyboardAvoidingView } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
 import { ideaAPI } from "../server";
 import * as currentUserActions from "../actions/currentUser";
 import * as alertActions from "../actions/alerts";
 import IdeaForm from "../components/idea/IdeaForm";
-import { DARK_BLUE } from "../colors";
 
 class IdeaAddScreen extends Component {
   initialState = {
@@ -42,7 +41,6 @@ class IdeaAddScreen extends Component {
   render() {
     return (
       <>
-        <StatusBar barStyle="light-content" backgroundColor={DARK_BLUE} />
         <ScrollView>
           <KeyboardAvoidingView behavior="padding">
             <IdeaForm

@@ -12,6 +12,7 @@ export default function MyDatePicker(props) {
       onChange={date => props.onChange(date)}
       className="form-control"
       locale="it"
+      minDate={props.minDate ? props.minDate : null}
       dateFormat="dd/MM/yyyy"
     />
   );

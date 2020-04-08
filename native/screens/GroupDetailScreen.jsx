@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, Alert, StatusBar } from "react-native";
+import { View, Alert, RefreshControl } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import GroupInfo from "../components/group/GroupInfo";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
 import RoundedButton from "../components/misc/RoundedButton";
-import { RED, YELLOW, DARK_RED, BLUE } from "../colors";
+import { RED, YELLOW, BLUE } from "../colors";
 import GroupForm from "../components/group/GroupForm";
 import axios from "axios";
 import { groupAPI, groupCreatorAPI } from "../server";
@@ -14,6 +14,7 @@ class GroupDetailScreen extends Component {
   state = {
     group: {},
     isEditing: false,
+    refreshing: false,
   };
 
   editing = () => this.setState({ isEditing: !this.state.isEditing });
@@ -36,7 +37,10 @@ class GroupDetailScreen extends Component {
         this.addIdeaToGroupInState(idea);
       }
     }
-
+    if (prevProps.route.params?.deletedIdeaId !== this.props.route.params?.deletedIdeaId) {
+      const ideaId = this.props.route.params.deletedIdeaId;
+      this.removeIdeaFromGroupInState(ideaId);
+    }
     if (prevProps.route.params?.selectedIdeas !== this.props.route.params?.selectedIdeas) {
       const selectedIdeas = this.props.route.params.selectedIdeas;
       this.addSelectedIdeasToGroupInState(selectedIdeas);
@@ -47,6 +51,19 @@ class GroupDetailScreen extends Component {
     if (group.profiles) {
       return Boolean(group.profiles.find(profile => profile.id === this.props.currentUserId));
     }
+  };
+
+  getGroup = () => {
+    const headers = { headers: { "Content-Type": "application/json", Authorization: `Token ${this.props.token}` } };
+    const id = this.state.group.id;
+    return axios
+      .get(`${groupAPI}${id}/`, headers)
+      .then(res => {
+        this.setState({ group: res.data });
+        this.props.route.params.updateGroupInState(res.data);
+        this.props.navigation.setOptions({ title: res.data.name });
+      })
+      .catch(error => this.props.error(error));
   };
 
   putGroup = (name, description, profiles, date_start, date_finish, ideas = []) => {
@@ -151,6 +168,23 @@ class GroupDetailScreen extends Component {
     }
   };
 
+  removeIdeaFromGroupInState = ideaId => {
+    let group = this.state.group;
+    const index = group.ideas.findIndex(i => i.id == ideaId);
+    if (index > -1) {
+      group.ideas.splice(index, 1);
+      const { name, description, profiles, date_start, date_finish, ideas } = group;
+      this.putGroup(
+        name,
+        description,
+        profiles.map(p => p.id),
+        date_start,
+        date_finish,
+        ideas.map(i => i.id)
+      ).then(() => this.editing());
+    }
+  };
+
   updateVotes = gti => {
     let group = this.state.group;
     const index = group.group_to_idea.findIndex(k => k.group === gti.group && k.idea === gti.idea);
@@ -159,11 +193,20 @@ class GroupDetailScreen extends Component {
     }
   };
 
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.getGroup()
+      .then(() => this.setState({ refreshing: false }))
+      .catch(error => {
+        this.props.error(error);
+        this.setState({ refreshing: false });
+      });
+  };
+
   render() {
     return (
       <>
-        <StatusBar backgroundColor={DARK_RED} barStyle="light-content" />
-        <ScrollView>
+        <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}>
           <View style={{ marginTop: 10 }}>
             <RoundedButton
               title={this.state.isEditing ? "Annulla" : "Modifica"}
@@ -204,6 +247,7 @@ class GroupDetailScreen extends Component {
                     ideas: this.state.group?.ideas,
                     updateVotes: this.updateVotes,
                     group: this.state.group,
+                    routeParams: this.props.route.params,
                   })
                 }
                 backgroundColor={BLUE}

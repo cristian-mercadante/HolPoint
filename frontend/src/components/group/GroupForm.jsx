@@ -23,7 +23,11 @@ const GroupForm = props => {
           <Form.Group controlId="date_finish">
             <Form.Label>Data ritorno</Form.Label>
             <br />
-            <DatePicker selected={props.dateFinish} onChange={date => props.setDateFinish(date)} />
+            <DatePicker
+              selected={props.dateFinish}
+              onChange={date => props.setDateFinish(date)}
+              minDate={props.dateStart}
+            />
           </Form.Group>
         </Col>
       </Row>
@@ -46,7 +50,7 @@ const GroupForm = props => {
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   };
 };
 

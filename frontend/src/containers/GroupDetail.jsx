@@ -17,7 +17,7 @@ class GroupDetail extends Component {
     selectedFriends: [],
     dateStart: null,
     dateFinish: null,
-    phase: 0 // should be 0 for "ideazione" and 1 for "planning"
+    phase: 0, // should be 0 for "ideazione" and 1 for "planning"
   };
 
   setDateStart = date => this.setState({ dateStart: date });
@@ -38,8 +38,8 @@ class GroupDetail extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     };
     const id = this.props.match.params.id;
     return axios
@@ -52,7 +52,7 @@ class GroupDetail extends Component {
           group: res.data,
           selectedFriends: selectedFriends,
           dateStart: stringToDate_or_Null(res.data.date_start),
-          dateFinish: stringToDate_or_Null(res.data.date_finish)
+          dateFinish: stringToDate_or_Null(res.data.date_finish),
         });
       })
       .catch(error => {
@@ -71,8 +71,8 @@ class GroupDetail extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     };
     const data = {
       name,
@@ -80,7 +80,7 @@ class GroupDetail extends Component {
       profiles,
       ideas, //: ideas.length === 0 ? this.state.group.ideas.map(idea => idea.id) : ideas, // fixed deleting ideas
       date_start: dateStart,
-      date_finish: dateFinish
+      date_finish: dateFinish,
     };
     return axios
       .put(`${groupAPI}${this.state.group.id}/`, data, headers)
@@ -103,8 +103,8 @@ class GroupDetail extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     };
     return axios
       .delete(`${groupCreatorAPI}${this.state.group.id}/`, headers)
@@ -190,8 +190,8 @@ class GroupDetail extends Component {
     this.setState({
       group: {
         ...this.state.group,
-        attachments
-      }
+        attachments,
+      },
     });
   };
 
@@ -200,8 +200,8 @@ class GroupDetail extends Component {
     this.setState({
       group: {
         ...this.state.group,
-        attachments
-      }
+        attachments,
+      },
     });
   };
 
@@ -210,11 +210,11 @@ class GroupDetail extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     };
     const data = {
-      prefered_idea: ideaId
+      prefered_idea: ideaId,
     };
     return axios
       .put(`${groupCreatorAPI}${this.state.group.id}/`, data, headers)
@@ -240,12 +240,7 @@ class GroupDetail extends Component {
                 <Nav.Link onClick={() => this.setState({ phase: 0 })}>Ideazione</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link
-                  onClick={() => this.setState({ phase: 1 })}
-                  disabled={this.state.group.prefered_idea ? false : true}
-                >
-                  Pianificazione
-                </Nav.Link>
+                <Nav.Link onClick={() => this.setState({ phase: 1 })}>Pianificazione</Nav.Link>
               </Nav.Item>
             </Nav>
             {this.state.phase === 0 ? (
@@ -283,14 +278,14 @@ class GroupDetail extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     error: error => dispatch(alertActions.error(error)),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
   };
 };
 

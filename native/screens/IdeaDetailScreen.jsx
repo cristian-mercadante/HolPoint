@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { ScrollView, Text, KeyboardAvoidingView, Alert, StatusBar, View } from "react-native";
+import { ScrollView, Text, KeyboardAvoidingView, Alert, View, RefreshControl } from "react-native";
 import { ideaAPI } from "../server";
-import { YELLOW, RED, DARK_BLUE } from "../colors";
+import { YELLOW, RED } from "../colors";
 import IdeaForm from "../components/idea/IdeaForm";
 import { connect } from "react-redux";
 import axios from "axios";
@@ -16,13 +16,12 @@ class IdeaDetailScreen extends Component {
     titleField: "",
     descriptionField: "",
     idEditing: false,
+    refreshing: false,
   };
 
   componentDidMount() {
     const idea = this.props.route.params.idea;
-    this.props.navigation.setOptions({
-      title: idea.title,
-    });
+    this.props.navigation.setOptions({ title: idea.title });
     this.setState({
       idea,
       titleField: idea.title,
@@ -33,6 +32,19 @@ class IdeaDetailScreen extends Component {
   onChangeTitle = text => this.setState({ titleField: text });
   onChangeDescription = text => this.setState({ descriptionField: text });
   editing = () => this.setState({ isEditing: !this.state.isEditing });
+
+  getIdea = () => {
+    const headers = { headers: { "Content-Type": "application/json", Authorization: `Token ${this.props.token}` } };
+    const id = this.state.idea.id;
+    return axios
+      .get(`${ideaAPI}${id}/`, headers)
+      .then(res => {
+        this.setState({ idea: res.data });
+        this.props.updateIdeaInStore(res.data);
+        this.props.navigation.setOptions({ title: res.data.title });
+      })
+      .catch(error => this.props.error(error));
+  };
 
   putIdea = () => {
     const { id } = this.state.idea;
@@ -54,9 +66,7 @@ class IdeaDetailScreen extends Component {
           titleField: res.data.title,
           descriptionField: res.data.description,
         });
-        this.props.navigation.setOptions({
-          title: res.data.title,
-        });
+        this.props.navigation.setOptions({ title: res.data.title });
         this.props.navigation.navigate(this.props.route.params.fromScreen, { idea: res.data });
       })
       .catch(error => {
@@ -66,25 +76,33 @@ class IdeaDetailScreen extends Component {
 
   deleteIdea = () => {
     const { id } = this.state.idea;
-    const { titleField: title, descriptionField: description } = this.state;
     const headers = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${this.props.token}`,
       },
     };
-
     return axios
       .delete(`${ideaAPI}${id}/`, headers)
       .then(res => {
         this.props.removeIdeaFromStore(id);
-        this.setState({
-          isEditing: false,
-        });
-        this.props.navigation.navigate("Profilo", { deletedIdeaId: id });
+        this.setState({ isEditing: false });
+        console.log("from Screen:");
+        console.log(this.props.route.params.fromScreen);
+        this.props.navigation.navigate(this.props.route.params.fromScreen, { deletedIdeaId: id });
       })
       .catch(error => {
         this.props.error(error);
+      });
+  };
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.getIdea()
+      .then(() => this.setState({ refreshing: false }))
+      .catch(error => {
+        this.props.error(error);
+        this.setState({ refreshing: false });
       });
   };
 
@@ -93,8 +111,7 @@ class IdeaDetailScreen extends Component {
 
     return (
       <>
-        <StatusBar barStyle="light-content" backgroundColor={DARK_BLUE} />
-        <ScrollView>
+        <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}>
           <KeyboardAvoidingView behavior="padding">
             {idea.creator && this.props.currentUserId === idea.creator.id && (
               <View style={{ marginTop: 10 }}>
@@ -139,7 +156,7 @@ class IdeaDetailScreen extends Component {
                 </Text>
               </>
             )}
-            <CommentSection id={idea.id} kind="idea" kind="idea" />
+            <CommentSection id={idea.id} kind="idea" kind="idea" refreshing={this.state.refreshing} />
           </KeyboardAvoidingView>
         </ScrollView>
       </>

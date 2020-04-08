@@ -49,6 +49,9 @@ class CommentSection extends Component {
     if (prevProps.id !== this.props.id) {
       this.getComments();
     }
+    if (prevProps.refreshing === false && this.props.refreshing === true) {
+      this.getComments();
+    }
   }
 
   addComment = commentText => {

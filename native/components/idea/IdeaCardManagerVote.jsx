@@ -76,6 +76,7 @@ class IdeaCardManagerVote extends Component {
             fromScreen={this.props.fromScreen}
             group_to_idea={this.props.group_to_idea}
             updateVotes={this.props.updateVotes}
+            navigation={this.props.navigation}
           />
         )}
         keyExtractor={item => String(item.id)}

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import { View, TextInput, StyleSheet, StatusBar } from "react-native";
+import { View, TextInput, StyleSheet } from "react-native";
 import Title from "../components/misc/Title";
+import OpenURLButton from "../components/misc/OpenURLButton";
 import SubTitle from "../components/misc/SubTitle";
 import { connect } from "react-redux";
 import * as colors from "../colors";
 import * as authActions from "../actions/auth";
 import Spinner from "../components/misc/Spinner";
 import RoundedButton from "../components/misc/RoundedButton";
+import { resetPassword } from "../server";
 
 class LoginScreen extends Component {
   state = {
@@ -25,7 +27,6 @@ class LoginScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", flexDirection: "column", justifyContent: "space-around" }}>
-        <StatusBar barStyle="dark-content" />
         <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
           <Title />
           <SubTitle />
@@ -54,6 +55,7 @@ class LoginScreen extends Component {
         </View>
         <View style={{ flex: 1, justifyContent: "center", width: "100%" }}>
           <RoundedButton title="Log In" backgroundColor={colors.YELLOW} color="#000" onPress={this.handleSubmit} />
+          <OpenURLButton url={resetPassword}>Password dimenticata?</OpenURLButton>
         </View>
       </View>
     );

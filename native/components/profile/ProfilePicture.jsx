@@ -13,7 +13,7 @@ const ProfilePicture = ({ size, source }) => {
         borderWidth: 2,
         margin: 15,
       }}
-      source={source ? { uri: source } : require("../../assets/default.png")}
+      source={source ? { uri: source, cache: "force-cache" } : require("../../assets/default.png")}
     />
   );
 };
