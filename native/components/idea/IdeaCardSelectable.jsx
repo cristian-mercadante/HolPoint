@@ -13,7 +13,7 @@ const IdeaCardSelectable = ({ idea, selected, selectIdea }) => {
         textColor="#fff"
         header={idea.title}
         body={idea.description}
-        footer={idea.date_creation}
+        footer={`${idea.creator.username} - ${idea.date_creation}`}
         selected={selected}
       />
     </TouchableWithoutFeedback>

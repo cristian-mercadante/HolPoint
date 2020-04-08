@@ -25,6 +25,18 @@ class GroupDetailScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.route.params?.idea !== this.props.route.params?.idea) {
+      const idea = this.props.route.params.idea;
+      const index = this.state.group.ideas.findIndex(i => i.id === idea.id);
+      if (index > -1) {
+        // update idea
+        this.updateIdeaInGroupInState(idea);
+      } else {
+        // add idea
+        this.addIdeaToGroupInState(idea);
+      }
+    }
+
     if (prevProps.route.params?.selectedIdeas !== this.props.route.params?.selectedIdeas) {
       const selectedIdeas = this.props.route.params.selectedIdeas;
       this.addSelectedIdeasToGroupInState(selectedIdeas);
@@ -139,6 +151,14 @@ class GroupDetailScreen extends Component {
     }
   };
 
+  updateVotes = gti => {
+    let group = this.state.group;
+    const index = group.group_to_idea.findIndex(k => k.group === gti.group && k.idea === gti.idea);
+    if (index > -1) {
+      group.group_to_idea[index] = gti;
+    }
+  };
+
   render() {
     return (
       <>
@@ -182,9 +202,8 @@ class GroupDetailScreen extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("GroupIdeaList", {
                     ideas: this.state.group?.ideas,
-                    addIdeaToGroupInState: this.addIdeaToGroupInState,
-                    updateIdeaInGroupInState: this.updateIdeaInGroupInState,
-                    addSelectedIdeasToGroupInState: this.addSelectedIdeasToGroupInState,
+                    updateVotes: this.updateVotes,
+                    group: this.state.group,
                   })
                 }
                 backgroundColor={BLUE}

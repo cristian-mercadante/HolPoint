@@ -23,7 +23,7 @@ export default function IdeaCard({ idea, fromScreen }) {
           textColor="#fff"
           header={idea.title}
           body={idea.description}
-          footer={idea.date_creation}
+          footer={`${idea.creator.username} - ${idea.date_creation}`}
         />
       </TouchableWithoutFeedback>
     </>
