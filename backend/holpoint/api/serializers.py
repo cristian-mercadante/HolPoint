@@ -243,6 +243,10 @@ class GroupSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('date_start should be before date_finish')
         instance.profiles.set(profiles)
         ideas = validated_data.pop("ideas")
+        prefered_idea = validated_data.get('prefered_idea', instance.prefered_idea)
+        if prefered_idea:
+            if prefered_idea.id not in [i.id for i in ideas]:
+                instance.prefered_idea = None
         instance.ideas.set(ideas)
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)

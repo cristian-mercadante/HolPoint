@@ -144,11 +144,7 @@ class GroupDetail extends Component {
     let group = this.getCleanDataForPutGroup();
     group.ideas = group.ideas.filter(idea => idea !== ideaId);
     const { name, description, profiles, ideas } = group;
-    return this.putGroup(name, description, profiles, ideas).then(() => {
-      if (this.state.group.prefered_idea && this.state.group.prefered_idea.id === ideaId) {
-        this.putFavIdea(null);
-      }
-    });
+    return this.putGroup(name, description, profiles, ideas);
   };
 
   updateIdeaInState = idea => {

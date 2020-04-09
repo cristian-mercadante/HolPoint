@@ -58,7 +58,9 @@ class IdeaCardManager extends Component {
                   {this.props.fromScreen === "GroupIdeaList" && (
                     <RoundedButton
                       title="Seleziona"
-                      onPress={() => this.props.navigation.navigate("GroupIdeaSelect", { ideasInGroup: ideas })}
+                      onPress={() =>
+                        this.props.navigation.navigate("GroupIdeaSelect", { ideasInGroup: ideas, mode: "multi" })
+                      }
                       backgroundColor={BLUE}
                       color="#fff"
                     />

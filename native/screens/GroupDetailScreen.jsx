@@ -45,6 +45,10 @@ class GroupDetailScreen extends Component {
       const selectedIdeas = this.props.route.params.selectedIdeas;
       this.addSelectedIdeasToGroupInState(selectedIdeas);
     }
+    if (prevProps.route.params?.favIdea !== this.props.route.params?.favIdea) {
+      const favIdea = this.props.route.params.favIdea;
+      if (favIdea !== null) this.putFavIdea(favIdea.id);
+    }
   }
 
   isCurrentUserAPartecipant = group => {
@@ -99,6 +103,25 @@ class GroupDetailScreen extends Component {
         this.props.error(error);
         return error;
       });
+  };
+
+  putFavIdea = ideaId => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${this.props.token}`,
+      },
+    };
+    const data = { prefered_idea: ideaId };
+    return axios
+      .put(`${groupCreatorAPI}${this.state.group.id}/`, data, headers)
+      .then(res => {
+        let group = this.state.group;
+        group.prefered_idea = res.data.prefered_idea;
+        this.props.route.params.updateGroupInState(res.data);
+        this.setState({ group: group });
+      })
+      .catch(error => this.props.error(error));
   };
 
   deleteGroup = () => {
@@ -215,19 +238,32 @@ class GroupDetailScreen extends Component {
               onPress={this.editing}
             />
             {this.state.group.creator && this.props.currentUserId === this.state.group.creator.id && (
-              <RoundedButton
-                title="Elimina"
-                backgroundColor={RED}
-                color="#fff"
-                onPress={() =>
-                  Alert.alert(
-                    `Sicuro di voler eliminare ${this.state.group.name}?`,
-                    "Non potrai più ripristinarlo",
-                    [{ text: "No" }, { text: "Sì", onPress: () => this.deleteGroup() }],
-                    { cancelable: true }
-                  )
-                }
-              />
+              <>
+                <RoundedButton
+                  title="Seleziona Idea Preferita"
+                  backgroundColor={BLUE}
+                  color="#fff"
+                  onPress={() =>
+                    this.props.navigation.navigate("GroupIdeaSelect", {
+                      ideasInGroup: this.state.group.ideas,
+                      mode: "fav",
+                    })
+                  }
+                />
+                <RoundedButton
+                  title="Elimina"
+                  backgroundColor={RED}
+                  color="#fff"
+                  onPress={() =>
+                    Alert.alert(
+                      `Sicuro di voler eliminare ${this.state.group.name}?`,
+                      "Non potrai più ripristinarlo",
+                      [{ text: "No" }, { text: "Sì", onPress: () => this.deleteGroup() }],
+                      { cancelable: true }
+                    )
+                  }
+                />
+              </>
             )}
           </View>
           {this.state.isEditing ? (

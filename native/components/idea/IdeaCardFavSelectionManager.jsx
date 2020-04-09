@@ -7,27 +7,20 @@ import H1WithButton from "../misc/H1WithButton";
 import RoundedButton from "../misc/RoundedButton";
 import { GREEN } from "../../colors";
 
-class IdeaCardSelectionManager extends Component {
+class IdeaCardFavSelectionManager extends Component {
   state = {
-    selectedIdeas: [],
+    favIdea: null,
   };
 
   selectIdea = idea => {
-    let selectedIdeas = this.state.selectedIdeas;
-    const index = selectedIdeas.findIndex(si => si.id == idea.id);
-    if (index > -1) {
-      // deselect
-      selectedIdeas.splice(index, 1);
-    } else {
-      // select
-      selectedIdeas.push(idea);
+    if (this.state.favIdea?.id === idea.id) {
+      this.setState({ favIdea: null });
+      return;
     }
-    this.setState({ selectedIdeas });
+    this.setState({ favIdea: idea });
   };
 
   render() {
-    const ideasInGroupIds = this.props.ideasInGroup.map(i => i.id);
-    const ideasToShow = this.props.ideas.filter(i => !ideasInGroupIds.includes(i.id));
     return (
       <FlatList
         ListHeaderComponent={
@@ -36,22 +29,16 @@ class IdeaCardSelectionManager extends Component {
             button={
               <RoundedButton
                 title="Invia"
-                onPress={() =>
-                  this.props.navigation.navigate("GroupDetail", { selectedIdeas: this.state.selectedIdeas })
-                }
+                onPress={() => this.props.navigation.navigate("GroupDetail", { favIdea: this.state.favIdea })}
                 backgroundColor={GREEN}
                 color="#fff"
               />
             }
           />
         }
-        data={ideasToShow}
+        data={this.props.ideasInGroup}
         renderItem={({ item }) => (
-          <IdeaCardSelectable
-            idea={item}
-            selected={this.state.selectedIdeas.map(si => si.id).includes(item.id)}
-            selectIdea={this.selectIdea}
-          />
+          <IdeaCardSelectable idea={item} selected={this.state.favIdea?.id === item.id} selectIdea={this.selectIdea} />
         )}
         keyExtractor={item => String(item.id)}
       />
@@ -65,4 +52,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(IdeaCardSelectionManager);
+export default connect(mapStateToProps)(IdeaCardFavSelectionManager);
