@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import IdeaCardManager from "../idea/IdeaCardManager";
 import ProfilePicture from "./ProfilePicture";
-import { BLUE } from "../../colors";
+import { BLUE, YELLOW } from "../../colors";
 import FriendUnfriendButtons from "../friend_request/FriendUnfriendButtons";
 import RoundedButton from "../misc/RoundedButton";
 
@@ -29,8 +29,8 @@ export default class ProfileView extends Component {
               friends: this.props.profile.profile.friends,
             })
           }
-          backgroundColor={BLUE}
-          color="#fff"
+          backgroundColor={YELLOW}
+          color="#000"
           title="AMICI"
         />
         <IdeaCardManager

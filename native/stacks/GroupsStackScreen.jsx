@@ -9,6 +9,7 @@ import GroupIdeaListScreen from "../screens/GroupIdeaListScreen";
 import IdeaDetailScreen from "../screens/IdeaDetailScreen";
 import IdeaAddScreen from "../screens/IdeaAddScreen";
 import GroupIdeaSelectScreen from "../screens/GroupIdeaSelectScreen";
+import AttachmentsScreen from "../screens/AttachmentsScreen";
 
 const HomeStack = createStackNavigator();
 
@@ -94,6 +95,15 @@ function GroupsStackScreen() {
           },
           headerTintColor: "#fff",
           title: "Seleziona idee",
+        }}
+      />
+      <HomeStack.Screen
+        name="Attachments"
+        component={AttachmentsScreen}
+        options={{
+          headerStyle: { backgroundColor: RED },
+          headerTintColor: "#fff",
+          title: "Allegati",
         }}
       />
     </HomeStack.Navigator>

@@ -5,21 +5,13 @@ import { FontAwesome } from "@expo/vector-icons";
 import RoundedButton from "../misc/RoundedButton";
 
 export const AddButton = ({ onPress }) => {
-  return (
-    <RoundedButton
-      icon={<FontAwesome name="user-plus" color="#fff" size={15} />}
-      title="Aggiungi"
-      backgroundColor={BLUE}
-      color="#fff"
-      onPress={onPress}
-    />
-  );
+  return <RoundedButton icon="user-plus" title="Aggiungi" backgroundColor={BLUE} color="#fff" onPress={onPress} />;
 };
 
 export const RemoveButton = ({ onPress }) => {
   return (
     <RoundedButton
-      icon={<FontAwesome name="user-times" color="#fff" size={15} />}
+      icon="user-minus"
       title="Rimuovi"
       backgroundColor={RED}
       color="#fff"
@@ -35,7 +27,7 @@ export const RemoveButton = ({ onPress }) => {
 export const WaitButton = ({ onPress }) => {
   return (
     <RoundedButton
-      icon={<FontAwesome name="user-plus" color="#fff" size={15} />}
+      icon="user-clock"
       title="Attesa"
       backgroundColor={LIGHT_BLUE}
       color="#fff"
@@ -50,7 +42,7 @@ export const AcceptRefuseButtons = ({ onPress, compact }) => {
     <View style={{ flex: 1, flexDirection: "row" }}>
       <View style={{ flex: 1 }}>
         <RoundedButton
-          icon={<FontAwesome name="user-plus" color="#fff" size={15} />}
+          icon="user-check"
           title={!compact ? "Accetta" : ""}
           backgroundColor={GREEN}
           color="#fff"
@@ -59,7 +51,7 @@ export const AcceptRefuseButtons = ({ onPress, compact }) => {
       </View>
       <View style={{ flex: 1 }}>
         <RoundedButton
-          icon={<FontAwesome name="user-times" color="#000" size={15} />}
+          icon="user-times"
           title={!compact ? "Rifiuta" : ""}
           backgroundColor={YELLOW}
           color="#000"

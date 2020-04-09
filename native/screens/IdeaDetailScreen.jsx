@@ -87,8 +87,6 @@ class IdeaDetailScreen extends Component {
       .then(res => {
         this.props.removeIdeaFromStore(id);
         this.setState({ isEditing: false });
-        console.log("from Screen:");
-        console.log(this.props.route.params.fromScreen);
         this.props.navigation.navigate(this.props.route.params.fromScreen, { deletedIdeaId: id });
       })
       .catch(error => {

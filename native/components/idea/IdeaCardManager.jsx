@@ -42,38 +42,36 @@ class IdeaCardManager extends Component {
     const ideas = this.state.ideas;
 
     return (
-      <FlatList
-        ListHeaderComponent={
-          <H1WithButton
-            text="Idee"
-            button={
-              currentUserId === this.props.userId && (
-                <>
+      <>
+        <H1WithButton
+          text="Idee"
+          button={
+            currentUserId === this.props.userId && (
+              <>
+                <RoundedButton
+                  title="Crea"
+                  onPress={() => this.props.navigation.navigate("IdeaAdd", { fromScreen: this.props.fromScreen })}
+                  backgroundColor={BLUE}
+                  color="#fff"
+                />
+                {this.props.fromScreen === "GroupIdeaList" && (
                   <RoundedButton
-                    title="Crea"
-                    onPress={() => this.props.navigation.navigate("IdeaAdd", { fromScreen: this.props.fromScreen })}
+                    title="Seleziona"
+                    onPress={() =>
+                      this.props.navigation.navigate("GroupIdeaSelect", { ideasInGroup: ideas, mode: "multi" })
+                    }
                     backgroundColor={BLUE}
                     color="#fff"
                   />
-                  {this.props.fromScreen === "GroupIdeaList" && (
-                    <RoundedButton
-                      title="Seleziona"
-                      onPress={() =>
-                        this.props.navigation.navigate("GroupIdeaSelect", { ideasInGroup: ideas, mode: "multi" })
-                      }
-                      backgroundColor={BLUE}
-                      color="#fff"
-                    />
-                  )}
-                </>
-              )
-            }
-          />
-        }
-        data={ideas}
-        renderItem={({ item }) => <IdeaCard idea={item} fromScreen={this.props.fromScreen} />}
-        keyExtractor={item => String(item.id)}
-      />
+                )}
+              </>
+            )
+          }
+        />
+        {ideas.map(idea => (
+          <IdeaCard idea={idea} fromScreen={this.props.fromScreen} key={idea.id} />
+        ))}
+      </>
     );
   }
 }

@@ -26,12 +26,13 @@ class AttachmentUpload(mixins.CreateModelMixin, viewsets.GenericViewSet):
             group = currentUser.profile.groups.get(pk=group_id)
             if not group:
                 raise NotFound(detail="Group not found", code=404)
+            file = request.data['file']
             try:
-                validate_file_type(request.FILES['file'])
+                validate_file_type(file)
             except:
                 return Response({"non_field_errors": "Questo tipo di file non è ammesso"},
                                 status=status.HTTP_400_BAD_REQUEST)
-            attachment = Attachment.objects.create(group=group, owner=currentUser.profile, name=request.FILES['file'].name)
+            attachment = Attachment.objects.create(group=group, owner=currentUser.profile, name=request.data['file'].name)
             serializer = self.serializer_class(attachment, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()

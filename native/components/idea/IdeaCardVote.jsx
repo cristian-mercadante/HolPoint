@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
 import { BLUE, GREEN, RED } from "../../colors";
 import IdeaCard from "./IdeaCard";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -75,7 +75,21 @@ class IdeaCardVote extends Component {
           <View style={{ flex: 1 }}>
             {this.props.currentUser.id === this.props.idea.creator.id && (
               <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.navigate("GroupDetail", { deletedIdeaId: this.props.idea.id })}
+                onPress={() =>
+                  Alert.alert(
+                    "Vuoi rimuovere quest'idea dal gruppo?",
+                    "Potrai proporla nuovamente, ma perderai i voti attuali.",
+                    [
+                      { text: "No" },
+                      {
+                        text: "Sì",
+                        onPress: () =>
+                          this.props.navigation.navigate("GroupDetail", { deletedIdeaId: this.props.idea.id }),
+                      },
+                    ],
+                    { cancelable: true }
+                  )
+                }
               >
                 <FontAwesome name="times" size={20} color={RED} />
               </TouchableWithoutFeedback>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { BLUE, DARK_YELLOW } from "../../colors";
+import { BLUE, DARK_YELLOW, YELLOW } from "../../colors";
 import TextInputLabel from "../misc/TextInputLabel";
 import * as ImagePicker from "expo-image-picker";
 import ProfilePicture from "../profile/ProfilePicture";
@@ -94,7 +94,7 @@ export default class SettingsForm extends Component {
             <ProfilePicture source={this.state.picture.uri} size={150} />
           </View>
         )}
-        <RoundedButton title="Modifica" onPress={this.handleSubmit} backgroundColor={BLUE} color="#fff" />
+        <RoundedButton title="Modifica" onPress={this.handleSubmit} backgroundColor={YELLOW} color="#000" />
       </ScrollView>
     );
   }

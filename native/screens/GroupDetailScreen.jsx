@@ -49,6 +49,10 @@ class GroupDetailScreen extends Component {
       const favIdea = this.props.route.params.favIdea;
       if (favIdea !== null) this.putFavIdea(favIdea.id);
     }
+    if (prevProps.route.params?.deletedAttId !== this.props.route.params?.deletedAttId) {
+      const attId = this.props.route.params?.deletedAttId;
+      this.removeAttFromGroupInState(attId);
+    }
   }
 
   isCurrentUserAPartecipant = group => {
@@ -216,6 +220,15 @@ class GroupDetailScreen extends Component {
     }
   };
 
+  removeAttFromGroupInState = attId => {
+    let group = this.state.group;
+    const index = group.attachments.findIndex(a => a.id === attId);
+    if (index > -1) {
+      group.attachments.splice(index, 1);
+      this.setState({ group });
+    }
+  };
+
   onRefresh = () => {
     this.setState({ refreshing: true });
     this.getGroup()
@@ -287,6 +300,17 @@ class GroupDetailScreen extends Component {
                   })
                 }
                 backgroundColor={BLUE}
+                color="#fff"
+              />
+              <RoundedButton
+                title="Allegati"
+                onPress={() =>
+                  this.props.navigation.navigate("Attachments", {
+                    attachments: this.state.group?.attachments,
+                    groupId: this.state.group?.id,
+                  })
+                }
+                backgroundColor={RED}
                 color="#fff"
               />
             </>

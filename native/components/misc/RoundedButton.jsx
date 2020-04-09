@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({
   button: {
@@ -20,8 +21,8 @@ const RoundedButton = props => {
       disabled={props.disabled || false}
     >
       <Text style={{ textAlign: "center", color: props.color }}>
-        {props.icon}
-        {props.title && ` ${String(props.title).toUpperCase()}`}
+        <FontAwesome5 name={props.icon} size={props.iconSize || 15} color={props.color} />
+        {props.title && `  ${String(props.title).toUpperCase()}`}
       </Text>
     </TouchableOpacity>
   );

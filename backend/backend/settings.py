@@ -154,7 +154,7 @@ REST_FRAMEWORK = {
     'DATE_INPUT_FORMATS': [('%d/%m/%Y'), ],
 }
 
-PRIVATE_STORAGE_SERVER = 'apache'
+#PRIVATE_STORAGE_SERVER = 'apache'
 PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, "private")
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_authenticated'
 

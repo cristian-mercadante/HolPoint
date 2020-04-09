@@ -58,14 +58,14 @@ const GroupForm = props => {
         onPress={() => setShowStart(true)}
         color="#fff"
         backgroundColor={RED}
-        icon={<FontAwesome5 name="calendar-alt" color="#fff" size={15} />}
+        icon="calendar-alt"
       />
       <RoundedButton
         title={`Ritorno ${dateToString_or_Null(date_finish) || "non definito"}`}
         onPress={() => setShowFinish(true)}
         color="#fff"
         backgroundColor={RED}
-        icon={<FontAwesome5 name="calendar-alt" color="#fff" size={15} />}
+        icon="calendar-alt"
       />
       <TextInputLabel
         multiline={true}
