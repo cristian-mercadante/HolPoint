@@ -29,6 +29,12 @@ class AttachmentCard extends Component {
     const uri_ = `${attachmentGetAPI}${this.props.id}`;
     FileSystem.downloadAsync(uri_, FileSystem.documentDirectory + this.props.name, headers)
       .then(async ({ uri }) => {
+        let permissionResult = await MediaLibrary.requestPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+          alert("Permission to access camera roll is required!");
+          return;
+        }
         const asset = await MediaLibrary.createAssetAsync(uri);
         const album = await MediaLibrary.createAlbumAsync("HolPoint", asset, false);
         FileSystem.getContentUriAsync(uri).then(cUri => {
