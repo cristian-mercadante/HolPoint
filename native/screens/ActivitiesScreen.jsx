@@ -35,12 +35,16 @@ class ActivitiesScreen extends Component {
       let activity = this.props.route.params.activity;
       this.updateOrAddActivityInSection(activity);
     }
+    if (prevProps.route.params?.deletedActivity !== this.props.route.params?.deletedActivity) {
+      let activity = this.props.route.params.deletedActivity;
+      this.removeActivityFromSection(activity);
+    }
   }
 
   updateOrAddActivityInSection = activity => {
     let { activities, sections } = this.state;
 
-    // this.state.activities
+    // ==> this.state.activities
     let index = activities.findIndex(a => a.id === activity.id);
     if (index > -1) {
       // update
@@ -50,10 +54,9 @@ class ActivitiesScreen extends Component {
       activities.push(activity);
     }
 
-    // this.state.sections
+    // ==> this.state.sections
     const activityDate = activity.date; // string
     index = sections.findIndex(s => s.title === activityDate);
-    console.log(index);
     if (index > -1) {
       // if section exists
       const i = sections[index].data.findIndex(d => d.id === activity.id);
@@ -81,6 +84,28 @@ class ActivitiesScreen extends Component {
     }
 
     this.setState({ sections, activities });
+  };
+
+  removeActivityFromSection = activity => {
+    let { activities, sections } = this.state;
+    let index = activities.findIndex(a => a.id === activity.id);
+    if (index > -1) {
+      activities.splice(index, 1);
+    }
+    index = sections.findIndex(s => s.title === activity.date);
+    if (index > -1) {
+      const idx = sections[index].data.findIndex(d => d.id === activity.id);
+      if (idx > -1) {
+        sections[index].data.splice(idx, 1);
+      }
+    } else {
+      // default section
+      const idx = sections[sections.length - 1].data.findIndex(d => d.id === activity.id);
+      if (idx > -1) {
+        sections[sections.length - 1].data.splice(idx, 1);
+      }
+    }
+    this.setState({ activities, sections });
   };
 
   putActivityIndex = activity => {
@@ -178,9 +203,11 @@ class ActivitiesScreen extends Component {
                 <View style={{ flex: 1 }}>
                   <Text style={styles.sectionHeaderText}>{title}</Text>
                 </View>
-                <TouchableOpacity style={{ marginRight: 10 }} onPress={() => this.sortActivityIndexesByTime(index)}>
-                  <FontAwesome5 name="clock" size={20} color={BLUE} />
-                </TouchableOpacity>
+                {index !== this.state.sections.length - 1 && (
+                  <TouchableOpacity style={{ marginRight: 10 }} onPress={() => this.sortActivityIndexesByTime(index)}>
+                    <FontAwesome5 name="clock" size={20} color={BLUE} />
+                  </TouchableOpacity>
+                )}
               </View>
             )}
             renderItem={({ item }) => (

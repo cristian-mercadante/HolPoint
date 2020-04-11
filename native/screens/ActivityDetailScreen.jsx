@@ -7,7 +7,8 @@ import RoundedButton from "../components/misc/RoundedButton";
 import { YELLOW, RED } from "../colors";
 import ActivityForm from "../components/activity/ActivityForm";
 import axios from "axios";
-import { activityAPI } from "../server";
+import { activityAPI, activityCreatorAPI } from "../server";
+import ActivityInfo from "../components/activity/ActivityInfo";
 
 class ActivityDetailScreen extends Component {
   constructor(props) {
@@ -39,10 +40,15 @@ class ActivityDetailScreen extends Component {
         },
         headers
       )
-      .then(res => {
-        //this.props.updateActivityInState(res.data);
-        this.props.navigation.navigate("Activities", { activity: res.data });
-      })
+      .then(res => this.props.navigation.navigate("Activities", { activity: res.data }))
+      .catch(error => this.props.error(error));
+  };
+
+  deleteActivity = () => {
+    const headers = { headers: { "Content-Type": "application/json", Authorization: `Token ${this.props.token}` } };
+    return axios
+      .delete(`${activityCreatorAPI}${this.state.activity.id}/`, headers)
+      .then(res => this.props.navigation.navigate("Activities", { deletedActivity: this.state.activity }))
       .catch(error => this.props.error(error));
   };
 
@@ -67,14 +73,18 @@ class ActivityDetailScreen extends Component {
                 Alert.alert(
                   `Sicuro di voler eliminare ${activity.title}?`,
                   "Non potrai più rispristinarla",
-                  [{ text: "No" }, { text: "Sì", onPress: () => alert("TODO: handle Delete") }],
+                  [{ text: "No" }, { text: "Sì", onPress: () => this.deleteActivity() }],
                   { cancelable: true }
                 )
               }
             />
           )}
         </View>
-        {this.state.isEditing ? <ActivityForm handleSubmit={this.putActivity} activity={activity} /> : <View></View>}
+        {this.state.isEditing ? (
+          <ActivityForm handleSubmit={this.putActivity} activity={activity} />
+        ) : (
+          <ActivityInfo activity={this.state.activity} />
+        )}
       </ScrollView>
     );
   }

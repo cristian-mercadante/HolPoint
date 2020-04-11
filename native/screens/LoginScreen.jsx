@@ -55,7 +55,9 @@ class LoginScreen extends Component {
         </View>
         <View style={{ flex: 1, justifyContent: "center", width: "100%" }}>
           <RoundedButton title="Log In" backgroundColor={colors.YELLOW} color="#000" onPress={this.handleSubmit} />
-          <OpenURLButton url={resetPassword}>Password dimenticata?</OpenURLButton>
+          <OpenURLButton url={resetPassword} color={colors.BLUE}>
+            Password dimenticata?
+          </OpenURLButton>
         </View>
       </View>
     );

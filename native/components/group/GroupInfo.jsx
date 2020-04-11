@@ -13,17 +13,17 @@ const GroupInfo = ({ group }) => {
           </Text>
           <Text style={styles.text}>
             <Text style={styles.textBold}>Data partenza:</Text>
-            <Text>{` ${group.date_start}`}</Text>
+            <Text>{` ${group.date_start ? group.date_start : "non definita"}`}</Text>
           </Text>
           <Text style={styles.text}>
             <Text style={styles.textBold}>Data ritorno:</Text>
-            <Text>{` ${group.date_finish}`}</Text>
+            <Text>{` ${group.date_finish ? group.date_finish : "non definita"}`}</Text>
           </Text>
           <Text style={styles.text}>
             <Text style={styles.textBold}>Idea preferita:</Text>
             <Text>{` ${group.prefered_idea ? group.prefered_idea.title : "non definita"}`}</Text>
           </Text>
-          <Text style={styles.textBold}>Partecipanti:</Text>
+          <Text style={[styles.textBold, styles.text]}>Partecipanti:</Text>
           {group.profiles.map(p => (
             <FriendTag username={p.username} key={p.id} />
           ))}
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   text: {
-    fontSize: 15,
+    fontSize: 16,
   },
   textBold: {
     fontWeight: "bold",
