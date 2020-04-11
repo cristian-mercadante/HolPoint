@@ -5,7 +5,7 @@ import * as colors from "./colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { AppLoading } from "expo";
 
-import GroupsStackScreen from "./stacks/GroupsStackScreen";
+import HomeStackScreen from "./stacks/HomeStackScreen";
 import ProfileStackScreen from "./stacks/ProfileStackScreen";
 import SearchStackScreen from "./stacks/SearchStackScreen";
 import RequestsStackScreen from "./stacks/RequestsStackScreen";
@@ -54,7 +54,7 @@ class AppNavigationContainer extends Component {
     this.props.onTryAutoSignup().then(() => this.setState({ isLoading: false }));
   }
 
-  RequestIconWithBadge = (props) => {
+  RequestIconWithBadge = props => {
     return <IconWithBadge {...props} badgeCount={this.props.receivedRequests.length} />;
   };
 
@@ -98,7 +98,7 @@ class AppNavigationContainer extends Component {
         >
           {this.props.isAuthenticated ? (
             <>
-              <Tab.Screen name="Home" component={GroupsStackScreen} />
+              <Tab.Screen name="Home" component={HomeStackScreen} />
               <Tab.Screen name="Cerca" component={SearchStackScreen} />
               <Tab.Screen name="Richieste" component={RequestsStackScreen} />
               <Tab.Screen name="Profilo" component={ProfileStackScreen} />
@@ -115,14 +115,14 @@ class AppNavigationContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.token !== null,
     receivedRequests: state.friendRequest.receivedRequests,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     onTryAutoSignup: () => dispatch(authActions.authCheckState()),
   };

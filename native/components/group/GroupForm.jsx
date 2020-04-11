@@ -4,10 +4,10 @@ import TextInputLabel from "../misc/TextInputLabel";
 import RoundedButton from "../misc/RoundedButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { dateToString_or_Null, stringToDate_or_Null } from "../../dateUtils";
-import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 import FriendTag from "../profile/FriendTag";
+import { Switch, View, Text } from "react-native";
 
 const getProfileList = (profiles, friends, creatorId = null) => {
   let list = [];
@@ -33,6 +33,9 @@ const GroupForm = props => {
   const [date_finish, setDateFinish] = useState(stringToDate_or_Null(props.group?.date_finish) || new Date(date_start));
   const [show_finish, setShowFinish] = useState(false);
 
+  const [null_date_start, setNullDateStart] = useState(stringToDate_or_Null(props.group?.date_start) === null);
+  const [null_date_finish, setNullDateFinish] = useState(stringToDate_or_Null(props.group?.date_finish) === null);
+
   useEffect(() => {
     if (props.routeParams?.selectedFriends) {
       setProfiles(props.routeParams.selectedFriends);
@@ -53,20 +56,51 @@ const GroupForm = props => {
         value={name}
         placeholderTextColor="#777"
       />
-      <RoundedButton
-        title={`Partenza ${dateToString_or_Null(date_start) || "non definita"}`}
-        onPress={() => setShowStart(true)}
-        color="#fff"
-        backgroundColor={RED}
-        icon="calendar-alt"
-      />
-      <RoundedButton
-        title={`Ritorno ${dateToString_or_Null(date_finish) || "non definito"}`}
-        onPress={() => setShowFinish(true)}
-        color="#fff"
-        backgroundColor={RED}
-        icon="calendar-alt"
-      />
+
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flex: 3 }}>
+          <RoundedButton
+            title={`Partenza ${dateToString_or_Null(date_start) || "non definita"}`}
+            onPress={() => setShowStart(true)}
+            color="#fff"
+            backgroundColor={RED}
+            icon="calendar-alt"
+          />
+        </View>
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={{ textAlign: "right", marginRight: 10, fontSize: 15 }}>N/D</Text>
+          <Switch
+            trackColor={{ false: "#767577", true: "#faaa9b" }}
+            thumbColor={null_date_start ? RED : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={setNullDateStart}
+            value={null_date_start}
+          />
+        </View>
+      </View>
+
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flex: 3 }}>
+          <RoundedButton
+            title={`Ritorno ${dateToString_or_Null(date_finish) || "non definito"}`}
+            onPress={() => setShowFinish(true)}
+            color="#fff"
+            backgroundColor={RED}
+            icon="calendar-alt"
+          />
+        </View>
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={{ textAlign: "right", marginRight: 10, fontSize: 15 }}>N/D</Text>
+          <Switch
+            trackColor={{ false: "#767577", true: "#faaa9b" }}
+            thumbColor={null_date_finish ? RED : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={setNullDateFinish}
+            value={null_date_finish}
+          />
+        </View>
+      </View>
+
       <TextInputLabel
         multiline={true}
         borderColor={RED}
@@ -100,8 +134,8 @@ const GroupForm = props => {
               name,
               description,
               profiles.map(p => p.id),
-              dateToString_or_Null(date_start),
-              dateToString_or_Null(date_finish),
+              null_date_start ? null : dateToString_or_Null(date_start),
+              null_date_finish ? null : dateToString_or_Null(date_finish),
               props.group ? props.group.ideas.map(i => i.id) : []
             )
             .then(ok => {
@@ -128,6 +162,7 @@ const GroupForm = props => {
           onChange={(event, selectedDate) => {
             const currentDate = selectedDate || date_start;
             setShowStart(Platform.OS === "ios");
+            setNullDateStart(false);
             setDateStart(currentDate);
           }}
         />
@@ -143,6 +178,7 @@ const GroupForm = props => {
           onChange={(event, selectedDate) => {
             const currentDate = selectedDate || date_finish;
             setShowFinish(Platform.OS === "ios");
+            setNullDateFinish(false);
             setDateFinish(currentDate);
           }}
         />

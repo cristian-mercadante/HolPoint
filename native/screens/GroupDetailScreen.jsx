@@ -5,7 +5,7 @@ import GroupInfo from "../components/group/GroupInfo";
 import { connect } from "react-redux";
 import * as alertActions from "../actions/alerts";
 import RoundedButton from "../components/misc/RoundedButton";
-import { RED, YELLOW, BLUE } from "../colors";
+import { RED, YELLOW, BLUE, GREEN } from "../colors";
 import GroupForm from "../components/group/GroupForm";
 import axios from "axios";
 import { groupAPI, groupCreatorAPI } from "../server";
@@ -311,6 +311,21 @@ class GroupDetailScreen extends Component {
                   })
                 }
                 backgroundColor={RED}
+                color="#fff"
+              />
+              <RoundedButton
+                title="Attività"
+                onPress={() =>
+                  this.state.group?.date_start && this.state.group?.date_finish
+                    ? this.props.navigation.navigate("Activities", {
+                        group: this.state.group,
+                      })
+                    : Alert.alert(
+                        "Date mancanti",
+                        "È necessario aver definito le date di partenza e di ritorno per accedere alle attività"
+                      )
+                }
+                backgroundColor={GREEN}
                 color="#fff"
               />
             </>

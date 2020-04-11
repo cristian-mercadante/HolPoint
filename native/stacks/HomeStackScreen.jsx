@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { YELLOW, RED, BLUE } from "../colors";
+import { YELLOW, RED, BLUE, GREEN } from "../colors";
 import GroupsScreen from "../screens/GroupsScreen";
 import GroupAddScreen from "../screens/GroupAddScreen";
 import GroupAddFriendScreen from "../screens/GroupAddFriendScreen";
@@ -10,10 +10,13 @@ import IdeaDetailScreen from "../screens/IdeaDetailScreen";
 import IdeaAddScreen from "../screens/IdeaAddScreen";
 import GroupIdeaSelectScreen from "../screens/GroupIdeaSelectScreen";
 import AttachmentsScreen from "../screens/AttachmentsScreen";
+import ActivitiesScreen from "../screens/ActivitiesScreen";
+import ActivityAddScreen from "../screens/ActivityAddScreen";
+import ActivityDetailScreen from "../screens/ActivityDetailScreen";
 
 const HomeStack = createStackNavigator();
 
-function GroupsStackScreen() {
+function HomeStackScreen() {
   return (
     <HomeStack.Navigator
       screenOptions={{
@@ -106,8 +109,34 @@ function GroupsStackScreen() {
           title: "Allegati",
         }}
       />
+      <HomeStack.Screen
+        name="Activities"
+        component={ActivitiesScreen}
+        options={{
+          headerStyle: { backgroundColor: GREEN },
+          headerTintColor: "#fff",
+          title: "Attività",
+        }}
+      />
+      <HomeStack.Screen
+        name="ActivityAdd"
+        component={ActivityAddScreen}
+        options={{
+          headerStyle: { backgroundColor: GREEN },
+          headerTintColor: "#fff",
+          title: "Crea attività",
+        }}
+      />
+      <HomeStack.Screen
+        name="ActivityDetail"
+        component={ActivityDetailScreen}
+        options={{
+          headerStyle: { backgroundColor: GREEN },
+          headerTintColor: "#fff",
+        }}
+      />
     </HomeStack.Navigator>
   );
 }
 
-export default GroupsStackScreen;
+export default HomeStackScreen;
