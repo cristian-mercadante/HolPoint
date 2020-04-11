@@ -7,7 +7,6 @@ export const dateToString_or_Null = date => {
 };
 
 export const stringToDate_or_Null = string => {
-  console.log(string);
   if (string === null || string === undefined) return null;
   const parts = string.split("/");
   return new Date(parts[2], parts[1] - 1, parts[0]);

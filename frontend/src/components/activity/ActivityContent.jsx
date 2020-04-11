@@ -10,13 +10,13 @@ import {
   timeToString_or_Null,
   stringToDate_or_Null,
   stringToTime_or_Null,
-  validateDateInBetween
+  validateDateInBetween,
 } from "../../dateUtils";
 
 class ActivityContent extends Component {
   state = {
     date: stringToDate_or_Null(this.props.activity.date),
-    time: stringToTime_or_Null(this.props.activity.time)
+    time: stringToTime_or_Null(this.props.activity.time),
   };
 
   setDate = date => this.setState({ date });
@@ -53,6 +53,7 @@ class ActivityContent extends Component {
         </ButtonGroup>
         {this.props.editing ? (
           <ActivityForm
+            {...this.props}
             onSubmit={this.handleSubmit}
             date={this.state.date}
             time={this.state.time}
@@ -89,7 +90,7 @@ class ActivityContent extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
   };
 };
 

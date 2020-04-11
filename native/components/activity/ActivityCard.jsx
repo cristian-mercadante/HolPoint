@@ -5,13 +5,13 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const ActivityCard = ({ activity, icon }) => {
+const ActivityCard = ({ activity, icon, group }) => {
   const navigation = useNavigation();
 
   return (
     <>
       <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("ActivityDetail", { activity })}
+        onPress={() => navigation.navigate("ActivityDetail", { activity, group })}
         style={{
           backgroundColor: GREEN,
           margin: 10,

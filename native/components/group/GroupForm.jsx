@@ -60,7 +60,7 @@ const GroupForm = props => {
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ flex: 3 }}>
           <RoundedButton
-            title={`Partenza ${dateToString_or_Null(date_start) || "non definita"}`}
+            title={`Partenza ${!null_date_start ? dateToString_or_Null(date_start) : "non definita"}`}
             onPress={() => setShowStart(true)}
             color="#fff"
             backgroundColor={RED}
@@ -82,7 +82,7 @@ const GroupForm = props => {
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ flex: 3 }}>
           <RoundedButton
-            title={`Ritorno ${dateToString_or_Null(date_finish) || "non definito"}`}
+            title={`Ritorno ${!null_date_finish ? dateToString_or_Null(date_finish) : "non definito"}`}
             onPress={() => setShowFinish(true)}
             color="#fff"
             backgroundColor={RED}

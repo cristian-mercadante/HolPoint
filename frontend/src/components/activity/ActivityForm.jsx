@@ -25,7 +25,12 @@ export default class ActivityForm extends Component {
           <Form.Group as={Col} controlId="date">
             <Form.Label>Data</Form.Label>
             <br />
-            <DatePicker selected={this.props.date} onChange={date => this.props.setDate(date)} />
+            <DatePicker
+              selected={this.props.date}
+              onChange={date => this.props.setDate(date)}
+              minDate={this.props.dateStart}
+              maxDate={this.props.dateFinish} // FIXME: not working, somehow...
+            />
           </Form.Group>
           <Form.Group as={Col} controlId="time">
             <Form.Label>Ora</Form.Label>

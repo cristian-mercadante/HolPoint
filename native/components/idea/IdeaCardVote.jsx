@@ -3,7 +3,7 @@ import { View, Text, Alert } from "react-native";
 import { BLUE, GREEN, RED } from "../../colors";
 import IdeaCard from "./IdeaCard";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import * as alertActions from "../../actions/alerts";
 import axios from "axios";
@@ -91,12 +91,12 @@ class IdeaCardVote extends Component {
                   )
                 }
               >
-                <FontAwesome name="times" size={20} color={RED} />
+                <FontAwesome5 name="times" size={20} color={RED} />
               </TouchableWithoutFeedback>
             )}
           </View>
           <TouchableWithoutFeedback onPress={() => this.vote(this.state.gti.group, this.state.gti.idea)}>
-            <FontAwesome name="thumbs-up" size={20} color={this.state.voted ? GREEN : "#aaa"} />
+            <FontAwesome5 name="thumbs-up" solid size={20} color={this.state.voted ? GREEN : "#aaa"} />
           </TouchableWithoutFeedback>
         </View>
         <IdeaCard {...this.props} />

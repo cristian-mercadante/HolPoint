@@ -14,7 +14,7 @@ class ActivityCreateButton extends Component {
   state = {
     showCreate: false,
     date: null,
-    time: null
+    time: null,
   };
 
   showCreate = () => this.setState({ showCreate: !this.state.showCreate });
@@ -30,8 +30,8 @@ class ActivityCreateButton extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     };
     return axios
       .post(
@@ -43,7 +43,7 @@ class ActivityCreateButton extends Component {
           url,
           date,
           time,
-          kind
+          kind,
         },
         headers
       )
@@ -92,6 +92,8 @@ class ActivityCreateButton extends Component {
               time={this.state.time}
               setDate={this.setDate}
               setTime={this.setTime}
+              dateStart={this.props.dateStart}
+              dateFinish={this.props.dateFinish}
             />
           }
         />
@@ -103,7 +105,7 @@ class ActivityCreateButton extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     error: error => dispatch(alertActions.error(error)),
-    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style))
+    addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
   };
 };
 

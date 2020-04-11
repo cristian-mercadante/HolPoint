@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, Switch, Picker } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { stringToDate_or_Null, stringToTime_or_Null, dateToString_or_Null } from "../../dateUtils";
+import {
+  stringToDate_or_Null,
+  stringToTime_or_Null,
+  dateToString_or_Null,
+  timeToString_or_Null,
+} from "../../dateUtils";
 import TextInputLabel from "../misc/TextInputLabel";
 import { GREEN, DARK_GREEN, YELLOW } from "../../colors";
 import RoundedButton from "../misc/RoundedButton";
@@ -10,8 +15,6 @@ import { KIND_CHOICES } from "./kindChoices";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 const ActivityForm = props => {
-  const navigation = useNavigation();
-
   const [title, setTitle] = useState(props.activity?.title || "");
   const [description, setDescription] = useState(props.activity?.description || "");
   const [kind, setKind] = useState(props.activity?.kind || "GEN");
@@ -43,7 +46,7 @@ const ActivityForm = props => {
           onValueChange={(itemValue, itemIndex) => setKind(itemValue)}
         >
           {Object.keys(KIND_CHOICES).map((key, index) => (
-            <Picker.Item label={KIND_CHOICES[key].name} value={KIND_CHOICES[key].kind} />
+            <Picker.Item label={KIND_CHOICES[key].name} value={KIND_CHOICES[key].kind} key={key} />
           ))}
         </Picker>
       </View>
@@ -52,7 +55,7 @@ const ActivityForm = props => {
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ flex: 3 }}>
           <RoundedButton
-            title={`Data ${dateToString_or_Null(date) || "non definita"}`}
+            title={`Data ${!nullDate ? dateToString_or_Null(date) : "non definita"}`}
             onPress={() => setShowDate(true)}
             color="#fff"
             backgroundColor={GREEN}
@@ -75,7 +78,7 @@ const ActivityForm = props => {
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ flex: 3 }}>
           <RoundedButton
-            title={`Ora ${dateToString_or_Null(time) || "non definita"}`}
+            title={`Ora ${!nullTime ? timeToString_or_Null(time) : "non definita"}`}
             onPress={() => setShowTime(true)}
             color="#fff"
             backgroundColor={GREEN}
@@ -118,14 +121,19 @@ const ActivityForm = props => {
         title="Invia"
         onPress={() =>
           props
-            .handleSubmit
-            //TODO: remeber to put args in order
-            ()
+            .handleSubmit(
+              title,
+              description,
+              url,
+              nullDate ? null : dateToString_or_Null(date),
+              nullTime ? null : timeToString_or_Null(time),
+              kind
+            )
             .then(ok => {
               if (ok === "ok") {
                 setTitle("");
                 setDescription("");
-                setUri("");
+                setUrl("");
                 setKind("GEN");
                 setDate(new Date());
                 setTime(new Date());
@@ -142,6 +150,8 @@ const ActivityForm = props => {
           timeZoneOffsetInMinutes={0}
           value={date}
           mode="date"
+          minimumDate={stringToDate_or_Null(props.group.date_start)}
+          maximumDate={stringToDate_or_Null(props.group.date_finish)}
           is24Hour={true}
           display="default"
           onChange={(event, selectedDate) => {

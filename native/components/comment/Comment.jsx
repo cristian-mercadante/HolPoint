@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import { DARK_BLUE, DARK_GREEN, RED, BLUE, GREEN } from "../../colors";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export const darkColor = kind => {
   switch (kind) {
@@ -36,7 +36,7 @@ class Comment extends Component {
           borderWidth: 2,
           padding: 5,
           borderRadius: 10,
-          marginBottom: 10
+          marginBottom: 10,
         }}
       >
         <View style={{ flex: 1 }}>
@@ -47,7 +47,7 @@ class Comment extends Component {
           <Text style={{ flex: 1, fontSize: 17 }}>{this.props.text}</Text>
           {this.props.currentUserId === this.props.creator.id && (
             <TouchableOpacity onPress={() => this.props.deleteComment(this.props.id)}>
-              <FontAwesome name="trash" size={30} color={RED} />
+              <FontAwesome5 name="trash" size={25} color={RED} />
             </TouchableOpacity>
           )}
         </View>
@@ -58,7 +58,7 @@ class Comment extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentUserId: state.currentUser.id
+    currentUserId: state.currentUser.id,
   };
 };
 

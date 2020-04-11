@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as colors from "./colors";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { AppLoading } from "expo";
 
 import HomeStackScreen from "./stacks/HomeStackScreen";
@@ -23,7 +23,7 @@ const IconWithBadge = ({ name, color, size, badgeCount }) => {
   const size_ = 15;
   return (
     <View style={{ width: 24, height: 24, margin: 5 }}>
-      <FontAwesome name={name} size={size} color={color} />
+      <FontAwesome5 name={name} size={size} color={color} />
       {badgeCount > 0 && (
         <View
           style={{
@@ -74,18 +74,18 @@ class AppNavigationContainer extends Component {
               } else if (route.name === "Cerca") {
                 iconName = "search";
               } else if (route.name === "Richieste") {
-                iconName = "users";
+                iconName = "plus";
               } else if (route.name === "Profilo") {
-                iconName = "user";
+                iconName = "user-alt";
               } else if (route.name === "LogIn") {
-                iconName = "sign-in";
+                iconName = "sign-in-alt";
               } else if (route.name === "SignUp") {
                 iconName = "plus";
               }
               if (route.name === "Richieste") {
                 return <this.RequestIconWithBadge name={iconName} size={size} color={color} />;
               } else {
-                return <FontAwesome name={iconName} size={size} color={color} />;
+                return <FontAwesome5 name={iconName} size={size} color={color} />;
               }
             },
           })}
