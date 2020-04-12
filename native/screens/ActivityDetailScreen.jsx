@@ -9,6 +9,7 @@ import ActivityForm from "../components/activity/ActivityForm";
 import axios from "axios";
 import { activityAPI, activityCreatorAPI } from "../server";
 import ActivityInfo from "../components/activity/ActivityInfo";
+import CommentSection from "../components/comment/CommentSection";
 
 class ActivityDetailScreen extends Component {
   constructor(props) {
@@ -83,7 +84,10 @@ class ActivityDetailScreen extends Component {
         {this.state.isEditing ? (
           <ActivityForm handleSubmit={this.putActivity} activity={activity} />
         ) : (
-          <ActivityInfo activity={this.state.activity} />
+          <>
+            <ActivityInfo activity={activity} />
+            <CommentSection id={activity.id} kind="activity" refreshing={false} />
+          </>
         )}
       </ScrollView>
     );

@@ -8,7 +8,7 @@ import H2 from "../misc/H2";
 import Comment from "./Comment";
 import AddComment from "./AddComment";
 import Spinner from "../misc/Spinner";
-import { BLUE } from "../../colors";
+import { BLUE, GREEN } from "../../colors";
 
 class CommentSection extends Component {
   state = {
@@ -28,40 +28,39 @@ class CommentSection extends Component {
   };
 
   getComments = () => {
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`,
-      },
-    };
+    const headers = { headers: { "Content-Type": "application/json", Authorization: `Token ${this.props.token}` } };
     const url = this.getCommentUrl();
     return axios
       .get(`${url}${this.props.id}`, headers)
-      .then(res => {
-        this.setState({ loading: false, comments: res.data });
-      })
-      .catch(error => {
-        this.props.error(error);
-      });
+      .then(res => this.setState({ loading: false, comments: res.data }))
+      .catch(error => this.props.error(error));
   };
+
+  componentDidMount() {
+    switch (this.props.kind) {
+      case "idea":
+        this.props.idea?.id && this.getComments();
+        break;
+      case "activity":
+        this.getComments();
+        break;
+      default:
+        return;
+    }
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.id !== this.props.id) {
       this.getComments();
     }
-    if (prevProps.refreshing === false && this.props.refreshing === true) {
+    if (prevProps?.refreshing === false && this.props?.refreshing === true) {
       this.getComments();
     }
   }
 
   addComment = commentText => {
     if (commentText === "") return;
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`,
-      },
-    };
+    const headers = { headers: { "Content-Type": "application/json", Authorization: `Token ${this.props.token}` } };
     const url = this.getCommentUrl();
     return axios
       .post(
@@ -81,12 +80,7 @@ class CommentSection extends Component {
   };
 
   deleteComment = commentId => {
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${this.props.token}`,
-      },
-    };
+    const headers = { headers: { "Content-Type": "application/json", Authorization: `Token ${this.props.token}` } };
     const url = this.getCommentUrl();
     return axios
       .delete(`${url}${commentId}/`, headers)
@@ -118,7 +112,7 @@ class CommentSection extends Component {
         <H2 text="Commenti" />
         <AddComment addComment={this.addComment} kind={this.props.kind} />
         {this.state.loading ? (
-          <Spinner color={BLUE} />
+          <Spinner color={this.props.kind === "idea" ? BLUE : GREEN} />
         ) : (
           <View style={{ paddingHorizontal: 20 }}>{!this.state.loading && this.renderComments()}</View>
         )}
