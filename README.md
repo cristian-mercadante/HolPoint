@@ -247,7 +247,7 @@ export const server = "https://holpoint.ns0.it";
 ```
 
 ## XSendFile
-According to (`django-private-storage`)[https://github.com/edoburu/django-private-storage#optimizing-large-file-transfers] developer, sending large file can be inefficient. So it will be required to add `mod_xsendfile` to Apache.
+[According to `django-private-storage`  developer](https://github.com/edoburu/django-private-storage#optimizing-large-file-transfers), sending large file can be inefficient. So it will be required to add `mod_xsendfile` to Apache.
 - In `backend/settings.py` add:
 ```python
 PRIVATE_STORAGE_SERVER = 'apache'
@@ -263,7 +263,8 @@ sudo apt-get install libapache2-mod-xsendfile
 sudo a2enmod xsendfile
 ```
 
-# Troubleshooting
+# Troubleshooting and notes
 - Error logs are in `/var/log/apache2`
 - After changes, restart Apache with `sudo service apache2 restart`
-- If you edit `frontend` (like `server.js` file), remember that effective changes are displayed after `npm run build` and after moving `build` directory into `backend`. Also do `python manage.py collectstatic`.
+- If you edit `frontend` (like `server.js` file), remember that effective changes are displayed after `npm run build` and after moving `build` directory into `backend`. Also do `python manage.py collectstatic`
+- Adding `PRIVATE_STORAGE_SERVER = 'apache'` will change the way files are served, so while developing or debugging is recommended to comment out this line from `settings.py`
