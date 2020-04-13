@@ -9,7 +9,7 @@ class IdeaContent extends Component {
       <Fragment>
         {this.props.doesCurrentUserOwnThisIdea() && (
           <ButtonGroup className="float-right">
-            <Button variant="success" onClick={this.props.showEditFormInModal}>
+            <Button variant="warning" onClick={this.props.showEditFormInModal}>
               {this.props.editing ? "Annulla" : "Modifica"}
             </Button>
           </ButtonGroup>

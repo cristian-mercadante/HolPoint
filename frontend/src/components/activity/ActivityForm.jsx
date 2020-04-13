@@ -46,8 +46,8 @@ export default class ActivityForm extends Component {
           <Form.Label>Descrizione</Form.Label>
           <Form.Control as="textarea" rows="10" defaultValue={this.props.defaultDescription} />
         </Form.Group>
-        <Button varian="warning" type="submit">
-          Invia!
+        <Button variant="warning" type="submit">
+          Invia
         </Button>
       </Form>
     );

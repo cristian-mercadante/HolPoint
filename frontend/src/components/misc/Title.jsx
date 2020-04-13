@@ -1,6 +1,5 @@
 import React from "react";
 import "../../assets/css/font.css";
-import * as colors from "../../colors";
 
 const Title = props => {
   const titleStyle = {
@@ -8,15 +7,15 @@ const Title = props => {
     fontSize: props.fontSize,
     textAlign: "center",
     marginTop: "-20px",
-    marginBottom: "-20px"
+    marginBottom: "-20px",
   };
 
   const holStyle = {
-    color: colors.BLUE
+    color: "var(--holpoint-blue)",
   };
 
   const pointStyle = {
-    color: colors.RED
+    color: "var(--holpoint-red)",
   };
 
   return (

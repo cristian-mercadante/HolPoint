@@ -26,8 +26,8 @@ export default class IdeaListForm extends Component {
         {this.props.ideas.length !== 0 ? (
           <Form onSubmit={this.props.onSubmit}>
             {this.renderCheckBoxes()}
-            <Button type="submit" variant="warning">
-              Invia!
+            <Button type="submit" variant="success">
+              Invia
             </Button>
           </Form>
         ) : (

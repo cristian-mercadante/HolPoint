@@ -8,21 +8,21 @@ import { AsyncStorage } from "react-native";
 
 export const authStart = () => {
   return {
-    type: actionTypes.AUTH_START
+    type: actionTypes.AUTH_START,
   };
 };
 
 export const authSuccess = token => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    token: token
+    token: token,
   };
 };
 
 export const authFail = error => {
   return {
     type: actionTypes.AUTH_FAIL,
-    error: error
+    error: error,
   };
 };
 
@@ -30,7 +30,7 @@ export const logout = () => {
   AsyncStorage.removeItem("token");
   AsyncStorage.removeItem("expirationDate");
   return {
-    type: actionTypes.AUTH_LOGOUT
+    type: actionTypes.AUTH_LOGOUT,
   };
 };
 
@@ -42,8 +42,8 @@ const checkAuthTimeout = expirationTime => {
 
 const headers = {
   headers: {
-    "Content-Type": "application/json"
-  }
+    "Content-Type": "application/json",
+  },
 };
 
 export const authLogin = (username, password) => {
@@ -55,13 +55,14 @@ export const authLogin = (username, password) => {
         loginURL,
         {
           username: username,
-          password: password
+          password: password,
         },
         headers
       )
       .then(res => {
         const token = res.data.key;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        let expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() + 1);
         AsyncStorage.setItem("token", String(token));
         AsyncStorage.setItem("expirationDate", String(expirationDate));
         dispatch(authSuccess(token));
@@ -88,13 +89,14 @@ export const authSignup = (username, email, password1, password2) => {
           username: username,
           email: email,
           password1: password1,
-          password2: password2
+          password2: password2,
         },
         headers
       )
       .then(res => {
         const token = res.data.key;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        let expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() + 1);
         AsyncStorage.setItem("token", String(token));
         AsyncStorage.setItem("expirationDate", String(expirationDate));
         dispatch(authSuccess(token));

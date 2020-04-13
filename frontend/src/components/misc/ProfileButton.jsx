@@ -27,14 +27,18 @@ class ProfileButton extends Component {
       <Fragment>
         {!this.props.currentUser.loading && (
           <Dropdown as={ButtonGroup} alignRight>
-            <Button variant="success" onClick={this.onClickProfile}>
+            <Button
+              style={{ backgroundColor: "var(--holpoint-yellow)" }}
+              variant="warning"
+              onClick={this.onClickProfile}
+            >
               <Image
                 src={this.props.currentUser.profile.picture ? this.props.currentUser.profile.picture : logo}
                 className="profile-pic-small"
               />
               {"   " + this.props.currentUser.username}
             </Button>
-            <Dropdown.Toggle split variant="success" />
+            <Dropdown.Toggle split variant="warning" style={{ backgroundColor: "var(--holpoint-yellow)" }} />
             <Dropdown.Menu>
               {this.dropdownItems.map(item => (
                 <LinkContainer to={item.to} key={item.key}>
@@ -56,13 +60,13 @@ class ProfileButton extends Component {
 }
 const mapStateToProps = state => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch(authActions.authLogout())
+    logout: () => dispatch(authActions.authLogout()),
   };
 };
 

@@ -1,10 +1,9 @@
 import React from "react";
-import * as colors from "../../colors";
 import { Card } from "react-bootstrap";
 
 const AccessFormCard = props => {
   const cardStyle = {
-    backgroundColor: colors.YELLOW
+    backgroundColor: "var(--holpoint-yellow)",
   };
 
   return (

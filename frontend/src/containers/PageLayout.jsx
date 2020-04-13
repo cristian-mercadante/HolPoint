@@ -4,14 +4,13 @@ import { LinkContainer } from "react-router-bootstrap";
 import { withRouter } from "react-router-dom";
 import { AlertComponent, AlertsOverlayComponent } from "../components/alerts/index";
 import { isAuthenticated } from "../routes";
-import * as colors from "../colors";
 import { Title, LogInSignUp, ProfileButton } from "../components/misc";
 import { SearchBar } from "../components/search";
 import { FriendRequestButton } from "../components/friend_request";
 
 class PageLayout extends Component {
   navbarStyle = {
-    backgroundColor: colors.YELLOW
+    backgroundColor: "var(--holpoint-yellow)",
   };
 
   componentDidMount() {

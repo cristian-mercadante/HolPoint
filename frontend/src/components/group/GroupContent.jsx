@@ -14,7 +14,7 @@ class GroupContent extends Component {
     editing: false,
     showModalDelete: false,
     showModalFavIdea: false,
-    profiles: []
+    profiles: [],
   };
 
   showModalDelete = () => {
@@ -104,12 +104,12 @@ class GroupContent extends Component {
     return (
       <Fragment>
         <ButtonGroup className="float-right">
-          <Button variant="success" onClick={this.edit}>
+          <Button variant="warning" onClick={this.edit}>
             {this.state.editing ? "Annulla" : "Modifica"}
           </Button>
           {this.isCreator() && (
             <Fragment>
-              <Button variant="warning" onClick={this.showModalFavIdea}>
+              <Button variant="success" onClick={this.showModalFavIdea}>
                 Seleziona idea preferita
               </Button>
               <Button variant="danger" onClick={this.showModalDelete}>
@@ -151,14 +151,14 @@ class GroupContent extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     addAlert: (text, style) => dispatch(alertActions.addAlert(text, style)),
-    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts())
+    removeAllAlerts: () => dispatch(alertActions.removeAllAlerts()),
   };
 };
 

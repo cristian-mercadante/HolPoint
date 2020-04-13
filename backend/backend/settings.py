@@ -13,8 +13,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = secrets.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = False
-DEBUG = True
+DEBUG = False
+#DEBUG = True
 
 #ALLOWED_HOSTS = ['192.168.1.2','192.168.1.226', '127.0.0.1', 'holpoint.ns0.it']
 ALLOWED_HOSTS = ['*']
@@ -154,7 +154,7 @@ REST_FRAMEWORK = {
     'DATE_INPUT_FORMATS': [('%d/%m/%Y'), ],
 }
 
-#PRIVATE_STORAGE_SERVER = 'apache'
+PRIVATE_STORAGE_SERVER = 'apache'
 PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, "private")
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_authenticated'
 
