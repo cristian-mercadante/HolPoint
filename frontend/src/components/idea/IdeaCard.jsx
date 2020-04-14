@@ -21,7 +21,7 @@ class IdeaCard extends Component {
   state = {
     showUpdate: false,
     showModalDelete: false,
-    editing: false
+    editing: false,
   };
 
   showUpdate = () => {
@@ -47,8 +47,8 @@ class IdeaCard extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     };
 
     return axios
@@ -56,7 +56,7 @@ class IdeaCard extends Component {
         `${ideaAPI}${this.props.id}/`,
         {
           title,
-          description
+          description,
         },
         headers
       )
@@ -97,7 +97,7 @@ class IdeaCard extends Component {
               )}
             </h4>
           </Card.Header>
-          <Card.Body className="card-body" onClick={this.showUpdate}>
+          <Card.Body className="card-body text-with-newline" onClick={this.showUpdate}>
             {this.props.description}
           </Card.Body>
           <Card.Footer>
@@ -134,14 +134,14 @@ class IdeaCard extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     updateIdeaInStore: idea => dispatch(currentUserActions.updateIdeaInStore(idea)),
-    error: error => dispatch(alertActions.error(error))
+    error: error => dispatch(alertActions.error(error)),
   };
 };
 

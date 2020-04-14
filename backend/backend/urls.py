@@ -15,7 +15,7 @@ urlpatterns = [
     path('api/', include('holpoint.api.urls')),
     path('private-media/', include(private_storage.urls)),
     path('reset-password/', PasswordResetView.as_view(), name='password_reset'),
-    path('resert-password/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset-password/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
     re_path(r'^reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset-password/complete/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('', TemplateView.as_view(template_name='index.html')),
