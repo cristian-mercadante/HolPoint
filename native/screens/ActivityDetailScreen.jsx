@@ -82,7 +82,7 @@ class ActivityDetailScreen extends Component {
           )}
         </View>
         {this.state.isEditing ? (
-          <ActivityForm handleSubmit={this.putActivity} activity={activity} />
+          <ActivityForm handleSubmit={this.putActivity} activity={activity} group={this.props.route.params.group} />
         ) : (
           <>
             <ActivityInfo activity={activity} />

@@ -6,6 +6,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { dateToString_or_Null, stringToDate_or_Null } from "../../dateUtils";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
+import * as alertActions from "../../actions/alerts";
 import FriendTag from "../profile/FriendTag";
 import { Switch, View, Text } from "react-native";
 
@@ -128,7 +129,11 @@ const GroupForm = props => {
         ))}
       <RoundedButton
         title="Invia"
-        onPress={() =>
+        onPress={() => {
+          if (!null_date_start && !null_date_finish && date_finish < date_start) {
+            props.addAlert("La data di ritorno non può precedere la data di partenza");
+            return;
+          }
           props
             .handleSubmit(
               name,
@@ -146,8 +151,8 @@ const GroupForm = props => {
                 setDateStart(new Date());
                 setDateFinish(new Date());
               }
-            })
-        }
+            });
+        }}
         backgroundColor={GREEN}
         color="#fff"
       />
@@ -193,4 +198,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(GroupForm);
+const mapDispatchToProps = dispatch => {
+  return {
+    addAlert: text => dispatch(alertActions.addAlert(text)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupForm);

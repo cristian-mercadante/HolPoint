@@ -43,19 +43,44 @@ class ActivitiesScreen extends Component {
 
   updateOrAddActivityInSection = activity => {
     let { activities, sections } = this.state;
+    let oldDate = 0;
 
-    // ==> this.state.activities
+    // Edit this.state.activities
     let index = activities.findIndex(a => a.id === activity.id);
     if (index > -1) {
       // update
+      oldDate = activities[index].date;
       activities[index] = activity;
     } else {
       // add
       activities.push(activity);
     }
 
-    // ==> this.state.sections
+    // Edit this.state.sections
     const activityDate = activity.date; // string
+
+    // if the activity changed date, then the old object in the previous section should be removed
+    if (oldDate !== activity.date) {
+      index = sections.findIndex(s => s.title === oldDate);
+      if (index > -1) {
+        const i = sections[index].data.findIndex(d => d.id === activity.id);
+        if (i > -1) {
+          sections[index].data.splice(i, 1);
+        } else {
+          // ignore
+        }
+      } else {
+        // use 'default' section
+        const i = sections[sections.length - 1].data.findIndex(d => d.id === activity.id);
+        if (i > -1) {
+          sections[sections.length - 1].data.splice(i, 1);
+        } else {
+          // ignore
+        }
+      }
+    }
+
+    // if the activity is new or updated, then it should be appended to the section data
     index = sections.findIndex(s => s.title === activityDate);
     if (index > -1) {
       // if section exists
