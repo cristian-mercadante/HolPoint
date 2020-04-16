@@ -23,6 +23,10 @@ const GroupInfo = ({ group }) => {
             <Text style={styles.textBold}>Idea preferita:</Text>
             <Text>{` ${group.prefered_idea ? group.prefered_idea.title : "non definita"}`}</Text>
           </Text>
+          <Text style={styles.text}>
+            <Text style={styles.textBold}>Descrizione:</Text>
+          </Text>
+          <Text style={styles.text}>{group.description}</Text>
           <Text style={[styles.textBold, styles.text]}>Partecipanti:</Text>
           {group.profiles.map(p => (
             <FriendTag username={p.username} key={p.id} />
