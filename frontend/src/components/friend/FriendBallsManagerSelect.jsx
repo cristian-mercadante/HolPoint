@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 
 class FriendBallsManagerSelect extends Component {
   state = {
-    friends: []
+    friends: [],
   };
 
   componentDidMount() {
@@ -12,9 +12,9 @@ class FriendBallsManagerSelect extends Component {
   }
 
   search = () => {
-    const f = document.getElementById("search-friend").value;
+    const f = String(document.getElementById("search-friend").value).toLowerCase();
     const friends = this.props.friends.filter(
-      friend => friend.username.includes(f) || this.props.selectedFriends.includes(friend.id)
+      friend => String(friend.username).toLowerCase().includes(f) || this.props.selectedFriends.includes(friend.id)
     );
     this.setState({ friends });
   };

@@ -15,7 +15,7 @@ class HomePage extends Component {
     groups: [],
   };
 
-  addGroup = (group) => {
+  addGroup = group => {
     this.setState({ groups: [...this.state.groups, group] });
   };
 
@@ -29,10 +29,10 @@ class HomePage extends Component {
     };
     return axios
       .get(`${groupAPI}`, headers)
-      .then((res) => {
+      .then(res => {
         if (this._isMounted) this.setState({ loading: false, groups: res.data });
       })
-      .catch((error) => {
+      .catch(error => {
         this.props.error(error);
       });
   };
@@ -53,7 +53,7 @@ class HomePage extends Component {
           <ProgressBar striped variant="success" now={100} animated />
         ) : (
           <Panel
-            title="Home"
+            title="Gruppi"
             component={<GroupCardsManager {...this.state} />}
             badge={<GroupCreateButton addGroup={this.addGroup} />}
           />
@@ -63,15 +63,15 @@ class HomePage extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     currentUser: state.currentUser,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    error: (error) => dispatch(alertActions.error(error)),
+    error: error => dispatch(alertActions.error(error)),
   };
 };
 

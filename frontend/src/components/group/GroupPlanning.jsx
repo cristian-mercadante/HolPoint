@@ -26,7 +26,7 @@ export default class GroupPlanning extends Component {
           />
         ) : (
           <div style={{ textAlign: "center", color: "#777", fontSize: "20px" }}>
-            È necessario definire la data di partenza e la data di arrivo per pianificare le attività
+            È necessario definire la data di partenza e la data di ritorno per pianificare le attività
           </div>
         )}
       </Fragment>
